@@ -1,4 +1,4 @@
-package com.nash.ecommerce;
+package com.hoanglam.ecommerce;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
