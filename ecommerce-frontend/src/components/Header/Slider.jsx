@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import bg from '../../images/bg_1.png'
 
 class Slider extends Component {
     render() {
@@ -13,7 +14,7 @@ class Slider extends Component {
                                         <div class="overlay"></div>
                                         <div class="container-fluid p-0">
                                             <div class="row d-md-flex no-gutters slider-text align-items-center justify-content-end" data-scrollax-parent="true">
-                                                <img class="one-third order-md-last img-fluid" src="./images/bg_1.png" alt="" />
+                                                <img class="one-third order-md-last img-fluid" src={require('../../images/bg_1.png')} alt="" />
                                                 <div class="one-forth d-flex align-items-center ftco-animate fadeInUp ftco-animated" data-scrollax=" properties: { translateY: '70%' }" style={{ transform: ' translateZ(0px) translateY(53.4053%)' }}>
                                                     <div class="text">
                                                         <span class="subheading">#New Arrival</span>
@@ -35,7 +36,7 @@ class Slider extends Component {
                                         <div class="overlay"></div>
                                         <div class="container-fluid p-0">
                                             <div class="row d-flex no-gutters slider-text align-items-center justify-content-end" data-scrollax-parent="true">
-                                                <img class="one-third order-md-last img-fluid" src="../images/bg_2.png" alt="" />
+                                                <img class="one-third order-md-last img-fluid" src={require('../../images/bg_2.png')} alt="" />
                                                 <div class="one-forth d-flex align-items-center ftco-animate fadeInUp ftco-animated" data-scrollax=" properties: { translateY: '70%' }" style={{ transform: ' translateZ(0px) translateY(53.4053%)' }}>
                                                     <div class="text">
                                                         <span class="subheading">#New Arrival</span>
@@ -57,7 +58,7 @@ class Slider extends Component {
                                         <div class="overlay"></div>
                                         <div class="container-fluid p-0">
                                             <div class="row d-md-flex no-gutters slider-text align-items-center justify-content-end" data-scrollax-parent="true">
-                                                <img class="one-third order-md-last img-fluid" src="../images/bg_1.png" alt="" />
+                                                <img class="one-third order-md-last img-fluid" src={require('../../images/bg_1.png')} alt="" />
                                                 <div class="one-forth d-flex align-items-center ftco-animate fadeInUp ftco-animated" data-scrollax=" properties: { translateY: '70%' }" style={{ transform: ' translateZ(0px) translateY(53.4053%)' }}>
                                                     <div class="text">
                                                         <span class="subheading">#New Arrival</span>
@@ -79,7 +80,7 @@ class Slider extends Component {
                                         <div class="overlay"></div>
                                         <div class="container-fluid p-0">
                                             <div class="row d-flex no-gutters slider-text align-items-center justify-content-end" data-scrollax-parent="true">
-                                                <img class="one-third order-md-last img-fluid" src="../images/bg_2.png" alt="" />
+                                                <img class="one-third order-md-last img-fluid" src={require('../../images/bg_2.png')} alt="" />
                                                 <div class="one-forth d-flex align-items-center ftco-animate fadeInUp ftco-animated" data-scrollax=" properties: { translateY: '70%' }" style={{ transform: ' translateZ(0px) translateY(53.4053%)' }}>
                                                     <div class="text">
                                                         <span class="subheading">#New Arrival</span>
@@ -101,7 +102,7 @@ class Slider extends Component {
                                         <div class="overlay"></div>
                                         <div class="container-fluid p-0">
                                             <div class="row d-md-flex no-gutters slider-text align-items-center justify-content-end" data-scrollax-parent="true">
-                                                <img class="one-third order-md-last img-fluid" src="images/bg_1.png" alt="" />
+                                                <img class="one-third order-md-last img-fluid"src={require('../../images/bg_1.png')} alt="" />
                                                 <div class="one-forth d-flex align-items-center ftco-animate fadeInUp ftco-animated" data-scrollax=" properties: { translateY: '70%' }" style={{ transform: ' translateZ(0px) translateY(53.4053%)' }}>
                                                     <div class="text">
                                                         <span class="subheading">#New Arrival</span>
@@ -123,7 +124,7 @@ class Slider extends Component {
                                         <div class="overlay"></div>
                                         <div class="container-fluid p-0">
                                             <div class="row d-flex no-gutters slider-text align-items-center justify-content-end" data-scrollax-parent="true">
-                                                <img class="one-third order-md-last img-fluid" src="images/bg_2.png" alt="" />
+                                                <img class="one-third order-md-last img-fluid" src={require('../../images/bg_2.png')} alt="" />
                                                 <div class="one-forth d-flex align-items-center ftco-animate fadeInUp ftco-animated" data-scrollax=" properties: { translateY: '70%' }" style={{ transform: ' translateZ(0px) translateY(53.4053%)' }}>
                                                     <div class="text">
                                                         <span class="subheading">#New Arrival</span>
