@@ -1,320 +1,392 @@
-package com.nash.ecommerce.entites;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.hoanglam.ecommerce.entites;
 
-import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ *
+ * @author dell
+ */
 @Entity
-@Table(name = "order")
+@Table(name = "order1")
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Id
-    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
     private Integer id;
-
-    @Column(name = "userId")
-    private Integer userId;
-
-    @Column(name = "sessionId", nullable = false)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "sessionId")
     private String sessionId;
-
-    @Column(name = "token", nullable = false)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "token")
     private String token;
-
-    @Column(name = "status", nullable = false)
-    private Integer status;
-
-    @Column(name = "subTotal", nullable = false)
-    private Float subTotal;
-
-    @Column(name = "itemDiscount", nullable = false)
-    private Float itemDiscount;
-
-    @Column(name = "tax", nullable = false)
-    private Float tax;
-
-    @Column(name = "shipping", nullable = false)
-    private Float shipping;
-
-    @Column(name = "total", nullable = false)
-    private Float total;
-
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "status")
+    private short status;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "subTotal")
+    private float subTotal;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "itemDiscount")
+    private float itemDiscount;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "tax")
+    private float tax;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "shipping")
+    private float shipping;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "total")
+    private float total;
+    @Size(max = 50)
     @Column(name = "promo")
     private String promo;
-
-    @Column(name = "discount", nullable = false)
-    private Float discount;
-
-    @Column(name = "grandTotal", nullable = false)
-    private Float grandTotal;
-
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "discount")
+    private float discount;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "grandTotal")
+    private float grandTotal;
+    @Size(max = 50)
     @Column(name = "firstName")
     private String firstName;
-
+    @Size(max = 50)
     @Column(name = "lastName")
     private String lastName;
-
+    @Size(max = 15)
     @Column(name = "mobile")
     private String mobile;
-
+    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Size(max = 50)
     @Column(name = "email")
     private String email;
-
+    @Size(max = 50)
     @Column(name = "line1")
     private String line1;
-
+    @Size(max = 50)
     @Column(name = "line2")
     private String line2;
-
+    @Size(max = 50)
     @Column(name = "city")
     private String city;
-
+    @Size(max = 50)
     @Column(name = "province")
     private String province;
-
+    @Size(max = 50)
     @Column(name = "country")
     private String country;
-
-    @Column(name = "createdAt", nullable = false)
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "createdAt")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-
     @Column(name = "updatedAt")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-
+    @Lob
+    @Size(max = 5000)
     @Column(name = "content")
     private String content;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
+    private Collection<OrderItem> orderItemCollection;
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @ManyToOne
+    private User userId;
 
-    public void setId(Integer id) {
+    public Order() {
+    }
+
+    public Order(Integer id) {
         this.id = id;
+    }
+
+    public Order(Integer id, String sessionId, String token, short status, float subTotal, float itemDiscount, float tax, float shipping, float total, float discount, float grandTotal, Date createdAt) {
+        this.id = id;
+        this.sessionId = sessionId;
+        this.token = token;
+        this.status = status;
+        this.subTotal = subTotal;
+        this.itemDiscount = itemDiscount;
+        this.tax = tax;
+        this.shipping = shipping;
+        this.total = total;
+        this.discount = discount;
+        this.grandTotal = grandTotal;
+        this.createdAt = createdAt;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getSessionId() {
         return sessionId;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public String getToken() {
         return token;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public Integer getStatus() {
+    public short getStatus() {
         return status;
     }
 
-    public void setSubTotal(Float subTotal) {
-        this.subTotal = subTotal;
+    public void setStatus(short status) {
+        this.status = status;
     }
 
-    public Float getSubTotal() {
+    public float getSubTotal() {
         return subTotal;
     }
 
-    public void setItemDiscount(Float itemDiscount) {
-        this.itemDiscount = itemDiscount;
+    public void setSubTotal(float subTotal) {
+        this.subTotal = subTotal;
     }
 
-    public Float getItemDiscount() {
+    public float getItemDiscount() {
         return itemDiscount;
     }
 
-    public void setTax(Float tax) {
-        this.tax = tax;
+    public void setItemDiscount(float itemDiscount) {
+        this.itemDiscount = itemDiscount;
     }
 
-    public Float getTax() {
+    public float getTax() {
         return tax;
     }
 
-    public void setShipping(Float shipping) {
-        this.shipping = shipping;
+    public void setTax(float tax) {
+        this.tax = tax;
     }
 
-    public Float getShipping() {
+    public float getShipping() {
         return shipping;
     }
 
-    public void setTotal(Float total) {
-        this.total = total;
+    public void setShipping(float shipping) {
+        this.shipping = shipping;
     }
 
-    public Float getTotal() {
+    public float getTotal() {
         return total;
     }
 
-    public void setPromo(String promo) {
-        this.promo = promo;
+    public void setTotal(float total) {
+        this.total = total;
     }
 
     public String getPromo() {
         return promo;
     }
 
-    public void setDiscount(Float discount) {
-        this.discount = discount;
+    public void setPromo(String promo) {
+        this.promo = promo;
     }
 
-    public Float getDiscount() {
+    public float getDiscount() {
         return discount;
     }
 
-    public void setGrandTotal(Float grandTotal) {
-        this.grandTotal = grandTotal;
+    public void setDiscount(float discount) {
+        this.discount = discount;
     }
 
-    public Float getGrandTotal() {
+    public float getGrandTotal() {
         return grandTotal;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setGrandTotal(float grandTotal) {
+        this.grandTotal = grandTotal;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getMobile() {
         return mobile;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setLine1(String line1) {
-        this.line1 = line1;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getLine1() {
         return line1;
     }
 
-    public void setLine2(String line2) {
-        this.line2 = line2;
+    public void setLine1(String line1) {
+        this.line1 = line1;
     }
 
     public String getLine2() {
         return line2;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setLine2(String line2) {
+        this.line2 = line2;
     }
 
     public String getCity() {
         return city;
     }
 
-    public void setProvince(String province) {
-        this.province = province;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getProvince() {
         return province;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setProvince(String province) {
+        this.province = province;
     }
 
     public String getCountry() {
         return country;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getContent() {
         return content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @XmlTransient
+    public Collection<OrderItem> getOrderItemCollection() {
+        return orderItemCollection;
+    }
+
+    public void setOrderItemCollection(Collection<OrderItem> orderItemCollection) {
+        this.orderItemCollection = orderItemCollection;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Order)) {
+            return false;
+        }
+        Order other = (Order) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public String toString() {
-        return "Order{" +
-                "id=" + id + '\'' +
-                "userId=" + userId + '\'' +
-                "sessionId=" + sessionId + '\'' +
-                "token=" + token + '\'' +
-                "status=" + status + '\'' +
-                "subTotal=" + subTotal + '\'' +
-                "itemDiscount=" + itemDiscount + '\'' +
-                "tax=" + tax + '\'' +
-                "shipping=" + shipping + '\'' +
-                "total=" + total + '\'' +
-                "promo=" + promo + '\'' +
-                "discount=" + discount + '\'' +
-                "grandTotal=" + grandTotal + '\'' +
-                "firstName=" + firstName + '\'' +
-                "lastName=" + lastName + '\'' +
-                "mobile=" + mobile + '\'' +
-                "email=" + email + '\'' +
-                "line1=" + line1 + '\'' +
-                "line2=" + line2 + '\'' +
-                "city=" + city + '\'' +
-                "province=" + province + '\'' +
-                "country=" + country + '\'' +
-                "createdAt=" + createdAt + '\'' +
-                "updatedAt=" + updatedAt + '\'' +
-                "content=" + content + '\'' +
-                '}';
+        return "com.hoanglam.ecommerce Order id=" + id + " ]";
     }
+
 }

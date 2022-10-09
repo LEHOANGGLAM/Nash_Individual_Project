@@ -1,152 +1,211 @@
-package com.nash.ecommerce.entites;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.hoanglam.ecommerce.entites;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
+/**
+ *
+ * @author dell
+ */
 @Entity
 @Table(name = "cart_item")
 public class CartItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Id
-    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
     private Integer id;
-
-    @Column(name = "productId", nullable = false)
-    private Integer productId;
-
-    @Column(name = "cartId", nullable = false)
-    private Integer cartId;
-
-    @Column(name = "sku", nullable = false)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "sku")
     private String sku;
-
-    @Column(name = "price", nullable = false)
-    private Float price;
-
-    @Column(name = "discount", nullable = false)
-    private Float discount;
-
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity;
-
-    @Column(name = "active", nullable = false)
-    private Boolean active;
-
-    @Column(name = "createdAt", nullable = false)
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "price")
+    private float price;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "discount")
+    private float discount;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "quantity")
+    private short quantity;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "active")
+    private boolean active;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "createdAt")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-
     @Column(name = "updatedAt")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-
+    @Lob
+    @Size(max = 65535)
     @Column(name = "content")
     private String content;
+    @JoinColumn(name = "cartId", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Cart cartId;
+    @JoinColumn(name = "productId", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Product productId;
 
-    public void setId(Integer id) {
+    public CartItem() {
+    }
+
+    public CartItem(Integer id) {
         this.id = id;
+    }
+
+    public CartItem(Integer id, String sku, float price, float discount, short quantity, boolean active, Date createdAt) {
+        this.id = id;
+        this.sku = sku;
+        this.price = price;
+        this.discount = discount;
+        this.quantity = quantity;
+        this.active = active;
+        this.createdAt = createdAt;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setCartId(Integer cartId) {
-        this.cartId = cartId;
-    }
-
-    public Integer getCartId() {
-        return cartId;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getSku() {
         return sku;
     }
 
-    public void setPrice(Float price) {
-        this.price = price;
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
-    public Float getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setDiscount(Float discount) {
-        this.discount = discount;
+    public void setPrice(float price) {
+        this.price = price;
     }
 
-    public Float getDiscount() {
+    public float getDiscount() {
         return discount;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setDiscount(float discount) {
+        this.discount = discount;
     }
 
-    public Integer getQuantity() {
+    public short getQuantity() {
         return quantity;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setQuantity(short quantity) {
+        this.quantity = quantity;
     }
 
-    public Boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getContent() {
         return content;
     }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Cart getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(Cart cartId) {
+        this.cartId = cartId;
+    }
+
+    public Product getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Product productId) {
+        this.productId = productId;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof CartItem)) {
+            return false;
+        }
+        CartItem other = (CartItem) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public String toString() {
-        return "CartItem{" +
-                "id=" + id + '\'' +
-                "productId=" + productId + '\'' +
-                "cartId=" + cartId + '\'' +
-                "sku=" + sku + '\'' +
-                "price=" + price + '\'' +
-                "discount=" + discount + '\'' +
-                "quantity=" + quantity + '\'' +
-                "active=" + active + '\'' +
-                "createdAt=" + createdAt + '\'' +
-                "updatedAt=" + updatedAt + '\'' +
-                "content=" + content + '\'' +
-                '}';
+        return "com.mycompany.pojo.CartItem[ id=" + id + " ]";
     }
+    
 }

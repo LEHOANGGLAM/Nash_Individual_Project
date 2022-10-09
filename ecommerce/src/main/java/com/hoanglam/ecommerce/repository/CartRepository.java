@@ -1,6 +1,6 @@
-package com.nash.ecommerce.repository;
+package com.hoanglam.ecommerce.repository;
 
-import com.nash.ecommerce.entites.Cart;
+import com.hoanglam.ecommerce.entites.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

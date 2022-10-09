@@ -1,6 +1,6 @@
-package com.nash.ecommerce.repository;
+package com.hoanglam.ecommerce.repository;
 
-import com.nash.ecommerce.entites.Category;
+import com.hoanglam.ecommerce.entites.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
