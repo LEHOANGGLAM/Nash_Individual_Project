@@ -40,10 +40,10 @@ public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    @Size(max = 36)
+    private String id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 75)
@@ -108,14 +108,30 @@ public class Product implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     private Collection<CartItem> cartItemCollection;
 
+
+    @JoinTable(name = "product_size", joinColumns = {
+            @JoinColumn(name = "product_id", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "size_id", referencedColumnName = "id")})
+    @ManyToMany
+    private Collection<com.hoanglam.ecommerce.entites.Size> sizeCollection;
+
+    public Collection<com.hoanglam.ecommerce.entites.Size> getSizeCollection() {
+        return sizeCollection;
+    }
+
+    public void setSizeCollection(Collection<com.hoanglam.ecommerce.entites.Size> sizeCollection) {
+        this.sizeCollection = sizeCollection;
+    }
+
+
     public Product() {
     }
 
-    public Product(Integer id) {
+    public Product(String id) {
         this.id = id;
     }
 
-    public Product(Integer id, String title, String slug, short type, float price, float discount, short quantity, boolean shop) {
+    public Product(String id, String title, String slug, short type, float price, float discount, short quantity, boolean shop) {
         this.id = id;
         this.title = title;
         this.slug = slug;
@@ -126,11 +142,11 @@ public class Product implements Serializable {
         this.shop = shop;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

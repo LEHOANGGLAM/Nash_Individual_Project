@@ -42,7 +42,73 @@
   box-sizing: border-box;
 }
 
+
+.tabs-nav {
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  width: 100%;
+}
+
+.tabs-nav li {
+  float: left;
+  line-height: 45px;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+}
+
+.tabs-nav li a,
+.tab-reviews {
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.tabs-nav li a {
+  background-color: #f2f2f2;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  color: #808080;
+  font-weight: 600;
+  display: block;
+  letter-spacing: 0;
+  outline: none;
+  padding: 0 20px;
+  text-decoration: none;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.tabs-nav li a:hover {}
+
+.tab-reviews {
+  color: #aaa;
+}
+
+.tabs-nav li.active .tab-reviews {
+  color: #fff;
+}
+
+.tabs-nav li.active a {
+  background-color: #505050;
+  color: #fff;
+}
+
+.tab-content {
+  padding: 15px 0px;
+}
+
+.tabs-container {
+  overflow: hidden;
+  width: 100%;
+}
+
 html {
+  scroll-behavior: smooth;
   font-family: sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
@@ -7181,6 +7247,33 @@ a.close.disabled {
     -o-transition: none;
     transition: none;
   }
+}
+
+
+.custom-nav {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+
+}
+
+.owl-prev,
+.owl-next {
+  position: absolute;
+  height: 100px;
+  color: inherit;
+  background: none;
+  border: none;
+  z-index: 100;
+}
+
+.owl-prev {
+  left: 0;
+}
+
+.owl-next {
+  right: 0;
 }
 
 .carousel-item.active,

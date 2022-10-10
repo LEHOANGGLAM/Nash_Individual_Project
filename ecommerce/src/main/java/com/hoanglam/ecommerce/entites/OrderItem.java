@@ -34,10 +34,10 @@ public class OrderItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    @Size(max = 36)
+    private String id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -77,11 +77,11 @@ public class OrderItem implements Serializable {
     public OrderItem() {
     }
 
-    public OrderItem(Integer id) {
+    public OrderItem(String id) {
         this.id = id;
     }
 
-    public OrderItem(Integer id, String sku, float price, float discount, short quantity, Date createdAt) {
+    public OrderItem(String id, String sku, float price, float discount, short quantity, Date createdAt) {
         this.id = id;
         this.sku = sku;
         this.price = price;
@@ -90,11 +90,11 @@ public class OrderItem implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -37,10 +37,10 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    @Size(max = 36)
+    private String id;
     @Size(max = 50)
     @Column(name = "firstName")
     private String firstName;
@@ -94,22 +94,22 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Integer id) {
+    public User(String id) {
         this.id = id;
     }
 
-    public User(Integer id, String passwordHash, String username, Date registeredDate) {
+    public User(String id, String passwordHash, String username, Date registeredDate) {
         this.id = id;
         this.passwordHash = passwordHash;
         this.username = username;
         this.registeredDate = registeredDate;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

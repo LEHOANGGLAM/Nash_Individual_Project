@@ -36,10 +36,10 @@ public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
+    @Size(max = 36)
+    private String id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 75)
@@ -71,21 +71,21 @@ public class Category implements Serializable {
     public Category() {
     }
 
-    public Category(Integer id) {
+    public Category(String id) {
         this.id = id;
     }
 
-    public Category(Integer id, String title, String slug) {
+    public Category(String id, String title, String slug) {
         this.id = id;
         this.title = title;
         this.slug = slug;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
