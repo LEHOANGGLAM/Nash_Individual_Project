@@ -8,13 +8,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("")
 public class TestController {
     @GetMapping("/all")
     public String allAccess(){
         return "Public content";
     }
 
+
+    @GetMapping("/user")
+    public String userAccess(){
+        return "User content";
+    }
+    @GetMapping("/admin")
+    public String adminAccess(){
+        return "Admin content";
+    }
 
 
 }

@@ -45,8 +45,8 @@ class Login extends Component {
                         {this.state.message && (
                             <span style={{ color: "red", justifyItems: 'center', display: 'grid', fontSize: 15 }}>{this.state.message}</span>
                         )}
-                        <label for="rememberme" class="rememberme col-md-12" style={{ margin: 10 }}>
-                            <input name="rememberme" type="checkbox" id="rememberme" value="forever" /> Remember Me</label>
+                        {/* <label for="rememberme" class="rememberme col-md-12" style={{ margin: 10 }}>
+                            <input name="rememberme" type="checkbox" id="rememberme" value="forever" /> Remember Me</label> */}
                         <p class="lost_password" style={{ marginLeft: 10 }}>
                             <a href="#">Lost Your Password?</a>
                         </p>

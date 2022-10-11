@@ -90,6 +90,17 @@ public class User implements Serializable {
     private Collection<Cart> cartCollection;
     @OneToMany(mappedBy = "userId")
     private Collection<Order> order1Collection;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "active")
+    private boolean active;
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public User() {
     }
