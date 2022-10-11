@@ -65,7 +65,7 @@ public class SecurityConfiguration {
                 .antMatchers("/all/**").permitAll()
                 .antMatchers("/user/**").hasAuthority("user")
                 .antMatchers("/admin/**").hasAuthority("admin");
-//                .anyRequest().authenticated();
+
 
         http.authenticationProvider(authenticationProvider());
 

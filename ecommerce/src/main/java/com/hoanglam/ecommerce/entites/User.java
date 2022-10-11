@@ -4,31 +4,17 @@
  */
 package com.hoanglam.ecommerce.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author dell
  */
 @Entity
@@ -58,6 +44,7 @@ public class User implements Serializable {
     @NotNull
     @Size(min = 1, max = 32)
     @Column(name = "passwordHash")
+    @JsonIgnore
     private String passwordHash;
     @Basic(optional = false)
     @NotNull
@@ -82,18 +69,33 @@ public class User implements Serializable {
     @Size(max = 200)
     @Column(name = "avatar_image")
     private String avatarImage;
-    @ManyToMany(mappedBy = "userCollection")
-    private Collection<Roles> rolesCollection;
+
+    @JsonIgnore
+    @JoinTable(name = "user_roles", joinColumns = {
+            @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "role_id", referencedColumnName = "id")})
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.ALL,
+            }
+    )
+    private Collection<Role> rolesCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    @JsonIgnore
     private Collection<Product> productCollection;
     @OneToMany(mappedBy = "userId")
+    @JsonIgnore
     private Collection<Cart> cartCollection;
     @OneToMany(mappedBy = "userId")
+    @JsonIgnore
     private Collection<Order> order1Collection;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "active")
     private boolean active;
+
     public boolean isActive() {
         return active;
     }
@@ -102,11 +104,34 @@ public class User implements Serializable {
         this.active = active;
     }
 
+
+    @XmlTransient
+    public Collection<Role> getRolesCollection() {
+        return rolesCollection;
+    }
+
+    @XmlTransient
+    public Collection<Product> getProductCollection() {
+        return productCollection;
+    }
+
+    @XmlTransient
+    public Collection<Cart> getCartCollection() {
+        return cartCollection;
+    }
+
+
     public User() {
     }
 
     public User(String id) {
         this.id = id;
+    }
+
+    public User(String username, String email, String encode) {
+        this.username = username;
+        this.email = email;
+        this.passwordHash = encode;
     }
 
     public User(String id, String passwordHash, String username, Date registeredDate) {
@@ -212,28 +237,14 @@ public class User implements Serializable {
         this.avatarImage = avatarImage;
     }
 
-    @XmlTransient
-    public Collection<Roles> getRolesCollection() {
-        return rolesCollection;
-    }
-
-    public void setRolesCollection(Collection<Roles> rolesCollection) {
+    public void setRolesCollection(Collection<Role> rolesCollection) {
         this.rolesCollection = rolesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Product> getProductCollection() {
-        return productCollection;
     }
 
     public void setProductCollection(Collection<Product> productCollection) {
         this.productCollection = productCollection;
     }
 
-    @XmlTransient
-    public Collection<Cart> getCartCollection() {
-        return cartCollection;
-    }
 
     public void setCartCollection(Collection<Cart> cartCollection) {
         this.cartCollection = cartCollection;
@@ -272,5 +283,5 @@ public class User implements Serializable {
     public String toString() {
         return "com.mycompany.pojo.User[ id=" + id + " ]";
     }
-    
+
 }

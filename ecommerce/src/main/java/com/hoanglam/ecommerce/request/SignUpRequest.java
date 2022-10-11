@@ -1,4 +1,4 @@
-package com.hoanglam.ecommerce.payload.request;
+package com.hoanglam.ecommerce.request;
 
 import javax.validation.constraints.*;
 import java.util.Collection;
@@ -13,11 +13,11 @@ public class SignUpRequest {
     @Email
     private String email;
 
-    private Collection<String> role;
-
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+
+    private Collection<String> role;
 
     public String getUsername() {
         return username;

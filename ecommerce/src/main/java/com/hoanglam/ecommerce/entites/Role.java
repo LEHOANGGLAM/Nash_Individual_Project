@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -16,7 +15,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "roles")
-public class Roles implements Serializable {
+public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -27,21 +26,13 @@ public class Roles implements Serializable {
     @Size(max = 45)
     @Column(name = "name")
     private String name;
-    @JoinTable(name = "user_roles", joinColumns = {
-            @JoinColumn(name = "role_id", referencedColumnName = "id")}, inverseJoinColumns = {
-            @JoinColumn(name = "user_id", referencedColumnName = "id")})
-    @ManyToMany(
-            fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.ALL,
-            }
-    )
+    @ManyToMany(mappedBy = "rolesCollection")
     private Collection<User> userCollection;
 
-    public Roles() {
+    public Role() {
     }
 
-    public Roles(String id) {
+    public Role(String id) {
         this.id = id;
     }
 
@@ -80,10 +71,10 @@ public class Roles implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Roles)) {
+        if (!(object instanceof Role)) {
             return false;
         }
-        Roles other = (Roles) object;
+        Role other = (Role) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
