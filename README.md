@@ -1,2 +1,3 @@
 # Nash_Individual_Project
-![image](https://user-images.githubusercontent.com/62151844/195250819-26a69d42-20ce-4d47-bee7-5c85d54a12f1.png)
+![image](https://user-images.githubusercontent.com/62151844/195250995-44043ac3-2605-49e4-a367-0d8b1f503939.png)
+
