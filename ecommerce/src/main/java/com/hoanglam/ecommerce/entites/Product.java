@@ -4,30 +4,15 @@
  */
 package com.hoanglam.ecommerce.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -52,61 +37,62 @@ public class Product implements Serializable {
     @Size(max = 100)
     @Column(name = "metaTitle")
     private String metaTitle;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "slug")
-    private String slug;
+
     @Size(max = 255)
-    @Column(name = "summary")
-    private String summary;
-    @Basic(optional = false)
-    @NotNull
+    @Column(name = "desciption")
+    private String desciption;
     @Column(name = "type")
     private short type;
     @Basic(optional = false)
     @NotNull
     @Column(name = "price")
-    private float price;
-    @Basic(optional = false)
-    @NotNull
+    private BigDecimal price;
+
     @Column(name = "discount")
     private float discount;
+    @Basic(optional = false)
+    @Column(name = "averageRating")
+    private float averageRating;
+
+    @Column(name = "numberSold")
+    private int numberSold;
+    @Column(name = "numberRating")
+    private int numberRating;
+
+    @Size(max = 65535)
+    @Column(name = "detail")
+    private String detail;
     @Basic(optional = false)
     @NotNull
     @Column(name = "quantity")
     private short quantity;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "shop")
-    private boolean shop;
-    @Column(name = "publishedAt")
+
+    @Column(name = "createdDate")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date publishedAt;
-    @Column(name = "endsAt")
+    private Date createdDate;
+    @Column(name = "updatedDate")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date endsAt;
+    private Date updatedDate;
     @Lob
     @Size(max = 65535)
     @Column(name = "content")
     private String content;
-    @JoinTable(name = "product_tag", joinColumns = {
-        @JoinColumn(name = "product_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "tag_id", referencedColumnName = "id")})
+
+    @JoinTable(name = "product_category", joinColumns = {
+            @JoinColumn(name = "productId", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "categoryId", referencedColumnName = "id")})
     @ManyToMany
-    private Collection<Tag> tagCollection;
-    @ManyToMany(mappedBy = "productCollection")
     private Collection<Category> categoryCollection;
 
     @OneToMany(mappedBy = "productId")
     private Collection<Image> imageCollection;
-    @JoinColumn(name = "userId", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private User userId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     private Collection<OrderItem> orderItemCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     private Collection<CartItem> cartItemCollection;
+    @JsonIgnore
+    @OneToMany(mappedBy = "productId", fetch = FetchType.LAZY)
+    private Collection<Comment> commentCollection;
 
 
     @JoinTable(name = "product_size", joinColumns = {
@@ -123,7 +109,6 @@ public class Product implements Serializable {
         this.sizeCollection = sizeCollection;
     }
 
-
     public Product() {
     }
 
@@ -131,15 +116,35 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public Product(String id, String title, String slug, short type, float price, float discount, short quantity, boolean shop) {
+
+    public Product(@Size(max = 36) String id, @NotNull @Size(min = 1, max = 75) String title,
+                   @Size(max = 100) String metaTitle, @Size(max = 255) String desciption,
+                   short type, @NotNull BigDecimal price, float discount, float averageRating,
+                   int numberSold, int numberRating, @Size(max = 65535) String detail,
+                   @NotNull short quantity, Date createdDate, Date updatedDate, @Size(max = 65535) String content) {
         this.id = id;
         this.title = title;
-        this.slug = slug;
+        this.metaTitle = metaTitle;
+        this.desciption = desciption;
         this.type = type;
         this.price = price;
         this.discount = discount;
+        this.averageRating = averageRating;
+        this.numberSold = numberSold;
+        this.numberRating = numberRating;
+        this.detail = detail;
         this.quantity = quantity;
-        this.shop = shop;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.content = content;
+    }
+
+    public float getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(float averageRating) {
+        this.averageRating = averageRating;
     }
 
     public String getId() {
@@ -166,21 +171,6 @@ public class Product implements Serializable {
         this.metaTitle = metaTitle;
     }
 
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
 
     public short getType() {
         return type;
@@ -190,11 +180,11 @@ public class Product implements Serializable {
         this.type = type;
     }
 
-    public float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -214,28 +204,28 @@ public class Product implements Serializable {
         this.quantity = quantity;
     }
 
-    public boolean getShop() {
-        return shop;
+    public int getNumberSold() {
+        return numberSold;
     }
 
-    public void setShop(boolean shop) {
-        this.shop = shop;
+    public void setNumberSold(int numberSold) {
+        this.numberSold = numberSold;
     }
 
-    public Date getPublishedAt() {
-        return publishedAt;
+    public int getNumberRating() {
+        return numberRating;
     }
 
-    public void setPublishedAt(Date publishedAt) {
-        this.publishedAt = publishedAt;
+    public void setNumberRating(int numberRating) {
+        this.numberRating = numberRating;
     }
 
-    public Date getEndsAt() {
-        return endsAt;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setEndsAt(Date endsAt) {
-        this.endsAt = endsAt;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     public String getContent() {
@@ -246,14 +236,30 @@ public class Product implements Serializable {
         this.content = content;
     }
 
-    @XmlTransient
-    public Collection<Tag> getTagCollection() {
-        return tagCollection;
+    public String getDesciption() {
+        return desciption;
     }
 
-    public void setTagCollection(Collection<Tag> tagCollection) {
-        this.tagCollection = tagCollection;
+    public void setDesciption(String desciption) {
+        this.desciption = desciption;
     }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
 
     @XmlTransient
     public Collection<Category> getCategoryCollection() {
@@ -274,13 +280,6 @@ public class Product implements Serializable {
         this.imageCollection = imageCollection;
     }
 
-    public User getUserId() {
-        return userId;
-    }
-
-    public void setUserId(User userId) {
-        this.userId = userId;
-    }
 
     @XmlTransient
     public Collection<OrderItem> getOrderItemCollection() {

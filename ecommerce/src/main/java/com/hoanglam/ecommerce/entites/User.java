@@ -69,6 +69,14 @@ public class User implements Serializable {
     @Size(max = 200)
     @Column(name = "avatar_image")
     private String avatarImage;
+    @Size(max = 100)
+    @Column(name = "line2")
+    private String address_line1;
+    @Size(max = 50)
+    @Column(name = "city")
+    private String city;
+
+
 
     @JsonIgnore
     @JoinTable(name = "user_roles", joinColumns = {
@@ -81,15 +89,16 @@ public class User implements Serializable {
             }
     )
     private Collection<Role> rolesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    @JsonIgnore
-    private Collection<Product> productCollection;
+
     @OneToMany(mappedBy = "userId")
     @JsonIgnore
     private Collection<Cart> cartCollection;
     @OneToMany(mappedBy = "userId")
     @JsonIgnore
     private Collection<Order> order1Collection;
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
+    private Collection<Comment> commentCollection;
 
     @Basic(optional = false)
     @NotNull
@@ -104,16 +113,27 @@ public class User implements Serializable {
         this.active = active;
     }
 
+    public String getAddress_line1() {
+        return address_line1;
+    }
+
+    public void setAddress_line1(String address_line1) {
+        this.address_line1 = address_line1;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     @XmlTransient
     public Collection<Role> getRolesCollection() {
         return rolesCollection;
     }
 
-    @XmlTransient
-    public Collection<Product> getProductCollection() {
-        return productCollection;
-    }
 
     @XmlTransient
     public Collection<Cart> getCartCollection() {
@@ -241,9 +261,6 @@ public class User implements Serializable {
         this.rolesCollection = rolesCollection;
     }
 
-    public void setProductCollection(Collection<Product> productCollection) {
-        this.productCollection = productCollection;
-    }
 
 
     public void setCartCollection(Collection<Cart> cartCollection) {

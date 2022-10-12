@@ -1,4 +1,4 @@
-package com.hoanglam.ecommerce.payload.request;
+package com.hoanglam.ecommerce.request;
 
 import javax.validation.constraints.NotBlank;
 

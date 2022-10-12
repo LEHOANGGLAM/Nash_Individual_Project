@@ -56,35 +56,7 @@ public class Cart implements Serializable {
     @NotNull
     @Column(name = "status")
     private short status;
-    @Size(max = 50)
-    @Column(name = "firstName")
-    private String firstName;
-    @Size(max = 50)
-    @Column(name = "lastName")
-    private String lastName;
-    @Size(max = 15)
-    @Column(name = "mobile")
-    private String mobile;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Size(max = 50)
-    @Column(name = "email")
-    private String email;
-    @Size(max = 50)
-    @Column(name = "line1")
-    private String line1;
-    @Size(max = 50)
-    @Column(name = "line2")
-    private String line2;
-    @Size(max = 50)
-    @Column(name = "city")
-    private String city;
-    @Size(max = 50)
-    @Column(name = "province")
-    private String province;
-    @Size(max = 50)
-    @Column(name = "country")
-    private String country;
-    @Basic(optional = false)
+
     @NotNull
     @Column(name = "createdAt")
     @Temporal(TemporalType.TIMESTAMP)
@@ -149,77 +121,6 @@ public class Cart implements Serializable {
         this.status = status;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLine1() {
-        return line1;
-    }
-
-    public void setLine1(String line1) {
-        this.line1 = line1;
-    }
-
-    public String getLine2() {
-        return line2;
-    }
-
-    public void setLine2(String line2) {
-        this.line2 = line2;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
 
     public Date getCreatedAt() {
         return createdAt;

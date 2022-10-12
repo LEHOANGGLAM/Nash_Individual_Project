@@ -47,24 +47,12 @@ public class Order implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "sessionId")
     private String sessionId;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "token")
-    private String token;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "status")
     private short status;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "subTotal")
-    private float subTotal;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "itemDiscount")
-    private float itemDiscount;
-    @Basic(optional = false)
+
     @NotNull
     @Column(name = "tax")
     private float tax;
@@ -76,45 +64,13 @@ public class Order implements Serializable {
     @NotNull
     @Column(name = "total")
     private float total;
-    @Size(max = 50)
-    @Column(name = "promo")
-    private String promo;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "discount")
     private float discount;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "grandTotal")
-    private float grandTotal;
-    @Size(max = 50)
-    @Column(name = "firstName")
-    private String firstName;
-    @Size(max = 50)
-    @Column(name = "lastName")
-    private String lastName;
-    @Size(max = 15)
-    @Column(name = "mobile")
-    private String mobile;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Size(max = 50)
-    @Column(name = "email")
-    private String email;
-    @Size(max = 50)
-    @Column(name = "line1")
-    private String line1;
-    @Size(max = 50)
-    @Column(name = "line2")
-    private String line2;
-    @Size(max = 50)
-    @Column(name = "city")
-    private String city;
-    @Size(max = 50)
-    @Column(name = "province")
-    private String province;
-    @Size(max = 50)
-    @Column(name = "country")
-    private String country;
+
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "createdAt")
@@ -140,20 +96,17 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public Order(String id, String sessionId, String token, short status, float subTotal, float itemDiscount, float tax, float shipping, float total, float discount, float grandTotal, Date createdAt) {
+    public Order(String id, String sessionId,  short status,  float tax, float shipping, float total, float discount,  Date createdAt) {
         this.id = id;
         this.sessionId = sessionId;
-        this.token = token;
         this.status = status;
-        this.subTotal = subTotal;
-        this.itemDiscount = itemDiscount;
         this.tax = tax;
         this.shipping = shipping;
         this.total = total;
         this.discount = discount;
-        this.grandTotal = grandTotal;
         this.createdAt = createdAt;
     }
+
 
     public String getId() {
         return id;
@@ -171,14 +124,6 @@ public class Order implements Serializable {
         this.sessionId = sessionId;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public short getStatus() {
         return status;
     }
@@ -187,21 +132,6 @@ public class Order implements Serializable {
         this.status = status;
     }
 
-    public float getSubTotal() {
-        return subTotal;
-    }
-
-    public void setSubTotal(float subTotal) {
-        this.subTotal = subTotal;
-    }
-
-    public float getItemDiscount() {
-        return itemDiscount;
-    }
-
-    public void setItemDiscount(float itemDiscount) {
-        this.itemDiscount = itemDiscount;
-    }
 
     public float getTax() {
         return tax;
@@ -227,13 +157,6 @@ public class Order implements Serializable {
         this.total = total;
     }
 
-    public String getPromo() {
-        return promo;
-    }
-
-    public void setPromo(String promo) {
-        this.promo = promo;
-    }
 
     public float getDiscount() {
         return discount;
@@ -241,86 +164,6 @@ public class Order implements Serializable {
 
     public void setDiscount(float discount) {
         this.discount = discount;
-    }
-
-    public float getGrandTotal() {
-        return grandTotal;
-    }
-
-    public void setGrandTotal(float grandTotal) {
-        this.grandTotal = grandTotal;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLine1() {
-        return line1;
-    }
-
-    public void setLine1(String line1) {
-        this.line1 = line1;
-    }
-
-    public String getLine2() {
-        return line2;
-    }
-
-    public void setLine2(String line2) {
-        this.line2 = line2;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public Date getCreatedAt() {

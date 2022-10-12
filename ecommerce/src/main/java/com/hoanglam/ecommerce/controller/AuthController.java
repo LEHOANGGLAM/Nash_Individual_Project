@@ -6,6 +6,7 @@ import com.hoanglam.ecommerce.entites.Role;
 import com.hoanglam.ecommerce.entites.User;
 import com.hoanglam.ecommerce.repository.RoleRepository;
 import com.hoanglam.ecommerce.repository.UserRepository;
+import com.hoanglam.ecommerce.request.LoginRequest;
 import com.hoanglam.ecommerce.request.SignUpRequest;
 import com.hoanglam.ecommerce.response.JwtResponse;
 import com.hoanglam.ecommerce.response.MessageResponse;
@@ -43,7 +44,7 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody com.hoanglam.ecommerce.payload.request.LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));

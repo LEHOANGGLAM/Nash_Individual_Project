@@ -41,9 +41,7 @@ public class CartItem implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
-    @Column(name = "sku")
-    private String sku;
-    @Basic(optional = false)
+
     @NotNull
     @Column(name = "price")
     private float price;
@@ -78,6 +76,11 @@ public class CartItem implements Serializable {
     @ManyToOne(optional = false)
     private Product productId;
 
+
+    @JoinColumn(name = "sizeId", referencedColumnName = "id")
+    @ManyToOne
+    private com.hoanglam.ecommerce.entites.Size sizeId;
+
     public CartItem() {
     }
 
@@ -85,9 +88,8 @@ public class CartItem implements Serializable {
         this.id = id;
     }
 
-    public CartItem(String id, String sku, float price, float discount, short quantity, boolean active, Date createdAt) {
+    public CartItem(String id, float price, float discount, short quantity, boolean active, Date createdAt) {
         this.id = id;
-        this.sku = sku;
         this.price = price;
         this.discount = discount;
         this.quantity = quantity;
@@ -103,12 +105,13 @@ public class CartItem implements Serializable {
         this.id = id;
     }
 
-    public String getSku() {
-        return sku;
+
+    public com.hoanglam.ecommerce.entites.Size getSizeId() {
+        return sizeId;
     }
 
-    public void setSku(String sku) {
-        this.sku = sku;
+    public void setSizeId(com.hoanglam.ecommerce.entites.Size sizeId) {
+        this.sizeId = sizeId;
     }
 
     public float getPrice() {

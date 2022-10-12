@@ -57,10 +57,8 @@ public class Category implements Serializable {
     @Size(max = 65535)
     @Column(name = "content")
     private String content;
-    @JoinTable(name = "product_category", joinColumns = {
-        @JoinColumn(name = "categoryId", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "productId", referencedColumnName = "id")})
-    @ManyToMany
+
+    @ManyToMany(mappedBy = "categoryCollection")
     private Collection<Product> productCollection;
     @OneToMany(mappedBy = "parentId")
     private Collection<Category> categoryCollection;

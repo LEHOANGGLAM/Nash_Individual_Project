@@ -73,6 +73,9 @@ public class OrderItem implements Serializable {
     @JoinColumn(name = "productId", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Product productId;
+    @JoinColumn(name = "sizeId", referencedColumnName = "id")
+    @ManyToOne
+    private com.hoanglam.ecommerce.entites.Size sizeId;
 
     public OrderItem() {
     }
@@ -96,6 +99,14 @@ public class OrderItem implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public com.hoanglam.ecommerce.entites.Size getSizeId() {
+        return sizeId;
+    }
+
+    public void setSizeId(com.hoanglam.ecommerce.entites.Size sizeId) {
+        this.sizeId = sizeId;
     }
 
     public String getSku() {
