@@ -27,7 +27,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author dell
  */
 @Entity
@@ -48,15 +47,12 @@ public class Category implements Serializable {
     @Size(max = 100)
     @Column(name = "metaTitle")
     private String metaTitle;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "slug")
-    private String slug;
     @Lob
     @Size(max = 65535)
     @Column(name = "content")
     private String content;
+    @Column(name = "href")
+    private String href;
 
     @ManyToMany(mappedBy = "categoryCollection")
     private Collection<Product> productCollection;
@@ -73,10 +69,10 @@ public class Category implements Serializable {
         this.id = id;
     }
 
-    public Category(String id, String title, String slug) {
+    public Category(String id, String title, String href) {
         this.id = id;
         this.title = title;
-        this.slug = slug;
+        this.href = href;
     }
 
     public String getId() {
@@ -85,6 +81,14 @@ public class Category implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
     }
 
     public String getTitle() {
@@ -101,14 +105,6 @@ public class Category implements Serializable {
 
     public void setMetaTitle(String metaTitle) {
         this.metaTitle = metaTitle;
-    }
-
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
     }
 
     public String getContent() {
@@ -169,5 +165,5 @@ public class Category implements Serializable {
     public String toString() {
         return "com.mycompany.pojo.Category[ id=" + id + " ]";
     }
-    
+
 }

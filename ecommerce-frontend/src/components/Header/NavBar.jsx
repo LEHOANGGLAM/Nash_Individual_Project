@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AuthService from '../../services/AuthService';
+import CateService from '../../services/CateService';
 import UserService from '../../services/UserService';
 
 
@@ -11,6 +12,8 @@ class NavBar extends Component {
             showAdmin: false,
             currentUser: undefined,
             isHovering: false,
+
+            cates: [],
         }
         this.handleMouseOver = this.handleMouseOver.bind(this);
         this.handleMouseOut = this.handleMouseOut.bind(this);
@@ -36,6 +39,12 @@ class NavBar extends Component {
                 });
             })
         }
+
+        CateService.getAllCates().then((res) => {
+            this.setState({
+                cates: res.data,
+            });
+        })
     }
 
     logOut() {
@@ -67,15 +76,16 @@ class NavBar extends Component {
                                         <li className={isHovering ? 'nav-item dropdown show' : 'nav-item dropdown'}
                                             onMouseOver={this.handleMouseOver}
                                             onMouseOut={this.handleMouseOut}>
-                                            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalog</a>
+                                            <a class="nav-link dropdown-toggle" href="#" id="dropdown04"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalog</a>
                                             <div
                                                 className={isHovering ? 'dropdown-menu show' : 'dropdown-menu'}
                                                 onMouseOver={this.handleMouseOver}
                                                 onMouseOut={this.handleMouseOut} aria-labelledby="dropdown04">
-                                                <a class="dropdown-item" href="shop.html">Shop</a>
-                                                <a class="dropdown-item" href="product-single.html">Single Product</a>
-                                                <a class="dropdown-item" href="cart.html">Cart</a>
-                                                <a class="dropdown-item" href="checkout.html">Checkout</a>
+                                                {this.state.cates.map((cate) =>
+                                                    <a class="dropdown-item" href={cate.href}>{cate.title}</a>
+                                                )}
+
                                             </div>
                                         </li>
                                         <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
@@ -110,7 +120,7 @@ class NavBar extends Component {
                                                     <img src={currentUser.avatarImage} alt=""
                                                         style={{ width: 30, height: 25, display: 'inline-block', borderRadius: '50%', verticalAlign: 'middle', marginRight: 10 }} />
                                                 )}
-                                                
+
                                                 Hi, {currentUser.firstName} {currentUser.lastName}</a>
                                             <div className='dropdown-menu' aria-labelledby="dropdown04">
                                                 <a class="dropdown-item" href="/">My Profile</a>

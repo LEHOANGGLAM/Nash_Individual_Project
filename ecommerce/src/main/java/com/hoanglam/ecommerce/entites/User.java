@@ -75,8 +75,12 @@ public class User implements Serializable {
     @Size(max = 50)
     @Column(name = "city")
     private String city;
-
-
+    @Size(max = 50)
+    @Column(name = "gender")
+    private String gender;
+    @Column(name = "dateOfBirth")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateOfBirth;
 
     @JsonIgnore
     @JoinTable(name = "user_roles", joinColumns = {
