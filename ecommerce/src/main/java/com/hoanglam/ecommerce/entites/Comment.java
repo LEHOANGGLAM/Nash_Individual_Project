@@ -17,7 +17,7 @@ public class Comment {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     @ManyToOne
     private Product productId;
     @JoinColumn(name = "user_id", referencedColumnName = "id")

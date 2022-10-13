@@ -16,7 +16,6 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author dell
  */
 @Entity
@@ -41,8 +40,7 @@ public class Product implements Serializable {
     @Size(max = 255)
     @Column(name = "desciption")
     private String desciption;
-    @Column(name = "type")
-    private short type;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "price")
@@ -82,12 +80,15 @@ public class Product implements Serializable {
             @JoinColumn(name = "productId", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "categoryId", referencedColumnName = "id")})
     @ManyToMany
+    @JsonIgnore
     private Collection<Category> categoryCollection;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "productId")
     private Collection<Image> imageCollection;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     private Collection<OrderItem> orderItemCollection;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     private Collection<CartItem> cartItemCollection;
     @JsonIgnore
@@ -99,6 +100,7 @@ public class Product implements Serializable {
             @JoinColumn(name = "product_id", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "size_id", referencedColumnName = "id")})
     @ManyToMany
+    @JsonIgnore
     private Collection<com.hoanglam.ecommerce.entites.Size> sizeCollection;
 
     public Collection<com.hoanglam.ecommerce.entites.Size> getSizeCollection() {
@@ -119,14 +121,14 @@ public class Product implements Serializable {
 
     public Product(@Size(max = 36) String id, @NotNull @Size(min = 1, max = 75) String title,
                    @Size(max = 100) String metaTitle, @Size(max = 255) String desciption,
-                   short type, @NotNull BigDecimal price, float discount, float averageRating,
+                   @NotNull BigDecimal price, float discount, float averageRating,
                    int numberSold, int numberRating, @Size(max = 65535) String detail,
                    @NotNull short quantity, Date createdDate, Date updatedDate, @Size(max = 65535) String content) {
         this.id = id;
         this.title = title;
         this.metaTitle = metaTitle;
         this.desciption = desciption;
-        this.type = type;
+
         this.price = price;
         this.discount = discount;
         this.averageRating = averageRating;
@@ -169,15 +171,6 @@ public class Product implements Serializable {
 
     public void setMetaTitle(String metaTitle) {
         this.metaTitle = metaTitle;
-    }
-
-
-    public short getType() {
-        return type;
-    }
-
-    public void setType(short type) {
-        this.type = type;
     }
 
     public BigDecimal getPrice() {
@@ -321,7 +314,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.pojo.Product[ id=" + id + " ]";
+        return "com.hoanglam.ecommerce.Product[ id=" + id + " ]";
     }
-    
+
 }

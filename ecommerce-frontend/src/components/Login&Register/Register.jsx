@@ -52,7 +52,7 @@ class Register extends Component {
                 this.state.fields["username"],
                 this.state.fields["email"],
                 this.state.fields["password"],
-                this.state.fields["role"],
+                ["user"],
             ).then(
                 response => {
                     this.setState({

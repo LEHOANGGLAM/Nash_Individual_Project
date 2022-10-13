@@ -63,6 +63,7 @@ public class AuthController {
                 userDetails.isEnabled(),
                 roles));
     }
+
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -85,27 +86,23 @@ public class AuthController {
         Collection<String> strRoles = signUpRequest.getRole();
         Collection<Role> roles = new HashSet<>();
 
-        if (strRoles == null) {
-            Role userRole = roleRepository.findByName("user")
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepository.findByName("admin")
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
 
-                        break;
-                    case "user":
-                        Role modRole = roleRepository.findByName("user")
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-                        break;
-                }
-            });
-        }
+        strRoles.forEach(role -> {
+            switch (role) {
+                case "admin":
+                    Role adminRole = roleRepository.findByName("admin")
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(adminRole);
+
+                    break;
+                case "user":
+                    Role modRole = roleRepository.findByName("user")
+                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                    roles.add(modRole);
+                    break;
+            }
+        });
+
 
         UUID uuid = UUID.randomUUID();
         user.setId(uuid.toString());
