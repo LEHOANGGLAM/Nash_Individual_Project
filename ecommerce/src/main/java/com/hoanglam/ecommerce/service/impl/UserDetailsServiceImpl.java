@@ -1,4 +1,4 @@
-package com.hoanglam.ecommerce.service;
+package com.hoanglam.ecommerce.service.impl;
 
 import com.hoanglam.ecommerce.entites.User;
 import com.hoanglam.ecommerce.repository.UserRepository;

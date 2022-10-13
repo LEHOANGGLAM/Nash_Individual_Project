@@ -9,6 +9,7 @@ import com.hoanglam.ecommerce.repository.ProductRepository;
 import com.hoanglam.ecommerce.repository.UserRepository;
 import com.hoanglam.ecommerce.request.SignUpRequest;
 import com.hoanglam.ecommerce.response.MessageResponse;
+import com.hoanglam.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,61 +36,45 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable String id) {
-        Product product = productRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException("Product not exist with id: " + id));
-        return ResponseEntity.ok(product);
+    public Product getProductById(@PathVariable String id) {
+        return  productService.getProductById(id);
     }
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProductsByPredicates(@RequestParam Map<String, String> params) {
-        Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
-        BigDecimal fromPrice = BigDecimal.valueOf(Double.valueOf(params.getOrDefault("fromPrice", "0")));
-        BigDecimal toPrice = BigDecimal.valueOf(Double.valueOf(params.getOrDefault("toPrice", "9999999999")));
-        String kw = params.getOrDefault("keyword", "");
-        String id = params.get("cateId");
-
-        Page<Product> result;
-        if (id != null && id != "") {
-            result = productRepository.findByPriceBetweenAndTitleContainingAndCategoryCollection_Id
-                    (fromPrice, toPrice, kw, id, pageable);
-        } else {
-            result = productRepository.findByPriceBetweenAndTitleContaining(fromPrice, toPrice , kw, pageable);
-        }
-        return new ResponseEntity<>(result.getContent(), HttpStatus.OK);
+    public List<Product> getProductsByPredicates(@RequestParam Map<String, String> params) {
+        return  productService.getProductsByPredicates(params);
     }
 
     @GetMapping("/products/cate")
-    public ResponseEntity<List<Product>> getProductsByCateId(@RequestParam Map<String, String> params) {
-        Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
-        String id = params.get("cateId");
-
-        Page<Product> result;
-        if (id != null && id != "") {
-            result = productRepository.findByCategoryCollection_Id(id, pageable);
-            return new ResponseEntity<>(result.getContent(), HttpStatus.OK);
-        }
-        result = productRepository.findAll(pageable);
-        return new ResponseEntity<>(result.getContent(), HttpStatus.OK);
+    public List<Product> getProductsByCateId(@RequestParam Map<String, String> params) {
+        return  productService.getProductsByCateId(params);
     }
 
 
+    //-------------FOR ADMIN BELOW--------------
     //------------FOR ADMIN BELOW------------------
-    @PostMapping("/admin/products")
-    public ResponseEntity<?> addProduct(@Valid @RequestBody Product product) {
-        UUID uuid = UUID.randomUUID();
-
-        //Set default value
-        product.setId(uuid.toString());
-        product.setCreatedDate(new Date());
-        product.setNumberRating(0);
-        product.setNumberSold(0);
-        product.setAverageRating(0);
-        productRepository.save(product);
-
-        return ResponseEntity.ok(new MessageResponse("Add product successfully!"));
-    }
-
-
+//    @PostMapping("/admin/products")
+//    public ResponseEntity<?> addProduct(@Valid @RequestBody Product product) {
+//        if(productService.addProduct(product)){
+//            return new ResponseEntity.ok(new MessageResponse("Add product successfully!"));
+//        }
+//
+//        //temp return
+//        return null;
+//    }
+//
+//    @PutMapping("/admin/products/{id}")
+//    public ResponseEntity<?> editProduct(@PathVariable String id) {
+//        Product product = productRepository.findById(id).orElseThrow(() ->
+//                new ResourceNotFoundException("Product not exist with id: " + id));
+//
+//        //Set update value below
+//        product.setUpdatedDate(new Date());
+//        productRepository.save(product);
+//        return ResponseEntity.ok(new MessageResponse("Update product successfully!"));
+//    }
 }

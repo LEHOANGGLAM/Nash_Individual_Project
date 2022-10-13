@@ -10,7 +10,7 @@ import com.hoanglam.ecommerce.request.LoginRequest;
 import com.hoanglam.ecommerce.request.SignUpRequest;
 import com.hoanglam.ecommerce.response.JwtResponse;
 import com.hoanglam.ecommerce.response.MessageResponse;
-import com.hoanglam.ecommerce.service.UserDetailsImpl;
+import com.hoanglam.ecommerce.service.impl.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -2,7 +2,7 @@ package com.hoanglam.ecommerce.config;
 
 import com.hoanglam.ecommerce.config.jwt.AuthEntryPointJwt;
 import com.hoanglam.ecommerce.config.jwt.AuthTokenFilter;
-import com.hoanglam.ecommerce.service.UserDetailsServiceImpl;
+import com.hoanglam.ecommerce.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

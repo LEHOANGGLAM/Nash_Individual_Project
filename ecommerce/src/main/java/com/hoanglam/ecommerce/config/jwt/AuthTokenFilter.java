@@ -1,6 +1,6 @@
 package com.hoanglam.ecommerce.config.jwt;
 
-import com.hoanglam.ecommerce.service.UserDetailsServiceImpl;
+import com.hoanglam.ecommerce.service.impl.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
