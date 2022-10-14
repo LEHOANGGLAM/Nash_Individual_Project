@@ -21,6 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, String>, JpaSp
     Page<Product> findByPriceBetweenAndTitleContainingOrderByCreatedDateDesc(BigDecimal fromPrice, BigDecimal toPrice, String title,Pageable pageable);
     Page<Product> findByCategoryCollection_Id(String id,  Pageable pageable);
 
+
 //    Page<Product> findByPriceLessThanEqual(BigDecimal price, Pageable pageable);
 //    Page<Product> findByPriceGreaterThanEqual(BigDecimal price, Pageable pageable);
 }

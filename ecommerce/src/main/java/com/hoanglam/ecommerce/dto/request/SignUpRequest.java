@@ -1,4 +1,4 @@
-package com.hoanglam.ecommerce.request;
+package com.hoanglam.ecommerce.dto.request;
 
 import javax.validation.constraints.*;
 import java.util.Collection;

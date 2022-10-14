@@ -28,11 +28,13 @@ public class Product implements Serializable {
     @Column(name = "id")
     @Size(max = 36)
     private String id;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 75)
     @Column(name = "title")
     private String title;
+
     @Size(max = 100)
     @Column(name = "metaTitle")
     private String metaTitle;
@@ -48,18 +50,20 @@ public class Product implements Serializable {
 
     @Column(name = "discount")
     private float discount;
-    @Basic(optional = false)
+
     @Column(name = "averageRating")
     private float averageRating;
 
     @Column(name = "numberSold")
     private int numberSold;
+
     @Column(name = "numberRating")
     private int numberRating;
 
     @Size(max = 65535)
     @Column(name = "detail")
     private String detail;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "quantity")
@@ -68,13 +72,19 @@ public class Product implements Serializable {
     @Column(name = "createdDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+
     @Column(name = "updatedDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
-    @Lob
+
     @Size(max = 65535)
     @Column(name = "content")
     private String content;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "active")
+    private boolean active;
 
     @JoinTable(name = "product_category", joinColumns = {
             @JoinColumn(name = "productId", referencedColumnName = "id")}, inverseJoinColumns = {
@@ -82,15 +92,19 @@ public class Product implements Serializable {
     @ManyToMany
     @JsonIgnore
     private Collection<Category> categoryCollection;
+
     @JsonIgnore
     @OneToMany(mappedBy = "productId")
     private Collection<Image> imageCollection;
+
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     private Collection<OrderItem> orderItemCollection;
+
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     private Collection<CartItem> cartItemCollection;
+
     @JsonIgnore
     @OneToMany(mappedBy = "productId", fetch = FetchType.LAZY)
     private Collection<Comment> commentCollection;
@@ -155,6 +169,14 @@ public class Product implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getTitle() {

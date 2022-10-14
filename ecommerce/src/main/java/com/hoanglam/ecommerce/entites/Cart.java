@@ -42,16 +42,19 @@ public class Cart implements Serializable {
     @Column(name = "id")
     @Size(max = 36)
     private String id;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "sessionId")
     private String sessionId;
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "token")
     private String token;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "status")
@@ -61,16 +64,20 @@ public class Cart implements Serializable {
     @Column(name = "createdAt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
     @Column(name = "updatedAt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
     @Lob
     @Size(max = 65535)
     @Column(name = "content")
     private String content;
+
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @ManyToOne
     private User userId;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cartId")
     private Collection<CartItem> cartItemCollection;
 

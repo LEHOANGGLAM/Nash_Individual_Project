@@ -6,10 +6,10 @@ import com.hoanglam.ecommerce.entites.Role;
 import com.hoanglam.ecommerce.entites.User;
 import com.hoanglam.ecommerce.repository.RoleRepository;
 import com.hoanglam.ecommerce.repository.UserRepository;
-import com.hoanglam.ecommerce.request.LoginRequest;
-import com.hoanglam.ecommerce.request.SignUpRequest;
-import com.hoanglam.ecommerce.response.JwtResponse;
-import com.hoanglam.ecommerce.response.MessageResponse;
+import com.hoanglam.ecommerce.dto.request.LoginRequest;
+import com.hoanglam.ecommerce.dto.request.SignUpRequest;
+import com.hoanglam.ecommerce.dto.response.JwtResponse;
+import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.service.impl.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -69,13 +69,13 @@ public class AuthController {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new SuccessResponse("Error: Username is already taken!"));
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+                    .body(new SuccessResponse("Error: Email is already in use!"));
         }
 
         // Create new user's account
@@ -85,7 +85,6 @@ public class AuthController {
 
         Collection<String> strRoles = signUpRequest.getRole();
         Collection<Role> roles = new HashSet<>();
-
 
         strRoles.forEach(role -> {
             switch (role) {
@@ -111,6 +110,6 @@ public class AuthController {
         user.setRegisteredDate(new Date());
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new SuccessResponse("User registered successfully!"));
     }
 }

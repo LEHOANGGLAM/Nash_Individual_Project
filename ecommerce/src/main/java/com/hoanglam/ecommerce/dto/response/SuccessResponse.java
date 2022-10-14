@@ -1,9 +1,9 @@
-package com.hoanglam.ecommerce.response;
+package com.hoanglam.ecommerce.dto.response;
 
-public class MessageResponse {
+public class SuccessResponse {
     private String message;
 
-    public MessageResponse(String message) {
+    public SuccessResponse(String message) {
         this.message = message;
     }
 

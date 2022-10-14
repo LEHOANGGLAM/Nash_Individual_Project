@@ -1,4 +1,4 @@
-package com.hoanglam.ecommerce.response;
+package com.hoanglam.ecommerce.dto.response;
 
 import java.util.List;
 

@@ -10,6 +10,6 @@ public interface ProductService{
     Product getProductById(String id);
     List<Product> getProductsByPredicates(Map<String, String> params);
     List<Product> getProductsByCateId(Map<String, String> params);
-    boolean addProduct(Product p);
-    boolean updateProduct(String id);
+    Product addProduct(Product p);
+    Product updateProduct(String id, Product product);
 }
