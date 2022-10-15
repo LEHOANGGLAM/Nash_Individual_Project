@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -60,6 +61,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User u) {
+        UUID uuid = UUID.randomUUID();
+        u.setId(uuid.toString());
         User savedUser = userRepository.save(u);
         return savedUser;
     }

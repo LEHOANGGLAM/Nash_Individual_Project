@@ -1,10 +1,14 @@
 package com.hoanglam.ecommerce.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "comment")
+@Builder
 public class Comment {
     private static final long serialVersionUID = 1L;
     @Id
@@ -19,9 +23,11 @@ public class Comment {
     private Date createdDate;
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private Product productId;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private User userId;
     @Column(name = "rating")
     private Integer rating;

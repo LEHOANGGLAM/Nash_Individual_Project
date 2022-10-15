@@ -93,7 +93,6 @@ public class Product implements Serializable {
     @JsonIgnore
     private Collection<Category> categoryCollection;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "productId")
     private Collection<Image> imageCollection;
 

@@ -77,6 +77,8 @@ public class ProductServiceImpl implements ProductService {
     //-------------FOR ADMIN BELOW--------------
     @Override
     public Product createProduct(Product p) {
+        UUID uuid = UUID.randomUUID();
+        p.setId(uuid.toString());
         Product savedProduct = productRepository.save(p);
         return savedProduct;
     }

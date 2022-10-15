@@ -12997,7 +12997,7 @@ h5,
 
 .product .text .cat,
 .product .text .rating {
-  width: 50%;
+  /* width: 50%; */
 }
 
 .product .text .cat span {

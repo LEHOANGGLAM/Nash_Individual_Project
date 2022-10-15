@@ -23,12 +23,15 @@ import java.util.List;
 @RequestMapping("")
 public class CateController {
 
-    CategoryService categoryService;
+    @Autowired
+    private CategoryService categoryService;
 
-    @GetMapping("/admin/categories")
+    @GetMapping("/categories")
     public List<Category> getAllCategories() {
         return categoryService.getAllCate();
     }
+
+
 
     @GetMapping("/admin/categories/{id}")
     public Category getCateById(@PathVariable String id) {
