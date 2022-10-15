@@ -1,5 +1,6 @@
 package com.hoanglam.ecommerce.controller;
 
+import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.entites.User;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
@@ -37,5 +38,11 @@ public class UserController {
     @GetMapping("/admin/users/role")
     public List<User> getUserByRole(@RequestParam Map<String, String> params) {
         return  userService.getUsersByRole(params);
+    }
+
+    @DeleteMapping("/admin/users/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+        this.userService.deleteUser(id);
+        return ResponseEntity.ok(new SuccessResponse("Delete user successfully!"));
     }
 }

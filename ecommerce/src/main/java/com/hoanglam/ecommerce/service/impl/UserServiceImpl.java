@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
-        String kw = params.getOrDefault("keyword", "");
+        String kw = params.getOrDefault("username", "");
 
         Page<User> result  = userRepository.findByUsernameContainingOrderByUsernameAsc(kw ,pageable);
         return result.getContent();
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsersByRole(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
-        String kw = params.getOrDefault("keyword", "");
+        String kw = params.getOrDefault("username", "");
         String id = params.get("roleId");
 
         Page<User> result;
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addUser(User u) {
+    public User createUser(User u) {
         User savedUser = userRepository.save(u);
         return savedUser;
     }
@@ -68,9 +68,20 @@ public class UserServiceImpl implements UserService {
     public User updateUser(String id, User userUpdate) {
         //Optional<User> userOptional = userRepository.findById(id);
         if(userRepository.findById(id).isEmpty()){
-            throw  new ResourceNotFoundException();
+            throw new ResourceNotFoundException("User not exist with id: " + id);
         }
         userUpdate = userRepository.save(userUpdate);
         return userUpdate;
+    }
+
+    @Override
+    public boolean deleteUser(String id) {
+
+        if(userRepository.findById(id).isEmpty()){
+            throw new ResourceNotFoundException("User not exist with id: " + id);
+        }
+
+        userRepository.deleteById(id);
+        return true;
     }
 }

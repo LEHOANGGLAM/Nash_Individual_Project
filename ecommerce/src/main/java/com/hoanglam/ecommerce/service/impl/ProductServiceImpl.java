@@ -1,5 +1,6 @@
 package com.hoanglam.ecommerce.service.impl;
 
+import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import com.hoanglam.ecommerce.repository.ProductRepository;
@@ -31,11 +32,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAllProducts(Map<String, String> params) {
+        Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
+
+        Page<Product> result = productRepository.findAll(pageable);
+        return result.getContent();
+    }
+
+    @Override
     public List<Product> getProductsByPredicates(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
         BigDecimal fromPrice = BigDecimal.valueOf(Double.valueOf(params.getOrDefault("fromPrice", "0")));
         BigDecimal toPrice = BigDecimal.valueOf(Double.valueOf(params.getOrDefault("toPrice", "9999999999")));
-        String kw = params.getOrDefault("keyword", "");
+        String kw = params.getOrDefault("name", "");
         String id = params.get("cateId");
 
         Page<Product> result;
@@ -67,7 +76,7 @@ public class ProductServiceImpl implements ProductService {
     //-------------FOR ADMIN BELOW--------------
     //-------------FOR ADMIN BELOW--------------
     @Override
-    public Product addProduct(Product p) {
+    public Product createProduct(Product p) {
         Product savedProduct = productRepository.save(p);
         return savedProduct;
     }
@@ -75,12 +84,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product updateProduct(String id, Product productUpdated) {
         //Optional<Product> productOptional = productRepository.findById(id);
-        if(productRepository.findById(id).isEmpty()){
-            throw  new ResourceNotFoundException();
+        if (productRepository.findById(id).isEmpty()) {
+            throw new ResourceNotFoundException("Product not exist with id: " + id);
         }
         productUpdated = productRepository.save(productUpdated);
         return productUpdated;
     }
+
+    @Override
+    public boolean deleteProduct(String id) {
+        if (productRepository.findById(id).isEmpty()) {
+            throw new ResourceNotFoundException("Product not exist with id: " + id);
+        }
+        productRepository.deleteById(id);
+        return true;
+    }
+
+
     //-------------FOR ADMIN ABOVE--------------
     //-------------FOR ADMIN ABOVE--------------
 

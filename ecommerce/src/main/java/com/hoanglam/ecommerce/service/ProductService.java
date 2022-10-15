@@ -8,8 +8,10 @@ import java.util.Map;
 
 public interface ProductService{
     Product getProductById(String id);
+    List<Product> getAllProducts(Map<String, String> params);
     List<Product> getProductsByPredicates(Map<String, String> params);
     List<Product> getProductsByCateId(Map<String, String> params);
-    Product addProduct(Product p);
+    Product createProduct(Product p);
     Product updateProduct(String id, Product product);
+    boolean deleteProduct(String id);
 }

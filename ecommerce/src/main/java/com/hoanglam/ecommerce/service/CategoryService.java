@@ -9,6 +9,7 @@ import java.util.Map;
 public interface CategoryService {
     List<Category> getAllCate();
     Category getCateById(String id);
-    Category addCate(Category u);
+    Category createCate(Category u);
     Category updateCate(String id, Category cateUpdate);
+    boolean deleteCate(String id);
 }

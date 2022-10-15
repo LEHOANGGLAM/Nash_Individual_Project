@@ -89,7 +89,10 @@ public class User implements Serializable {
     @ManyToMany(
             fetch = FetchType.LAZY,
             cascade = {
-                    CascadeType.ALL,
+                    CascadeType.DETACH,
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
             }
     )
     private Collection<Role> rolesCollection;

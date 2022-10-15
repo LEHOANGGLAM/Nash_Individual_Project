@@ -10,10 +10,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class CategoryServiceImpl implements CategoryService {
     public static final int pageSize = 20;
     private ModelMapper modelMapper;
@@ -34,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category addCate(Category u) {
+    public Category createCate(Category u) {
         Category savedCate = categoryRepository.save(u);
         return savedCate;
     }
@@ -43,9 +45,18 @@ public class CategoryServiceImpl implements CategoryService {
     public Category updateCate(String id, Category cateUpdate) {
         //Optional<Category> cateOptional = categoryRepository.findById(id);
         if(categoryRepository.findById(id).isEmpty()){
-            throw  new ResourceNotFoundException();
+            throw new ResourceNotFoundException("Category not exist with id: " + id);
         }
         cateUpdate = categoryRepository.save(cateUpdate);
         return cateUpdate;
+    }
+
+    @Override
+    public boolean deleteCate(String id) {
+        if(categoryRepository.findById(id).isEmpty()){
+            throw new ResourceNotFoundException("Category not exist with id: " + id);
+        }
+        categoryRepository.deleteById(id);
+        return true;
     }
 }

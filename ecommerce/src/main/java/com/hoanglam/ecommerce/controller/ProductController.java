@@ -24,17 +24,23 @@ public class ProductController {
 
     @GetMapping("/products/{id}")
     public Product getProductById(@PathVariable String id) {
-        return  productService.getProductById(id);
+        return productService.getProductById(id);
     }
 
+
     @GetMapping("/products")
+    public List<Product> getAllProducts(@RequestParam Map<String, String> params) {
+        return productService.getAllProducts(params);
+    }
+
+    @GetMapping("/products/search")
     public List<Product> getProductsByPredicates(@RequestParam Map<String, String> params) {
-        return  productService.getProductsByPredicates(params);
+        return productService.getProductsByPredicates(params);
     }
 
     @GetMapping("/products/cate")
     public List<Product> getProductsByCateId(@RequestParam Map<String, String> params) {
-        return  productService.getProductsByCateId(params);
+        return productService.getProductsByCateId(params);
     }
 
 
@@ -43,11 +49,19 @@ public class ProductController {
     @PostMapping("/admin/products")
     @ResponseStatus(HttpStatus.CREATED)
     public Product addProduct(@Valid @RequestBody Product product) {
-        return this.productService.addProduct(product);
+        return this.productService.createProduct(product);
     }
 
     @PutMapping("/admin/products/{id}")
     public Product updateProduct(@PathVariable String id, @Valid @RequestBody Product product) {
-        return this.productService.updateProduct(id,product);
+        return this.productService.updateProduct(id, product);
     }
+
+    @DeleteMapping("/admin/products/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable String id) {
+        this.productService.deleteProduct(id);
+        return ResponseEntity.ok(new SuccessResponse("Delete product successfully!"));
+    }
+    //-------------FOR ADMIN ABOVE--------------
+    //------------FOR ADMIN ABOVE------------------
 }
