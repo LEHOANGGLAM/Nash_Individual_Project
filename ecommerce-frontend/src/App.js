@@ -7,6 +7,7 @@ import Footer from './components/Share/Footer/Footer';
 import Home from './components/Home/Home';
 import LoginAndRegister from './components/Share/Login&Register/LoginAndRegister';
 import ShoppingList from './components/ShoppingList/ShoppingList'
+import PageNotFound from './components/Share/Error/PageNotFound';
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
           <Route path="/login" component={LoginAndRegister}></Route>
 
           <Route path="/shoppinglist" component={ShoppingList}></Route>
+          
+          <Route component={PageNotFound}></Route>
         </Switch>
         <Footer />
       </Router>

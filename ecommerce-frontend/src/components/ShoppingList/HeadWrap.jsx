@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-
+import { withRouter } from 'react-router-dom';
 import bg from '../../images/bg_6.jpg'
 
 class HeadWrap extends Component {
     constructor(props) {
         super(props)
         this.state = {
-           
+            name: this.props.match.params.name,
         }
     }
 
@@ -31,4 +31,4 @@ class HeadWrap extends Component {
     }
 }
 
-export default HeadWrap;
+export default withRouter(HeadWrap);

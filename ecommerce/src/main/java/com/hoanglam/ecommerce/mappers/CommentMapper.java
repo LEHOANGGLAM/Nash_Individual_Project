@@ -17,13 +17,11 @@ public class CommentMapper {
     @Autowired
     private ProductRepository productRepository;
 
-
     public Comment mapRequestDtoToEntity(CommentRequestDto cDto) {
         return Comment.builder()
                 .userId(userRepository.findById(cDto.getUserId()).get())
                 .productId(productRepository.findById(cDto.getProductId()).get())
                 .content(cDto.getContent())
-                .createdDate(cDto.getCreatedDate())
                 .rating(cDto.getRating())
                 .build();
     }

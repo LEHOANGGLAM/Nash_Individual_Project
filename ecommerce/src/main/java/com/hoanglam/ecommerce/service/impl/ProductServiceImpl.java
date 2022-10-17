@@ -1,5 +1,7 @@
 package com.hoanglam.ecommerce.service.impl;
 
+import com.hoanglam.ecommerce.dto.response.APIRespone;
+import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
 import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
@@ -32,15 +34,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts(Map<String, String> params) {
+    public APIRespone<List<Product>> getAllProducts(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
 
         Page<Product> result = productRepository.findAll(pageable);
-        return result.getContent();
+        return new APIRespone<>(result.getTotalPages(),result.getContent());
     }
 
     @Override
-    public List<Product> getProductsByPredicates(Map<String, String> params) {
+    public APIRespone<List<Product>> getProductsByPredicates(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
         BigDecimal fromPrice = BigDecimal.valueOf(Double.valueOf(params.getOrDefault("fromPrice", "0")));
         BigDecimal toPrice = BigDecimal.valueOf(Double.valueOf(params.getOrDefault("toPrice", "9999999999")));
@@ -54,11 +56,11 @@ public class ProductServiceImpl implements ProductService {
         } else {
             result = productRepository.findByPriceBetweenAndTitleContainingOrderByCreatedDateDesc(fromPrice, toPrice, kw, pageable);
         }
-        return result.getContent();
+        return new APIRespone<>(result.getTotalPages(),result.getContent());
     }
 
     @Override
-    public List<Product> getProductsByCateId(Map<String, String> params) {
+    public APIRespone<List<Product>> getProductsByCateId(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
         String id = params.get("cateId");
 
@@ -69,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
             result = productRepository.findAll(pageable);
         }
 
-        return result.getContent();
+        return new APIRespone<>(result.getTotalPages(),result.getContent());
     }
 
 

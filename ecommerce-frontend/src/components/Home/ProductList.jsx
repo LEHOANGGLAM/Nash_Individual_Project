@@ -1,32 +1,24 @@
 import React, { Component } from 'react';
 import ProductService from '../../services/ProductService';
 import StarRatingFormat from '../Common/StarRatingFormat';
+import currencyFormat from '../Common/CurrencyFormat';
 
 class ProductList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            fields: {},
-            errors: {},
-            loading: false,
-            message: "",
-
             products: [],
         }
 
     }
     componentDidMount() {
         ProductService.getAllProducts().then((res) => {
-            this.setState({ products: res.data })
+            this.setState({ products: res.data.listResponse })
         })
     }
 
-    currencyFormat(num) {
-        return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-    }
-
     render() {
-       // console.log(this.state.products[0]);
+        // console.log(this.state.products[0]);
         return (
             <>
                 <section class="ftco-section bg-light">
@@ -51,7 +43,7 @@ class ProductList extends Component {
                                                 <div class="text py-3 pb-4 px-2">
                                                     <div class="d-flex">
                                                         <div class="cat">
-                                                            <span style={{ marginRight: 30 }}>Average Rating: {pro.averageRating.toFixed(1)}</span>
+                                                            <span style={{ marginRight: 20 }}>Average Rating: {pro.averageRating.toFixed(1)}</span>
                                                         </div>
                                                         <div class="rating">
                                                             <p class="text-right mb-0">
@@ -62,7 +54,7 @@ class ProductList extends Component {
                                                     <h3><a href="#">{pro.title}</a></h3>
                                                     <div class="pricing">
                                                         <p class="price"><span>
-                                                            {this.currencyFormat(pro.price)} VND
+                                                            {currencyFormat(pro.price)} VND
                                                         </span></p>
                                                     </div>
                                                     <p class="bottom-area d-flex px-3">

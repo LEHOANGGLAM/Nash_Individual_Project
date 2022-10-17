@@ -8,7 +8,6 @@ public class CommentRequestDto {
     private String userId;
     @NotBlank(message = "Product id is required")
     private String productId;
-    private Date createdDate;
     private String content;
     private int rating;
 
@@ -26,14 +25,6 @@ public class CommentRequestDto {
 
     public void setProductId(String productId) {
         this.productId = productId;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
     }
 
     public String getContent() {

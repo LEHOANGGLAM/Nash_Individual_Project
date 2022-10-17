@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -30,6 +31,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = modelMapper.mapRequestDtoToEntity(c);
 
         comment.setId(uuid.toString());
+        comment.setCreatedDate(new Date());
         Comment savedComment = commentRepository.save(comment);
 
         averageRating(c.getProductId(), c.getRating());
@@ -42,6 +44,7 @@ public class CommentServiceImpl implements CommentService {
 
         float average = (product.getAverageRating() + rating) / 2;
         product.setAverageRating(average);
+
         productRepository.save(product);
         return average;
     }

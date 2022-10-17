@@ -1,5 +1,6 @@
 package com.hoanglam.ecommerce.controller;
 
+import com.hoanglam.ecommerce.dto.response.APIRespone;
 import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.repository.ProductRepository;
@@ -17,8 +18,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("")
 public class ProductController {
-    public static final int pageSize = 9;
-
     @Autowired
     private ProductService productService;
 
@@ -29,17 +28,17 @@ public class ProductController {
 
 
     @GetMapping("/products")
-    public List<Product> getAllProducts(@RequestParam Map<String, String> params) {
+    public APIRespone<List<Product>> getAllProducts(@RequestParam Map<String, String> params) {
         return productService.getAllProducts(params);
     }
 
     @GetMapping("/products/search")
-    public List<Product> getProductsByPredicates(@RequestParam Map<String, String> params) {
+    public APIRespone<List<Product>> getProductsByPredicates(@RequestParam Map<String, String> params) {
         return productService.getProductsByPredicates(params);
     }
 
     @GetMapping("/products/cate")
-    public List<Product> getProductsByCateId(@RequestParam Map<String, String> params) {
+    public APIRespone<List<Product>> getProductsByCateId(@RequestParam Map<String, String> params) {
         return productService.getProductsByCateId(params);
     }
 

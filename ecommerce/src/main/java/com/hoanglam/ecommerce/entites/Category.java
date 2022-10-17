@@ -4,6 +4,8 @@
  */
 package com.hoanglam.ecommerce.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -54,6 +56,7 @@ public class Category implements Serializable {
     @Column(name = "href")
     private String href;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "categoryCollection")
     private Collection<Product> productCollection;
     @OneToMany(mappedBy = "parentId")
