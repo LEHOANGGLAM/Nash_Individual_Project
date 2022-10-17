@@ -116,8 +116,4 @@ public class Comment {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "com.mycompany.pojo.Comment[ id=" + id + " ]";
-    }
 }

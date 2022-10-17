@@ -38,19 +38,12 @@ public class OrderItem implements Serializable {
     @Column(name = "id")
     @Size(max = 36)
     private String id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "sku")
-    private String sku;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "price")
     private float price;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "discount")
-    private float discount;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "quantity")
@@ -80,18 +73,24 @@ public class OrderItem implements Serializable {
     public OrderItem() {
     }
 
+    public OrderItem(@Size(max = 36) String id, @NotNull float price, @NotNull short quantity,
+                     @NotNull Date createdAt, Date updatedAt, @Size(max = 65535) String content,
+                     Order orderId, Product productId, com.hoanglam.ecommerce.entites.Size sizeId) {
+        this.id = id;
+        this.price = price;
+        this.quantity = quantity;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.content = content;
+        this.orderId = orderId;
+        this.productId = productId;
+        this.sizeId = sizeId;
+    }
+
     public OrderItem(String id) {
         this.id = id;
     }
 
-    public OrderItem(String id, String sku, float price, float discount, short quantity, Date createdAt) {
-        this.id = id;
-        this.sku = sku;
-        this.price = price;
-        this.discount = discount;
-        this.quantity = quantity;
-        this.createdAt = createdAt;
-    }
 
     public String getId() {
         return id;
@@ -109,13 +108,6 @@ public class OrderItem implements Serializable {
         this.sizeId = sizeId;
     }
 
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
 
     public float getPrice() {
         return price;
@@ -123,14 +115,6 @@ public class OrderItem implements Serializable {
 
     public void setPrice(float price) {
         this.price = price;
-    }
-
-    public float getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(float discount) {
-        this.discount = discount;
     }
 
     public short getQuantity() {
@@ -203,7 +187,7 @@ public class OrderItem implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.pojo.OrderItem[ id=" + id + " ]";
+        return "com.hoanglam.ecommerce.OrderItem[ id=" + id + " ]";
     }
     
 }

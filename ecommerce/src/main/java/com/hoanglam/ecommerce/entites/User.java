@@ -305,7 +305,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.pojo.User[ id=" + id + " ]";
+        return "com.hoanglam.ecommerce.User[ id=" + id + " ]";
     }
 
 }

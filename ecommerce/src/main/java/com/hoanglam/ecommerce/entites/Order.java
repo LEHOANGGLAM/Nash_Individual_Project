@@ -42,11 +42,6 @@ public class Order implements Serializable {
     @Column(name = "id")
     @Size(max = 36)
     private String id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "sessionId")
-    private String sessionId;
 
     @Basic(optional = false)
     @NotNull
@@ -56,20 +51,17 @@ public class Order implements Serializable {
     @NotNull
     @Column(name = "tax")
     private float tax;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "shipping")
-    private float shipping;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "total")
     private float total;
 
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "discount")
     private float discount;
 
+    @Column(name = "numberItem")
+    private int numberItem;
 
     @Basic(optional = false)
     @NotNull
@@ -79,10 +71,7 @@ public class Order implements Serializable {
     @Column(name = "updatedAt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-    @Lob
-    @Size(max = 5000)
-    @Column(name = "content")
-    private String content;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private Collection<OrderItem> orderItemCollection;
     @JoinColumn(name = "userId", referencedColumnName = "id")
@@ -96,17 +85,21 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public Order(String id, String sessionId,  short status,  float tax, float shipping, float total, float discount,  Date createdAt) {
+    public Order(@Size(max = 36) String id, @NotNull short status, @NotNull float tax,
+                 @NotNull float total, float discount, int numberItem,
+                 @NotNull Date createdAt, Date updatedAt,
+                 Collection<OrderItem> orderItemCollection, User userId) {
         this.id = id;
-        this.sessionId = sessionId;
         this.status = status;
         this.tax = tax;
-        this.shipping = shipping;
         this.total = total;
         this.discount = discount;
+        this.numberItem = numberItem;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.orderItemCollection = orderItemCollection;
+        this.userId = userId;
     }
-
 
     public String getId() {
         return id;
@@ -114,14 +107,6 @@ public class Order implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
     }
 
     public short getStatus() {
@@ -132,6 +117,13 @@ public class Order implements Serializable {
         this.status = status;
     }
 
+    public int getNumberItem() {
+        return numberItem;
+    }
+
+    public void setNumberItem(int numberItem) {
+        this.numberItem = numberItem;
+    }
 
     public float getTax() {
         return tax;
@@ -139,14 +131,6 @@ public class Order implements Serializable {
 
     public void setTax(float tax) {
         this.tax = tax;
-    }
-
-    public float getShipping() {
-        return shipping;
-    }
-
-    public void setShipping(float shipping) {
-        this.shipping = shipping;
     }
 
     public float getTotal() {
@@ -180,14 +164,6 @@ public class Order implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     @XmlTransient
@@ -229,7 +205,7 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
-        return "com.hoanglam.ecommerce Order id=" + id + " ]";
+        return "com.hoanglam.ecommerce.Order id=" + id + " ]";
     }
 
 }

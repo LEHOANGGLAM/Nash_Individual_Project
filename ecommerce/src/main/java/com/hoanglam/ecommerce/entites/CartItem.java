@@ -45,10 +45,7 @@ public class CartItem implements Serializable {
     @NotNull
     @Column(name = "price")
     private float price;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "discount")
-    private float discount;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "quantity")
@@ -65,10 +62,6 @@ public class CartItem implements Serializable {
     @Column(name = "updatedAt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "content")
-    private String content;
     @JoinColumn(name = "cartId", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Cart cartId;
@@ -88,13 +81,16 @@ public class CartItem implements Serializable {
         this.id = id;
     }
 
-    public CartItem(String id, float price, float discount, short quantity, boolean active, Date createdAt) {
+    public CartItem(@Size(max = 36) String id, @NotNull @Size(min = 1, max = 100) @NotNull float price, @NotNull short quantity, @NotNull boolean active, @NotNull Date createdAt, Date updatedAt, Cart cartId, Product productId, com.hoanglam.ecommerce.entites.Size sizeId) {
         this.id = id;
         this.price = price;
-        this.discount = discount;
         this.quantity = quantity;
         this.active = active;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.cartId = cartId;
+        this.productId = productId;
+        this.sizeId = sizeId;
     }
 
     public String getId() {
@@ -120,14 +116,6 @@ public class CartItem implements Serializable {
 
     public void setPrice(float price) {
         this.price = price;
-    }
-
-    public float getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(float discount) {
-        this.discount = discount;
     }
 
     public short getQuantity() {
@@ -160,14 +148,6 @@ public class CartItem implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
     public Cart getCartId() {
@@ -206,9 +186,5 @@ public class CartItem implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "com.mycompany.pojo.CartItem[ id=" + id + " ]";
-    }
     
 }

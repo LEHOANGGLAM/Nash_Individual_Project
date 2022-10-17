@@ -95,9 +95,5 @@ public class Image implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "com.mycompany.pojo.Image[ id=" + id + " ]";
-    }
     
 }

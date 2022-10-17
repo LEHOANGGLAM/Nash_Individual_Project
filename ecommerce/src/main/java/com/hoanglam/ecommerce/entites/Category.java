@@ -164,9 +164,5 @@ public class Category implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "com.mycompany.pojo.Category[ id=" + id + " ]";
-    }
 
 }

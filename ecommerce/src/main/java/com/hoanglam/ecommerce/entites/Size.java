@@ -74,7 +74,7 @@ public class Size implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.pojo.Size1[ id=" + id + " ]";
+        return "com.hoanglam.ecommerce.Size1[ id=" + id + " ]";
     }
 
 }

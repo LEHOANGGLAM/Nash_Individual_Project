@@ -5,6 +5,7 @@
 package com.hoanglam.ecommerce.entites;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -29,7 +30,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author dell
  */
 @Entity
@@ -45,20 +45,15 @@ public class Cart implements Serializable {
 
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "sessionId")
-    private String sessionId;
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "token")
-    private String token;
-
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "status")
     private short status;
+
+
+    @Column(name = "totalPrice")
+    private BigDecimal totalPrice;
+
+    @Column(name = "numberItem")
+    private int numberItem;
 
     @NotNull
     @Column(name = "createdAt")
@@ -88,12 +83,18 @@ public class Cart implements Serializable {
         this.id = id;
     }
 
-    public Cart(String id, String sessionId, String token, short status, Date createdAt) {
+    public Cart(@Size(max = 36) String id, @NotNull short status, BigDecimal totalPrice, int numberItem,
+                @NotNull Date createdAt, Date updatedAt, @Size(max = 65535) String content,
+                User userId, Collection<CartItem> cartItemCollection) {
         this.id = id;
-        this.sessionId = sessionId;
-        this.token = token;
         this.status = status;
+        this.totalPrice = totalPrice;
+        this.numberItem = numberItem;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.content = content;
+        this.userId = userId;
+        this.cartItemCollection = cartItemCollection;
     }
 
     public String getId() {
@@ -104,20 +105,21 @@ public class Cart implements Serializable {
         this.id = id;
     }
 
-    public String getSessionId() {
-        return sessionId;
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public String getToken() {
-        return token;
+    public int getNumberItem() {
+        return numberItem;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setNumberItem(int numberItem) {
+        this.numberItem = numberItem;
     }
 
     public short getStatus() {
@@ -190,9 +192,5 @@ public class Cart implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "com.mycompany.pojo.Cart[ id=" + id + " ]";
-    }
-    
+
 }
