@@ -7,9 +7,9 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "rating")
 @Builder
-public class Comment {
+public class Rating {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -21,10 +21,10 @@ public class Comment {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JoinColumn(name = "orderItem_id", referencedColumnName = "id")
     @ManyToOne
     @JsonIgnore
-    private Product productId;
+    private OrderItem orderItem;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
     @JsonIgnore
@@ -32,20 +32,28 @@ public class Comment {
     @Column(name = "rating")
     private Integer rating;
 
-    public Comment() {
+    public Rating() {
     }
 
-    public Comment(String id) {
+    public Rating(String id) {
         this.id = id;
     }
 
-    public Comment(String id, String content, Date createdDate, Product productId, User userId, Integer rating) {
+    public Rating(String id, String content, Date createdDate, OrderItem orderItemId, User userId, Integer rating) {
         this.id = id;
         this.content = content;
         this.createdDate = createdDate;
-        this.productId = productId;
+        this.orderItem = orderItemId;
         this.userId = userId;
         this.rating = rating;
+    }
+
+    public OrderItem getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(OrderItem orderItem) {
+        this.orderItem = orderItem;
     }
 
     public String getId() {
@@ -72,13 +80,6 @@ public class Comment {
         this.createdDate = createdDate;
     }
 
-    public Product getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Product productId) {
-        this.productId = productId;
-    }
 
     public User getUserId() {
         return userId;
@@ -106,10 +107,10 @@ public class Comment {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Comment)) {
+        if (!(object instanceof Rating)) {
             return false;
         }
-        Comment other = (Comment) object;
+        Rating other = (Rating) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

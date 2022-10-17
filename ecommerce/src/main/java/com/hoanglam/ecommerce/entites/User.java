@@ -59,22 +59,15 @@ public class User implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLogin;
     @Lob
-    @Size(max = 65535)
-    @Column(name = "intro")
-    private String intro;
-    @Lob
-    @Size(max = 65535)
+    @Size(max = 16383)
     @Column(name = "profile")
     private String profile;
     @Size(max = 200)
     @Column(name = "avatar_image")
     private String avatarImage;
     @Size(max = 100)
-    @Column(name = "line2")
-    private String address_line1;
-    @Size(max = 50)
-    @Column(name = "city")
-    private String city;
+    @Column(name = "address")
+    private String address;
     @Size(max = 50)
     @Column(name = "gender")
     private String gender;
@@ -105,7 +98,7 @@ public class User implements Serializable {
     private Collection<Order> order1Collection;
     @JsonIgnore
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
-    private Collection<Comment> commentCollection;
+    private Collection<Rating> ratingCollection;
 
     @Basic(optional = false)
     @NotNull
@@ -120,20 +113,28 @@ public class User implements Serializable {
         this.active = active;
     }
 
-    public String getAddress_line1() {
-        return address_line1;
+    public String getGender() {
+        return gender;
     }
 
-    public void setAddress_line1(String address_line1) {
-        this.address_line1 = address_line1;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public String getCity() {
-        return city;
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Collection<Rating> getRatingCollection() {
+        return ratingCollection;
+    }
+
+    public void setRatingCollection(Collection<Rating> ratingCollection) {
+        this.ratingCollection = ratingCollection;
     }
 
     @XmlTransient
@@ -174,6 +175,14 @@ public class User implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getFirstName() {
@@ -238,14 +247,6 @@ public class User implements Serializable {
 
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
-    }
-
-    public String getIntro() {
-        return intro;
-    }
-
-    public void setIntro(String intro) {
-        this.intro = intro;
     }
 
     public String getProfile() {

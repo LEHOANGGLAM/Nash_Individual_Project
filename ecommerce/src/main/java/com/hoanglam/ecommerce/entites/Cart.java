@@ -48,7 +48,6 @@ public class Cart implements Serializable {
     @Column(name = "status")
     private short status;
 
-
     @Column(name = "totalPrice")
     private BigDecimal totalPrice;
 

@@ -60,7 +60,6 @@ public class Product implements Serializable {
     @Column(name = "numberRating")
     private int numberRating;
 
-    @Size(max = 65535)
     @Column(name = "detail")
     private String detail;
 
@@ -77,7 +76,7 @@ public class Product implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
 
-    @Size(max = 65535)
+    @Size(max = 9000)
     @Column(name = "content")
     private String content;
 
@@ -104,9 +103,6 @@ public class Product implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     private Collection<CartItem> cartItemCollection;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "productId", fetch = FetchType.LAZY)
-    private Collection<Comment> commentCollection;
 
 
     @JoinTable(name = "product_size", joinColumns = {

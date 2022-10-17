@@ -3,11 +3,11 @@ package com.hoanglam.ecommerce.dto.request;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
-public class CommentRequestDto {
+public class RatingRequestDto {
     @NotBlank(message = "User id is required")
     private String userId;
-    @NotBlank(message = "Product id is required")
-    private String productId;
+    @NotBlank(message = "orderItemId id is required")
+    private String orderItemId;
     private String content;
     private int rating;
 
@@ -19,12 +19,12 @@ public class CommentRequestDto {
         this.userId = userId;
     }
 
-    public String getProductId() {
-        return productId;
+    public String getOrderItemId() {
+        return orderItemId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setOrderItemId(String orderItemId) {
+        this.orderItemId = orderItemId;
     }
 
     public String getContent() {

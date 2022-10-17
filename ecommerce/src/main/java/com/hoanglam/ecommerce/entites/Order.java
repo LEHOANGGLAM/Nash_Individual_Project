@@ -48,7 +48,6 @@ public class Order implements Serializable {
     @Column(name = "status")
     private short status;
 
-    @NotNull
     @Column(name = "tax")
     private float tax;
 

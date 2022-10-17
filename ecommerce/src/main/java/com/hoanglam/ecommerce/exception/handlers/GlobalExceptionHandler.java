@@ -1,6 +1,7 @@
 package com.hoanglam.ecommerce.exception.handlers;
 
 import com.hoanglam.ecommerce.dto.response.ErrorResponse;
+import com.hoanglam.ecommerce.exception.ResourceAlreadyExistException;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,10 +26,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({ ResourceAlreadyExistException.class })
+    protected ResponseEntity<ErrorResponse> handleResourceAlreadyExistException(RuntimeException exception,
+                                                                                WebRequest request) {
+        ErrorResponse error = new ErrorResponse("02", exception.getMessage());
+        return new ResponseEntity<ErrorResponse>(error, HttpStatus.ALREADY_REPORTED);
+    }
+
     @ExceptionHandler({ IllegalArgumentException.class })
     protected ResponseEntity<ErrorResponse> handleIllegalArgumentException(RuntimeException exception,
                                                                            WebRequest request) {
-        ErrorResponse error = new ErrorResponse("02", exception.getMessage());
+        ErrorResponse error = new ErrorResponse("03", exception.getMessage());
         return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -41,7 +49,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        ErrorResponse error = new ErrorResponse("03", "Validation Error", errors);
+        ErrorResponse error = new ErrorResponse("04", "Validation Error", errors);
         return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
     }
+
+
 }

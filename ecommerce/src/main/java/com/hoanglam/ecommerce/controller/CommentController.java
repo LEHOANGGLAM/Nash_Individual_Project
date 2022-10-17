@@ -1,10 +1,8 @@
 package com.hoanglam.ecommerce.controller;
 
-import com.hoanglam.ecommerce.dto.request.CommentRequestDto;
-import com.hoanglam.ecommerce.entites.Comment;
-import com.hoanglam.ecommerce.entites.Product;
-import com.hoanglam.ecommerce.repository.CartRepository;
-import com.hoanglam.ecommerce.service.CommentService;
+import com.hoanglam.ecommerce.dto.request.RatingRequestDto;
+import com.hoanglam.ecommerce.entites.Rating;
+import com.hoanglam.ecommerce.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +14,11 @@ import javax.validation.Valid;
 @RequestMapping("")
 public class CommentController {
     @Autowired
-    public CommentService commentService;
+    public RatingService ratingService;
 
-    @PostMapping("/comments")
+    @PostMapping("/ratings")
     @ResponseStatus(HttpStatus.CREATED)
-    public Comment createComment(@Valid @RequestBody CommentRequestDto c){
-        return commentService.createComment(c);
+    public Rating createComment(@Valid @RequestBody RatingRequestDto c){
+        return ratingService.createRating(c);
     }
 }
