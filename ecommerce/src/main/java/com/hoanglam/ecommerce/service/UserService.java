@@ -1,5 +1,6 @@
 package com.hoanglam.ecommerce.service;
 
+import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.entites.User;
 
@@ -12,5 +13,5 @@ public interface UserService {
     List<User> getUsersByRole(Map<String, String> params);
     User createUser(User u);
     User updateUser(String id, User userUpdate);
-    boolean deleteUser(String id);
+    DeleteResponseDto deleteUser(String id);
 }

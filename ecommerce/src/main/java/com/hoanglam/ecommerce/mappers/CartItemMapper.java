@@ -14,18 +14,20 @@ import java.util.Optional;
 @Component
 public class CartItemMapper {
     @Autowired
-    private CartRepository cartRepository;
+    private UserRepository uesrRepository;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
     private SizeRepository sizeRepository;
 
     public CartItem mapCartItemRequestDtoToEntity(CartItemRequestDto cDto) {
-        //Optional<Cart> cart = cartRepository.findById(cDto.getCardId());
+        Optional<User> user = uesrRepository.findById(cDto.getUserId());
         Optional<Product> product = productRepository.findById(cDto.getProductId());
         Optional<Size> size = sizeRepository.findById(cDto.getSizeId());
 
-
+        if (user.isEmpty()) {
+            throw new ResourceNotFoundException("User not exist with id: " + cDto.getUserId());
+        }
         if (product.isEmpty()) {
             throw new ResourceNotFoundException("Product not exist with id: " + cDto.getProductId());
         }
@@ -39,6 +41,7 @@ public class CartItemMapper {
                 .quantity(cDto.getQuantity())
                 .productId(product.get())
                 .sizeId(size.get())
+                .userId(user.get())
                 .build();
     }
 }

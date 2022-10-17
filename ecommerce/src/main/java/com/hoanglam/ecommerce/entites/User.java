@@ -92,10 +92,12 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "userId")
     @JsonIgnore
-    private Collection<Cart> cartCollection;
+    private Collection<CartItem> cartItemCollection;
+
     @OneToMany(mappedBy = "userId")
     @JsonIgnore
     private Collection<Order> order1Collection;
+
     @JsonIgnore
     @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     private Collection<Rating> ratingCollection;
@@ -144,10 +146,13 @@ public class User implements Serializable {
 
 
     @XmlTransient
-    public Collection<Cart> getCartCollection() {
-        return cartCollection;
+    public Collection<CartItem> getCartItemCollection() {
+        return cartItemCollection;
     }
 
+    public void setCartCollection(Collection<CartItem> cartCollection) {
+        this.cartItemCollection = cartCollection;
+    }
 
     public User() {
     }
@@ -271,9 +276,6 @@ public class User implements Serializable {
 
 
 
-    public void setCartCollection(Collection<Cart> cartCollection) {
-        this.cartCollection = cartCollection;
-    }
 
     @XmlTransient
     public Collection<Order> getOrder1Collection() {

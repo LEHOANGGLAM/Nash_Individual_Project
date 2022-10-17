@@ -1,5 +1,6 @@
 package com.hoanglam.ecommerce.service.impl;
 
+import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.entites.User;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -78,13 +80,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(String id) {
-
+    public DeleteResponseDto deleteUser(String id) {
         if(userRepository.findById(id).isEmpty()){
             throw new ResourceNotFoundException("User not exist with id: " + id);
         }
 
         userRepository.deleteById(id);
-        return true;
+        return new DeleteResponseDto("Delete category successfully", HttpStatus.OK.value(), HttpStatus.OK);
     }
 }

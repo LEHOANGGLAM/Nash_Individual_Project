@@ -1,6 +1,7 @@
 package com.hoanglam.ecommerce.controller;
 
 import com.hoanglam.ecommerce.dto.response.APIRespone;
+import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.repository.ProductRepository;
@@ -57,9 +58,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/admin/products/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable String id) {
-        this.productService.deleteProduct(id);
-        return ResponseEntity.ok(new SuccessResponse("Delete product successfully!"));
+    public DeleteResponseDto deleteProduct(@PathVariable String id) {
+        return this.productService.deleteProduct(id);
     }
     //-------------FOR ADMIN ABOVE--------------
     //------------FOR ADMIN ABOVE------------------

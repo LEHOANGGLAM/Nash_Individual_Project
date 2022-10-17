@@ -1,6 +1,7 @@
 package com.hoanglam.ecommerce.service;
 
 import com.hoanglam.ecommerce.dto.response.APIRespone;
+import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
 import com.hoanglam.ecommerce.entites.Product;
 import org.springframework.data.domain.Page;
@@ -15,5 +16,5 @@ public interface ProductService{
     APIRespone<List<Product>> getProductsByCateId(Map<String, String> params);
     Product createProduct(Product p);
     Product updateProduct(String id, Product product);
-    boolean deleteProduct(String id);
+    DeleteResponseDto deleteProduct(String id);
 }

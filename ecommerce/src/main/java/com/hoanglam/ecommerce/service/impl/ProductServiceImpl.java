@@ -1,6 +1,7 @@
 package com.hoanglam.ecommerce.service.impl;
 
 import com.hoanglam.ecommerce.dto.response.APIRespone;
+import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
 import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.Product;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -96,12 +98,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean deleteProduct(String id) {
+    public DeleteResponseDto deleteProduct(String id) {
         if (productRepository.findById(id).isEmpty()) {
             throw new ResourceNotFoundException("Product not exist with id: " + id);
         }
         productRepository.deleteById(id);
-        return true;
+
+        return new DeleteResponseDto("Delete product successfully", HttpStatus.OK.value(), HttpStatus.OK);
     }
 
 

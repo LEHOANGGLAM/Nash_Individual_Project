@@ -1,5 +1,6 @@
 package com.hoanglam.ecommerce.controller;
 
+import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.Category;
 import com.hoanglam.ecommerce.entites.Product;
@@ -50,9 +51,8 @@ public class CateController {
     }
 
     @DeleteMapping("/admin/categories/{id}")
-    public ResponseEntity<?> deleteCate(@PathVariable String id) {
-        this.categoryService.deleteCate(id);
-        return ResponseEntity.ok(new SuccessResponse("Delete category successfully!"));
+    public DeleteResponseDto deleteCate(@PathVariable String id) {
+        return this.categoryService.deleteCate(id);
     }
 //    @DeleteMapping("/admin/users/{id}")
 //    public ResponseEntity<?> deleteUser(@PathVariable String id) {

@@ -1,5 +1,6 @@
 package com.hoanglam.ecommerce.service.impl;
 
+import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.entites.Category;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
@@ -10,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,11 +57,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public boolean deleteCate(String id) {
+    public DeleteResponseDto deleteCate(String id) {
         if(categoryRepository.findById(id).isEmpty()){
             throw new ResourceNotFoundException("Category not exist with id: " + id);
         }
         categoryRepository.deleteById(id);
-        return true;
+        return new DeleteResponseDto("Delete category successfully", HttpStatus.OK.value(), HttpStatus.OK);
     }
 }

@@ -60,17 +60,19 @@ public class CartItem implements Serializable {
     @Column(name = "updatedAt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-    @JoinColumn(name = "cartId", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Cart cartId;
+
     @JoinColumn(name = "productId", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Product productId;
 
-
     @JoinColumn(name = "sizeId", referencedColumnName = "id")
     @ManyToOne
     private com.hoanglam.ecommerce.entites.Size sizeId;
+
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @ManyToOne
+    private User userId;
+
 
     public CartItem() {
     }
@@ -79,18 +81,18 @@ public class CartItem implements Serializable {
         this.id = id;
     }
 
-    public CartItem(@Size(max = 36) String id, BigDecimal price,
-                    @NotNull short quantity,  boolean active,  Date createdAt, Date updatedAt,
-                    Cart cartId, Product productId, com.hoanglam.ecommerce.entites.Size sizeId) {
+    public CartItem(@Size(max = 36) String id, BigDecimal price, @NotNull short quantity,
+                    boolean active, Date createdAt, Date updatedAt, Product productId,
+                    com.hoanglam.ecommerce.entites.Size sizeId, User userId) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
         this.active = active;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.cartId = cartId;
         this.productId = productId;
         this.sizeId = sizeId;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -148,14 +150,6 @@ public class CartItem implements Serializable {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public Cart getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(Cart cartId) {
-        this.cartId = cartId;
     }
 
     public Product getProductId() {
