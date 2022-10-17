@@ -7,6 +7,7 @@ package com.hoanglam.ecommerce.entites;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.*;
@@ -32,7 +33,7 @@ public class OrderItem implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "price")
-    private float price;
+    private BigDecimal price;
 
     @Basic(optional = false)
     @NotNull
@@ -70,7 +71,7 @@ public class OrderItem implements Serializable {
     public OrderItem() {
     }
 
-    public OrderItem(@Size(max = 36) String id, @NotNull float price, @NotNull short quantity,
+    public OrderItem(@Size(max = 36) String id, @NotNull BigDecimal price, @NotNull short quantity,
                      @NotNull Date createdAt, Date updatedAt, @Size(max = 65535) String content,
                      Order orderId, Product productId, com.hoanglam.ecommerce.entites.Size sizeId) {
         this.id = id;
@@ -115,11 +116,11 @@ public class OrderItem implements Serializable {
         this.ratingCollection = ratingCollection;
     }
 
-    public float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

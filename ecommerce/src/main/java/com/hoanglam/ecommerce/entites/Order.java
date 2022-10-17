@@ -5,6 +5,7 @@
 package com.hoanglam.ecommerce.entites;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -54,7 +55,7 @@ public class Order implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "total")
-    private float total;
+    private BigDecimal total;
 
     @Column(name = "discount")
     private float discount;
@@ -85,7 +86,7 @@ public class Order implements Serializable {
     }
 
     public Order(@Size(max = 36) String id, @NotNull short status, @NotNull float tax,
-                 @NotNull float total, float discount, int numberItem,
+                 @NotNull BigDecimal total, float discount, int numberItem,
                  @NotNull Date createdAt, Date updatedAt,
                  Collection<OrderItem> orderItemCollection, User userId) {
         this.id = id;
@@ -132,11 +133,11 @@ public class Order implements Serializable {
         this.tax = tax;
     }
 
-    public float getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 

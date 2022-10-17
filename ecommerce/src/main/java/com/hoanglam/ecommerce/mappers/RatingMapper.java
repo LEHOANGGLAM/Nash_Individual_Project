@@ -20,7 +20,7 @@ public class RatingMapper {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
-    public Rating mapRequestDtoToEntity(RatingRequestDto cDto) {
+    public Rating mapRatingRequestDtoToEntity(RatingRequestDto cDto) {
         Optional<OrderItem> orderItem = orderItemRepository.findById(cDto.getOrderItemId());
         Optional<User> user = userRepository.findById(cDto.getUserId());
 

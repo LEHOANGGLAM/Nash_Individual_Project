@@ -4,7 +4,10 @@
  */
 package com.hoanglam.ecommerce.entites;
 
+import lombok.Builder;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -30,6 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "cart_item")
+@Builder
 public class CartItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,24 +42,18 @@ public class CartItem implements Serializable {
     @Column(name = "id")
     @Size(max = 36)
     private String id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
 
-    @NotNull
     @Column(name = "price")
-    private float price;
+    private BigDecimal price;
 
     @Basic(optional = false)
     @NotNull
     @Column(name = "quantity")
     private short quantity;
-    @Basic(optional = false)
-    @NotNull
+
     @Column(name = "active")
     private boolean active;
-    @Basic(optional = false)
-    @NotNull
+
     @Column(name = "createdAt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -81,7 +79,9 @@ public class CartItem implements Serializable {
         this.id = id;
     }
 
-    public CartItem(@Size(max = 36) String id, @NotNull @Size(min = 1, max = 100) @NotNull float price, @NotNull short quantity, @NotNull boolean active, @NotNull Date createdAt, Date updatedAt, Cart cartId, Product productId, com.hoanglam.ecommerce.entites.Size sizeId) {
+    public CartItem(@Size(max = 36) String id, BigDecimal price,
+                    @NotNull short quantity,  boolean active,  Date createdAt, Date updatedAt,
+                    Cart cartId, Product productId, com.hoanglam.ecommerce.entites.Size sizeId) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
@@ -110,11 +110,11 @@ public class CartItem implements Serializable {
         this.sizeId = sizeId;
     }
 
-    public float getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

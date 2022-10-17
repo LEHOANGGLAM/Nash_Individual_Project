@@ -43,8 +43,6 @@ public class Cart implements Serializable {
     @Size(max = 36)
     private String id;
 
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "status")
     private short status;
 
@@ -54,7 +52,6 @@ public class Cart implements Serializable {
     @Column(name = "numberItem")
     private int numberItem;
 
-    @NotNull
     @Column(name = "createdAt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -82,8 +79,8 @@ public class Cart implements Serializable {
         this.id = id;
     }
 
-    public Cart(@Size(max = 36) String id, @NotNull short status, BigDecimal totalPrice, int numberItem,
-                @NotNull Date createdAt, Date updatedAt, @Size(max = 65535) String content,
+    public Cart(@Size(max = 36) String id, short status, BigDecimal totalPrice, int numberItem,
+                Date createdAt, Date updatedAt, @Size(max = 65535) String content,
                 User userId, Collection<CartItem> cartItemCollection) {
         this.id = id;
         this.status = status;

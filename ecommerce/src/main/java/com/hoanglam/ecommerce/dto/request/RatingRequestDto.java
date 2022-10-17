@@ -11,6 +11,7 @@ public class RatingRequestDto {
     private String content;
     private int rating;
 
+
     public String getUserId() {
         return userId;
     }

@@ -31,7 +31,7 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public Rating createRating(RatingRequestDto c) {
         UUID uuid = UUID.randomUUID();
-        Rating rating = modelMapper.mapRequestDtoToEntity(c);
+        Rating rating = modelMapper.mapRatingRequestDtoToEntity(c);
 
         List<Rating> ratinglist = ratingRepository.findByUserId(rating.getUserId());
         for(Rating r: ratinglist){

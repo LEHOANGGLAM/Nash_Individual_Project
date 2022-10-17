@@ -12,7 +12,7 @@ import javax.validation.Valid;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("")
-public class CommentController {
+public class RatingController {
     @Autowired
     public RatingService ratingService;
 
