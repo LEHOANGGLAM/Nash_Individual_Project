@@ -80,12 +80,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public DeleteResponseDto deleteUser(String id) {
-        if(userRepository.findById(id).isEmpty()){
+    public DeleteResponseDto softDeleteUser(String id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if(userOptional.isEmpty()){
             throw new ResourceNotFoundException("User not exist with id: " + id);
         }
 
-        userRepository.deleteById(id);
-        return new DeleteResponseDto("Delete category successfully", HttpStatus.OK.value(), HttpStatus.OK);
+        User user = userOptional.get();
+        user.setActive(false);
+        userRepository.save(user);
+
+        return new DeleteResponseDto("Delete user successfully", HttpStatus.OK.value(), HttpStatus.OK);
     }
 }

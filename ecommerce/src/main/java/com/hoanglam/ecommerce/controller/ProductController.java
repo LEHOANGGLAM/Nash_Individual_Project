@@ -59,7 +59,7 @@ public class ProductController {
 
     @DeleteMapping("/admin/products/{id}")
     public DeleteResponseDto deleteProduct(@PathVariable String id) {
-        return this.productService.deleteProduct(id);
+        return this.productService.softDeleteProduct(id);
     }
     //-------------FOR ADMIN ABOVE--------------
     //------------FOR ADMIN ABOVE------------------

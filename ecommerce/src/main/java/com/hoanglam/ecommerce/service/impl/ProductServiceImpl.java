@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
     public APIRespone<List<Product>> getAllProducts(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
 
-        Page<Product> result = productRepository.findAll(pageable);
+        Page<Product> result = productRepository.findByActive( true ,pageable);
         return new APIRespone<>(result.getTotalPages(),result.getContent());
     }
 
@@ -53,10 +53,10 @@ public class ProductServiceImpl implements ProductService {
 
         Page<Product> result;
         if (id != null && id != "") {
-            result = productRepository.findByPriceBetweenAndTitleContainingAndCategoryCollection_IdOrderByCreatedDateDesc
-                    (fromPrice, toPrice, kw, id, pageable);
+            result = productRepository.findByPriceBetweenAndTitleContainingAndCategoryCollection_IdAndActiveOrderByCreatedDateDesc
+                    (fromPrice, toPrice, kw, id, true, pageable);
         } else {
-            result = productRepository.findByPriceBetweenAndTitleContainingOrderByCreatedDateDesc(fromPrice, toPrice, kw, pageable);
+            result = productRepository.findByPriceBetweenAndTitleContainingAndActiveOrderByCreatedDateDesc(fromPrice, toPrice, kw, true, pageable);
         }
         return new APIRespone<>(result.getTotalPages(),result.getContent());
     }
@@ -82,7 +82,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product createProduct(Product p) {
         UUID uuid = UUID.randomUUID();
+
         p.setId(uuid.toString());
+        p.setActive(true);
+        p.setCreatedDate(new Date());
+        p.setAverageRating(0);
+        p.setNumberSold(0);
+        p.setNumberRating(0);
+
         Product savedProduct = productRepository.save(p);
         return savedProduct;
     }
@@ -98,12 +105,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public DeleteResponseDto deleteProduct(String id) {
-        if (productRepository.findById(id).isEmpty()) {
+    public DeleteResponseDto softDeleteProduct(String id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isEmpty()) {
             throw new ResourceNotFoundException("Product not exist with id: " + id);
         }
-        productRepository.deleteById(id);
 
+        Product product = productOptional.get();
+        product.setActive(false);
+        productRepository.save(product);
         return new DeleteResponseDto("Delete product successfully", HttpStatus.OK.value(), HttpStatus.OK);
     }
 

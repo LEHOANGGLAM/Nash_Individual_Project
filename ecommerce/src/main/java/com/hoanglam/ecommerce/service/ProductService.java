@@ -16,5 +16,5 @@ public interface ProductService{
     APIRespone<List<Product>> getProductsByCateId(Map<String, String> params);
     Product createProduct(Product p);
     Product updateProduct(String id, Product product);
-    DeleteResponseDto deleteProduct(String id);
+    DeleteResponseDto softDeleteProduct(String id);
 }

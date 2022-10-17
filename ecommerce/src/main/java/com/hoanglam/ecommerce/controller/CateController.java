@@ -52,11 +52,7 @@ public class CateController {
 
     @DeleteMapping("/admin/categories/{id}")
     public DeleteResponseDto deleteCate(@PathVariable String id) {
-        return this.categoryService.deleteCate(id);
+        return this.categoryService.softDeleteCate(id);
     }
-//    @DeleteMapping("/admin/users/{id}")
-//    public ResponseEntity<?> deleteUser(@PathVariable String id) {
-//        this.userService.deleteUser(id);
-//        return ResponseEntity.ok(new SuccessResponse("Delete user successfully!"));
-//    }
+
 }

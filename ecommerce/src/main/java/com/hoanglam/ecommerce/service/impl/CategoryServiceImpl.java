@@ -3,6 +3,7 @@ package com.hoanglam.ecommerce.service.impl;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.entites.Category;
 import com.hoanglam.ecommerce.entites.Product;
+import com.hoanglam.ecommerce.entites.User;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import com.hoanglam.ecommerce.repository.CategoryRepository;
 import com.hoanglam.ecommerce.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -57,11 +59,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public DeleteResponseDto deleteCate(String id) {
-        if(categoryRepository.findById(id).isEmpty()){
+    public DeleteResponseDto softDeleteCate(String id) {
+        Optional<Category> cateOptional = categoryRepository.findById(id);
+        if(cateOptional.isEmpty()){
             throw new ResourceNotFoundException("Category not exist with id: " + id);
         }
-        categoryRepository.deleteById(id);
+
+        Category cate = cateOptional.get();
+        cate.setActive(false);
+        categoryRepository.save(cate);
+
         return new DeleteResponseDto("Delete category successfully", HttpStatus.OK.value(), HttpStatus.OK);
     }
 }

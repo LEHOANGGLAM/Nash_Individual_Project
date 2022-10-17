@@ -43,6 +43,6 @@ public class UserController {
 
     @DeleteMapping("/admin/users/{id}")
     public DeleteResponseDto deleteUser(@PathVariable String id) {
-        return  this.userService.deleteUser(id);
+        return  this.userService.softDeleteUser(id);
     }
 }

@@ -34,8 +34,8 @@ public class RatingServiceImpl implements RatingService {
         Rating rating = modelMapper.mapRatingRequestDtoToEntity(c);
 
         List<Rating> ratinglist = ratingRepository.findByUserId(rating.getUserId());
-        for(Rating r: ratinglist){
-            if(r.getOrderItem() == rating.getOrderItem()){
+        for (Rating r : ratinglist) {
+            if (r.getOrderItem() == rating.getOrderItem()) {
                 throw new ResourceAlreadyExistException("User already rating this product");
             }
         }
@@ -51,6 +51,7 @@ public class RatingServiceImpl implements RatingService {
     private float averageRating(Product product, int rating) {
         float average = (product.getAverageRating() + rating) / 2;
         product.setAverageRating(average);
+        product.setNumberRating(product.getNumberRating() + 1);
 
         productRepository.save(product);
         return average;

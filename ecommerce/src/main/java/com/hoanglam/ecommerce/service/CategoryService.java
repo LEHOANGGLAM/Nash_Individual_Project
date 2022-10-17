@@ -12,5 +12,5 @@ public interface CategoryService {
     Category getCateById(String id);
     Category createCate(Category u);
     Category updateCate(String id, Category cateUpdate);
-    DeleteResponseDto deleteCate(String id);
+    DeleteResponseDto softDeleteCate(String id);
 }

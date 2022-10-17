@@ -15,11 +15,15 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, String>, JpaSpecificationExecutor<Product> {
     Optional<Product> findByTitle(String title);
 
-    Page<Product> findAll(Pageable pageable);
-    Page<Product> findByPriceBetweenAndTitleContainingAndCategoryCollection_IdOrderByCreatedDateDesc
-            (BigDecimal fromPrice, BigDecimal toPrice, String title, String id, Pageable pageable);
-    Page<Product> findByPriceBetweenAndTitleContainingOrderByCreatedDateDesc(BigDecimal fromPrice, BigDecimal toPrice, String title,Pageable pageable);
-    Page<Product> findByCategoryCollection_Id(String id,  Pageable pageable);
+    Page<Product> findByActive(boolean active, Pageable pageable);
+
+    Page<Product> findByPriceBetweenAndTitleContainingAndCategoryCollection_IdAndActiveOrderByCreatedDateDesc
+            (BigDecimal fromPrice, BigDecimal toPrice, String title, String id, boolean active, Pageable pageable);
+
+    Page<Product> findByPriceBetweenAndTitleContainingAndActiveOrderByCreatedDateDesc
+            (BigDecimal fromPrice, BigDecimal toPrice, String title,boolean active, Pageable pageable);
+
+    Page<Product> findByCategoryCollection_Id(String id, Pageable pageable);
 
 
 //    Page<Product> findByPriceLessThanEqual(BigDecimal price, Pageable pageable);

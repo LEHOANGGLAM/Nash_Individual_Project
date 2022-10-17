@@ -13,5 +13,5 @@ public interface UserService {
     List<User> getUsersByRole(Map<String, String> params);
     User createUser(User u);
     User updateUser(String id, User userUpdate);
-    DeleteResponseDto deleteUser(String id);
+    DeleteResponseDto softDeleteUser(String id);
 }

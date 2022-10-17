@@ -56,6 +56,9 @@ public class Category implements Serializable {
     @Column(name = "href")
     private String href;
 
+    @Column(name = "active")
+    private boolean active;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "categoryCollection")
     private Collection<Product> productCollection;
@@ -84,6 +87,14 @@ public class Category implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getHref() {
