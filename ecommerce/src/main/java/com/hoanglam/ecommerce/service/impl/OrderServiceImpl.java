@@ -2,6 +2,8 @@ package com.hoanglam.ecommerce.service.impl;
 
 import com.hoanglam.ecommerce.dto.request.OrderItemRequestDto;
 import com.hoanglam.ecommerce.dto.request.OrderResquestDto;
+import com.hoanglam.ecommerce.dto.response.OrderResponseDto;
+import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
 import com.hoanglam.ecommerce.entites.Order;
 import com.hoanglam.ecommerce.entites.OrderItem;
 import com.hoanglam.ecommerce.entites.Product;
@@ -13,6 +15,7 @@ import com.hoanglam.ecommerce.repository.OrderRepository;
 import com.hoanglam.ecommerce.repository.ProductRepository;
 import com.hoanglam.ecommerce.service.OrderService;
 import com.hoanglam.ecommerce.service.ProductService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +39,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
-    public Order createOrder(OrderResquestDto orderResquestDto) {
+    public OrderResponseDto createOrder(OrderResquestDto orderResquestDto) {
         //Check quantity
         for (OrderItemRequestDto o : orderResquestDto.getOrderItems()) {
             Product product = productService.getProductById(o.getProductId());
@@ -60,7 +65,9 @@ public class OrderServiceImpl implements OrderService {
 
         //add OrderItem into Order
         order = addOrderItemIntoOrder(order, orderResquestDto.getOrderItems());
-        return order;
+
+        OrderResponseDto orderResponseDto = modelMapper.map(order, OrderResponseDto.class);
+        return orderResponseDto;
     }
 
     public Order addOrderItemIntoOrder(Order order, List<OrderItemRequestDto> orderItemRequestDtos){

@@ -29,10 +29,8 @@ public class Category implements Serializable {
     private String id;
     @Basic(optional = false)
     @NotNull
-
     @Size(min = 1, max = 75)
     @Column(name = "title")
-
     private String title;
     @Size(max = 100)
     @Column(name = "metaTitle")

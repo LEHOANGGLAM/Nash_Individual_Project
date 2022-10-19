@@ -103,6 +103,17 @@ public class CartItem implements Serializable {
         this.id = id;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
 
     public com.hoanglam.ecommerce.entites.Size getSizeId() {
         return sizeId;

@@ -1,5 +1,6 @@
 package com.hoanglam.ecommerce.controller;
 
+import com.hoanglam.ecommerce.dto.request.ProductRequestDto;
 import com.hoanglam.ecommerce.dto.response.APIRespone;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
@@ -49,7 +50,7 @@ public class ProductController {
     //------------FOR ADMIN BELOW------------------
     @PostMapping("/admin/products")
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductResponseDto addProduct(@Valid @RequestBody Product product) {
+    public ProductResponseDto addProduct(@Valid @RequestBody ProductRequestDto product) {
         return this.productService.createProduct(product);
     }
 

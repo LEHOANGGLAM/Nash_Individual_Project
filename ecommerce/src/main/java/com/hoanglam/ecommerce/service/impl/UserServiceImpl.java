@@ -23,8 +23,8 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     public static final int pageSize = 20;
 
+    @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
     private UserRepository userRepository;
 

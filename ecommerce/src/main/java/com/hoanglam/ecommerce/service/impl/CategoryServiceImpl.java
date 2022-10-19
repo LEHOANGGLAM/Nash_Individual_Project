@@ -25,8 +25,9 @@ import java.util.UUID;
 @Service
 public class CategoryServiceImpl implements CategoryService {
     public static final int pageSize = 20;
-    private ModelMapper modelMapper;
 
+    @Autowired
+    private ModelMapper modelMapper;
     @Autowired
     private CategoryRepository categoryRepository;
 

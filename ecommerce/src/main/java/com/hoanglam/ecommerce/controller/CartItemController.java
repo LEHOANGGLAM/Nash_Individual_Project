@@ -38,7 +38,6 @@ public class CartItemController {
     }
 
     @PutMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
     public CartItemResponseDto updateCartItem(@Valid @RequestBody CartItemRequestDto cartItemRequestDto){
         return cartItemService.updateCartItem(cartItemRequestDto);
     }

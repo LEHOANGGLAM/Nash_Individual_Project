@@ -36,11 +36,12 @@ public class CartItemServiceImpl implements CartItemService {
     private CartItemRepository cartItemRepository;
     @Autowired
     private SizeRepository sizeRepository;
+
     @Autowired
     private ProductService productService;
 
+    @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
     private CartItemMapper cartItemMapper;
 
@@ -81,6 +82,7 @@ public class CartItemServiceImpl implements CartItemService {
         if (cartItem != null) {
             cartItem.setQuantity((short) (cartItem.getQuantity() + cartItemDto.getQuantity()));
             cartItem.setPrice(cartItem.getProductId().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+            cartItem = cartItemRepository.save(cartItem);
 
             CartItemResponseDto cartItemResponseDto = modelMapper.map(cartItem, CartItemResponseDto.class);
             return cartItemResponseDto;

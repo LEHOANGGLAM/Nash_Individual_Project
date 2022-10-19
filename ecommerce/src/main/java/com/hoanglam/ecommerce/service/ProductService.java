@@ -1,5 +1,6 @@
 package com.hoanglam.ecommerce.service;
 
+import com.hoanglam.ecommerce.dto.request.ProductRequestDto;
 import com.hoanglam.ecommerce.dto.response.APIRespone;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
@@ -17,7 +18,7 @@ public interface ProductService {
     APIRespone<List<Product>> getProductsByPredicates(Map<String, String> params);
 
     //    APIRespone<List<Product>> getProductsByCateId(Map<String, String> params);
-    ProductResponseDto createProduct(Product p);
+    ProductResponseDto createProduct(ProductRequestDto p);
 
     ProductResponseDto updateProduct(String id, Product product);
 

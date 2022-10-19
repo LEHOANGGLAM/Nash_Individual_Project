@@ -5,6 +5,8 @@
 package com.hoanglam.ecommerce.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -20,6 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "product")
+@Builder
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -88,7 +91,7 @@ public class Product implements Serializable {
     @JoinTable(name = "product_category", joinColumns = {
             @JoinColumn(name = "productId", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "categoryId", referencedColumnName = "id")})
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JsonIgnore
     private Collection<Category> categoryCollection;
 
@@ -127,17 +130,16 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-
     public Product(@Size(max = 36) String id, @NotNull @Size(min = 1, max = 75) String title,
-                   @Size(max = 100) String metaTitle, @Size(max = 255) String desciption,
-                   @NotNull BigDecimal price, float discount, float averageRating,
-                   int numberSold, int numberRating, @Size(max = 65535) String detail,
-                   @NotNull short quantity, Date createdDate, Date updatedDate, @Size(max = 65535) String content) {
+                   @Size(max = 100) String metaTitle, @Size(max = 255) String desciption, @NotNull BigDecimal price,
+                   float discount, float averageRating, int numberSold, int numberRating, String detail, @NotNull short quantity,
+                   Date createdDate, Date updatedDate, @Size(max = 9000) String content, @NotNull boolean active, Collection<Category> categoryCollection,
+                   Collection<Image> imageCollection, Collection<OrderItem> orderItemCollection, Collection<CartItem> cartItemCollection,
+                   Collection<com.hoanglam.ecommerce.entites.Size> sizeCollection) {
         this.id = id;
         this.title = title;
         this.metaTitle = metaTitle;
         this.desciption = desciption;
-
         this.price = price;
         this.discount = discount;
         this.averageRating = averageRating;
@@ -148,6 +150,12 @@ public class Product implements Serializable {
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
         this.content = content;
+        this.active = active;
+        this.categoryCollection = categoryCollection;
+        this.imageCollection = imageCollection;
+        this.orderItemCollection = orderItemCollection;
+        this.cartItemCollection = cartItemCollection;
+        this.sizeCollection = sizeCollection;
     }
 
     public float getAverageRating() {

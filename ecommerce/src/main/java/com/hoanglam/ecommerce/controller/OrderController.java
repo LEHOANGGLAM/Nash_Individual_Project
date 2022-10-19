@@ -4,6 +4,7 @@ package com.hoanglam.ecommerce.controller;
 import com.hoanglam.ecommerce.dto.request.CartItemRequestDto;
 import com.hoanglam.ecommerce.dto.request.OrderItemRequestDto;
 import com.hoanglam.ecommerce.dto.request.OrderResquestDto;
+import com.hoanglam.ecommerce.dto.response.OrderResponseDto;
 import com.hoanglam.ecommerce.entites.CartItem;
 import com.hoanglam.ecommerce.entites.Order;
 import com.hoanglam.ecommerce.service.OrderService;
@@ -24,7 +25,7 @@ public class OrderController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public Order createCartItem(@Valid @RequestBody OrderResquestDto orderResquestDto){
+    public OrderResponseDto createCartItem(@Valid @RequestBody OrderResquestDto orderResquestDto){
         return orderService.createOrder(orderResquestDto);
     }
 }
