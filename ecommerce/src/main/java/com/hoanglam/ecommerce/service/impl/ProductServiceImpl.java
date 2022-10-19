@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
     //-------------FOR ADMIN BELOW--------------
     //-------------FOR ADMIN BELOW--------------
     @Override
-    public Product createProduct(Product p) {
+    public ProductResponseDto createProduct(Product p) {
         UUID uuid = UUID.randomUUID();
 
         p.setId(uuid.toString());
@@ -91,17 +91,18 @@ public class ProductServiceImpl implements ProductService {
         p.setNumberRating(0);
 
         Product savedProduct = productRepository.save(p);
-        return savedProduct;
+        ProductResponseDto productResponseDto = modelMapper.map(savedProduct, ProductResponseDto.class);
+        return productResponseDto;
     }
 
     @Override
-    public Product updateProduct(String id, Product productUpdated) {
-        //Optional<Product> productOptional = productRepository.findById(id);
+    public ProductResponseDto updateProduct(String id, Product productUpdated) {
         if (productRepository.findById(id).isEmpty()) {
             throw new ResourceNotFoundException("Product not exist with id: " + id);
         }
         productUpdated = productRepository.save(productUpdated);
-        return productUpdated;
+        ProductResponseDto productResponseDto = modelMapper.map(productUpdated, ProductResponseDto.class);
+        return productResponseDto;
     }
 
     @Override

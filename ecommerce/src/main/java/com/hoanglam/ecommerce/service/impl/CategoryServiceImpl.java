@@ -1,6 +1,8 @@
 package com.hoanglam.ecommerce.service.impl;
 
+import com.hoanglam.ecommerce.dto.response.CategoryReponseDto;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
+import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
 import com.hoanglam.ecommerce.entites.Category;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.entites.User;
@@ -41,24 +43,25 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category createCate(Category c) {
+    public CategoryReponseDto createCate(Category c) {
         UUID uuid = UUID.randomUUID();
-
         c.setId(uuid.toString());
         c.setActive(true);
 
         Category savedCate = categoryRepository.save(c);
-        return savedCate;
+        CategoryReponseDto categoryReponseDto = modelMapper.map(savedCate, CategoryReponseDto.class);
+        return categoryReponseDto;
     }
 
     @Override
-    public Category updateCate(String id, Category cateUpdate) {
-        //Optional<Category> cateOptional = categoryRepository.findById(id);
+    public CategoryReponseDto updateCate(String id, Category cateUpdate) {
         if(categoryRepository.findById(id).isEmpty()){
             throw new ResourceNotFoundException("Category not exist with id: " + id);
         }
         cateUpdate = categoryRepository.save(cateUpdate);
-        return cateUpdate;
+
+        CategoryReponseDto categoryReponseDto = modelMapper.map(cateUpdate, CategoryReponseDto.class);
+        return categoryReponseDto;
     }
 
     @Override

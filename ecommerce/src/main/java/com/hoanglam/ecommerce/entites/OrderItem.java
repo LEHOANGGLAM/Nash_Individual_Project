@@ -63,12 +63,8 @@ public class OrderItem implements Serializable {
     @ManyToOne
     private com.hoanglam.ecommerce.entites.Size sizeId;
 
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "orderItem", fetch = FetchType.LAZY)
-    private Collection<Rating> ratingCollection;
-
-
+    @OneToOne(mappedBy = "orderItem", cascade = CascadeType.ALL)
+    private Rating rating;
 
     public OrderItem() {
     }
@@ -77,7 +73,7 @@ public class OrderItem implements Serializable {
                      @NotNull short quantity, @NotNull Date createdAt,
                      Date updatedAt, @Size(max = 65535) String content,
                      Order orderId, Product productId, com.hoanglam.ecommerce.entites.Size sizeId,
-                     Collection<Rating> ratingCollection) {
+                     Rating rating) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
@@ -87,7 +83,7 @@ public class OrderItem implements Serializable {
         this.orderId = orderId;
         this.productId = productId;
         this.sizeId = sizeId;
-        this.ratingCollection = ratingCollection;
+        this.rating = rating;
     }
 
     public OrderItem(String id) {
@@ -113,12 +109,12 @@ public class OrderItem implements Serializable {
     }
 
 
-    public Collection<Rating> getRatingCollection() {
-        return ratingCollection;
+    public Rating getRating() {
+        return rating;
     }
 
-    public void setRatingCollection(Collection<Rating> ratingCollection) {
-        this.ratingCollection = ratingCollection;
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 
     public BigDecimal getPrice() {

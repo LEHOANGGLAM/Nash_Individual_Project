@@ -1,6 +1,8 @@
 package com.hoanglam.ecommerce.service.impl;
 
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
+import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
+import com.hoanglam.ecommerce.dto.response.UserResponseDto;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.entites.User;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
@@ -58,26 +60,26 @@ public class UserServiceImpl implements UserService {
         return result.getContent();
     }
 
+//    @Override
+//    public User createUser(User u) {
+//        UUID uuid = UUID.randomUUID();
+//
+//        u.setId(uuid.toString());
+//        u.setActive(true);
+//        u.setRegisteredDate(new Date());
+//
+//        User savedUser = userRepository.save(u);
+//        return savedUser;
+//    }
+
     @Override
-    public User createUser(User u) {
-        UUID uuid = UUID.randomUUID();
-
-        u.setId(uuid.toString());
-        u.setActive(true);
-        u.setRegisteredDate(new Date());
-
-        User savedUser = userRepository.save(u);
-        return savedUser;
-    }
-
-    @Override
-    public User updateUser(String id, User userUpdate) {
-        //Optional<User> userOptional = userRepository.findById(id);
+    public UserResponseDto updateUser(String id, User userUpdate) {
         if(userRepository.findById(id).isEmpty()){
             throw new ResourceNotFoundException("User not exist with id: " + id);
         }
         userUpdate = userRepository.save(userUpdate);
-        return userUpdate;
+        UserResponseDto userResponseDto = modelMapper.map(userUpdate, UserResponseDto.class);
+        return userResponseDto;
     }
 
     @Override

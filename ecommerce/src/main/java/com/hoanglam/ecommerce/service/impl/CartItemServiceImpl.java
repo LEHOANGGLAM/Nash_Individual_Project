@@ -1,8 +1,10 @@
 package com.hoanglam.ecommerce.service.impl;
 
 import com.hoanglam.ecommerce.dto.request.CartItemRequestDto;
+import com.hoanglam.ecommerce.dto.response.CartItemResponseDto;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.dto.response.ErrorResponse;
+import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
 import com.hoanglam.ecommerce.entites.*;
 import com.hoanglam.ecommerce.exception.MessageException;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
@@ -14,6 +16,7 @@ import com.hoanglam.ecommerce.repository.SizeRepository;
 import com.hoanglam.ecommerce.repository.UserRepository;
 import com.hoanglam.ecommerce.service.CartItemService;
 import com.hoanglam.ecommerce.service.ProductService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -36,6 +39,7 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private ProductService productService;
 
+    private ModelMapper modelMapper;
 
     @Autowired
     private CartItemMapper cartItemMapper;
@@ -63,7 +67,7 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public CartItem createCartItem(CartItemRequestDto cartItemDto) {
+    public CartItemResponseDto createCartItem(CartItemRequestDto cartItemDto) {
         //Check quantity
         Product product = productService.getProductById(cartItemDto.getProductId());
         if (product.getQuantity() < cartItemDto.getQuantity()) {
@@ -77,7 +81,9 @@ public class CartItemServiceImpl implements CartItemService {
         if (cartItem != null) {
             cartItem.setQuantity((short) (cartItem.getQuantity() + cartItemDto.getQuantity()));
             cartItem.setPrice(cartItem.getProductId().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
-            return cartItemRepository.save(cartItem);
+
+            CartItemResponseDto cartItemResponseDto = modelMapper.map(cartItem, CartItemResponseDto.class);
+            return cartItemResponseDto;
         }
 
         //When in cart does not exist the same product and size
@@ -87,11 +93,13 @@ public class CartItemServiceImpl implements CartItemService {
         cartItem.setCreatedAt(new Date());
         cartItem.setPrice(cartItem.getProductId().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
         cartItem = cartItemRepository.save(cartItem);
-        return cartItem;
+
+        CartItemResponseDto cartItemResponseDto = modelMapper.map(cartItem, CartItemResponseDto.class);
+        return cartItemResponseDto;
     }
 
     @Override
-    public CartItem updateCartItem(CartItemRequestDto cartItemDto) {
+    public CartItemResponseDto updateCartItem(CartItemRequestDto cartItemDto) {
         List<CartItem> cartItemList = getCartItemByUserId(cartItemDto.getUserId());
         CartItem cartItem = cartItemList.stream().filter(c -> (c.getProductId().getId().equals(cartItemDto.getProductId()) && c.getSizeId().getId().equals(cartItemDto.getSizeId())))
                 .findFirst().orElse(null);
@@ -101,7 +109,9 @@ public class CartItemServiceImpl implements CartItemService {
 
         cartItem.setQuantity(cartItemDto.getQuantity());
         cartItem.setPrice(cartItem.getProductId().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
-        return cartItemRepository.save(cartItem);
+
+        CartItemResponseDto cartItemResponseDto = modelMapper.map(cartItem, CartItemResponseDto.class);
+        return cartItemResponseDto;
     }
 
 

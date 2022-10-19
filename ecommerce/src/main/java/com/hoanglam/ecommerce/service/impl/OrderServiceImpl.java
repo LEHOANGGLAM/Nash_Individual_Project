@@ -59,8 +59,15 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         //add OrderItem into Order
+        order = addOrderItemIntoOrder(order, orderResquestDto.getOrderItems());
+        return order;
+    }
+
+    public Order addOrderItemIntoOrder(Order order, List<OrderItemRequestDto> orderItemRequestDtos){
         Collection<OrderItem> orderItems = new HashSet<>();
-        for (OrderItemRequestDto o : orderResquestDto.getOrderItems()) {
+        UUID uuid;
+
+        for (OrderItemRequestDto o : orderItemRequestDtos) {
             uuid = UUID.randomUUID();
 
             OrderItem orderItem = orderItemMapper.mapOrderItemRequestDtoToEntity(o);

@@ -35,7 +35,6 @@ public class RatingServiceImpl implements RatingService {
 
         Optional<Rating> ratingOptional = ratingRepository.findByUserIdAndOrderItem(rating.getUserId(), rating.getOrderItem());
         if(ratingOptional.isPresent()){
-            //if()
             throw new ResourceAlreadyExistException("User already rating this product");
         }
 

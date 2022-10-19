@@ -1,5 +1,6 @@
 package com.hoanglam.ecommerce.controller;
 
+import com.hoanglam.ecommerce.dto.response.CategoryReponseDto;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.Category;
@@ -41,12 +42,12 @@ public class CateController {
 
     @PostMapping("/admin/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public Category addCate(@Valid @RequestBody Category cate) {
+    public CategoryReponseDto addCate(@Valid @RequestBody Category cate) {
         return this.categoryService.createCate(cate);
     }
 
     @PutMapping("/admin/categories/{id}")
-    public Category updateCate(@PathVariable String id, @Valid @RequestBody Category cate) {
+    public CategoryReponseDto updateCate(@PathVariable String id, @Valid @RequestBody Category cate) {
         return this.categoryService.updateCate(id, cate);
     }
 

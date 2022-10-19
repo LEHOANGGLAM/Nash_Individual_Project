@@ -1,6 +1,7 @@
 package com.hoanglam.ecommerce.service;
 
 import com.hoanglam.ecommerce.dto.request.CartItemRequestDto;
+import com.hoanglam.ecommerce.dto.response.CartItemResponseDto;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.entites.CartItem;
 import com.hoanglam.ecommerce.entites.Product;
@@ -10,10 +11,8 @@ import java.util.List;
 
 public interface CartItemService {
 
-    CartItem createCartItem(CartItemRequestDto c);
-
-
-    CartItem updateCartItem(CartItemRequestDto c);
+    CartItemResponseDto createCartItem(CartItemRequestDto c);
+    CartItemResponseDto updateCartItem(CartItemRequestDto c);
 
     DeleteResponseDto deleteCartItem(String id);
 

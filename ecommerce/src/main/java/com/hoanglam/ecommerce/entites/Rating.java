@@ -21,10 +21,12 @@ public class Rating {
     @Column(name = "created_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    @JoinColumn(name = "orderItem_id", referencedColumnName = "id")
-    @ManyToOne
+
+    @JoinColumn(name = "orderItemId", referencedColumnName = "id")
+    @OneToOne
     @JsonIgnore
     private OrderItem orderItem;
+
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
     @JsonIgnore

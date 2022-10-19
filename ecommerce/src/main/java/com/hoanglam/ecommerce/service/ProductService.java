@@ -9,12 +9,17 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 import java.util.Map;
 
-public interface ProductService{
+public interface ProductService {
     Product getProductById(String id);
+
     APIRespone<List<Product>> getAllProducts(Map<String, String> params);
+
     APIRespone<List<Product>> getProductsByPredicates(Map<String, String> params);
-//    APIRespone<List<Product>> getProductsByCateId(Map<String, String> params);
-    Product createProduct(Product p);
-    Product updateProduct(String id, Product product);
+
+    //    APIRespone<List<Product>> getProductsByCateId(Map<String, String> params);
+    ProductResponseDto createProduct(Product p);
+
+    ProductResponseDto updateProduct(String id, Product product);
+
     DeleteResponseDto softDeleteProduct(String id);
 }

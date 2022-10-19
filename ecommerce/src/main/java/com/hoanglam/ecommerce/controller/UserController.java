@@ -1,7 +1,9 @@
 package com.hoanglam.ecommerce.controller;
 
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
+import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
 import com.hoanglam.ecommerce.dto.response.SuccessResponse;
+import com.hoanglam.ecommerce.dto.response.UserResponseDto;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.entites.User;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +32,10 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @PutMapping("/users/{id}")
+    public UserResponseDto updateUserById(@PathVariable String id, @Valid @RequestBody User user) {
+        return userService.updateUser(id, user);
+    }
 
 
     @GetMapping("/admin/users")

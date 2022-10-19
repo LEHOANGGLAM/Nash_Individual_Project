@@ -1,6 +1,7 @@
 package com.hoanglam.ecommerce.controller;
 
 import com.hoanglam.ecommerce.dto.request.CartItemRequestDto;
+import com.hoanglam.ecommerce.dto.response.CartItemResponseDto;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
 import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.CartItem;
@@ -32,13 +33,13 @@ public class CartItemController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public CartItem createCartItem(@Valid @RequestBody CartItemRequestDto cartItemRequestDto){
+    public CartItemResponseDto createCartItem(@Valid @RequestBody CartItemRequestDto cartItemRequestDto){
         return cartItemService.createCartItem(cartItemRequestDto);
     }
 
     @PutMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public CartItem updateCartItem(@Valid @RequestBody CartItemRequestDto cartItemRequestDto){
+    public CartItemResponseDto updateCartItem(@Valid @RequestBody CartItemRequestDto cartItemRequestDto){
         return cartItemService.updateCartItem(cartItemRequestDto);
     }
 
