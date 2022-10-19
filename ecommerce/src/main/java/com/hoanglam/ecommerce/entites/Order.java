@@ -63,6 +63,12 @@ public class Order implements Serializable {
     @Column(name = "numberItem")
     private int numberItem;
 
+    @Column(name = "paymentMethod")
+    private String paymentMethod;
+
+    @Column(name = "address")
+    private String address;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "createdAt")
@@ -141,6 +147,21 @@ public class Order implements Serializable {
         this.total = total;
     }
 
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public float getDiscount() {
         return discount;

@@ -1,5 +1,7 @@
 package com.hoanglam.ecommerce.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
@@ -43,6 +45,7 @@ public class Size implements Serializable {
         this.sizeName = sizeName;
     }
 
+    @JsonIgnore
     @XmlTransient
     public Collection<Product> getProductCollection() {
         return productCollection;

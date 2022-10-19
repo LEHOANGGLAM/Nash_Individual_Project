@@ -1,30 +1,9 @@
 package com.hoanglam.ecommerce.dto.request;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-public class CartItemRequestDto {
-    private boolean active;
+public class OrderItemRequestDto {
     private short quantity;
     private String productId;
     private String sizeId;
-    private String userId;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 
     public short getQuantity() {
         return quantity;

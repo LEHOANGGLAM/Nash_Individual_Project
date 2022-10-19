@@ -38,10 +38,10 @@ public class ProductController {
         return productService.getProductsByPredicates(params);
     }
 
-    @GetMapping("/products/cate")
-    public APIRespone<List<Product>> getProductsByCateId(@RequestParam Map<String, String> params) {
-        return productService.getProductsByCateId(params);
-    }
+//    @GetMapping("/products/cate")
+//    public APIRespone<List<Product>> getProductsByCateId(@RequestParam Map<String, String> params) {
+//        return productService.getProductsByCateId(params);
+//    }
 
 
     //-------------FOR ADMIN BELOW--------------

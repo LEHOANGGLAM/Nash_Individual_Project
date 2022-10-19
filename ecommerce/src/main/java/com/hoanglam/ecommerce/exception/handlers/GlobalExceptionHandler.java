@@ -1,6 +1,7 @@
 package com.hoanglam.ecommerce.exception.handlers;
 
 import com.hoanglam.ecommerce.dto.response.ErrorResponse;
+import com.hoanglam.ecommerce.exception.MessageException;
 import com.hoanglam.ecommerce.exception.ResourceAlreadyExistException;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +32,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                                 WebRequest request) {
         ErrorResponse error = new ErrorResponse(HttpStatus.ALREADY_REPORTED.toString(), exception.getMessage());
         return new ResponseEntity<ErrorResponse>(error, HttpStatus.ALREADY_REPORTED);
+    }
+    @ExceptionHandler({ MessageException.class })
+    protected ResponseEntity<ErrorResponse> handleShowMessageException(RuntimeException exception,
+                                                                                WebRequest request) {
+        ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
+        return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({ IllegalArgumentException.class })

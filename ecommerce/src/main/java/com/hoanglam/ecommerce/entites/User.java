@@ -18,7 +18,13 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author dell
  */
 @Entity
-@Table(name = "user")
+@Table(name = "user",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email"),
+                @UniqueConstraint(columnNames = "mobile"),
+        }
+)
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;

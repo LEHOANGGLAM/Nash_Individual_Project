@@ -36,7 +36,6 @@ public class CartItemMapper {
         }
 
         return CartItem.builder()
-                .id(cDto.getId())
                 .active(cDto.isActive())
                 .quantity(cDto.getQuantity())
                 .productId(product.get())

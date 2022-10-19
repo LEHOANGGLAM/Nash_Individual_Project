@@ -1,9 +1,17 @@
 package com.hoanglam.ecommerce.repository;
 
 import com.hoanglam.ecommerce.entites.CartItem;
+import com.hoanglam.ecommerce.entites.Product;
+import com.hoanglam.ecommerce.entites.Size;
+import com.hoanglam.ecommerce.entites.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface CartItemRepository extends JpaRepository<CartItem, String>, JpaSpecificationExecutor<CartItem> {
+import java.util.List;
 
+public interface CartItemRepository extends JpaRepository<CartItem, String>, JpaSpecificationExecutor<CartItem> {
+    List<CartItem> findByUserId(User id);
+    CartItem findByProductIdAndSizeId(Product productId, Size sizeId);
+
+    int countByUserId(User id);
 }

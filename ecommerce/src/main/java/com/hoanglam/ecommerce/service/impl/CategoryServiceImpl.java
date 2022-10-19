@@ -30,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAllCate() {
-        return categoryRepository.findAll();
+        return categoryRepository.findByActive(true);
     }
 
     @Override
@@ -43,7 +43,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category createCate(Category c) {
         UUID uuid = UUID.randomUUID();
+
         c.setId(uuid.toString());
+        c.setActive(true);
+
         Category savedCate = categoryRepository.save(c);
         return savedCate;
     }

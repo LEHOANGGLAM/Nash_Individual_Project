@@ -13,7 +13,7 @@ public interface ProductService{
     Product getProductById(String id);
     APIRespone<List<Product>> getAllProducts(Map<String, String> params);
     APIRespone<List<Product>> getProductsByPredicates(Map<String, String> params);
-    APIRespone<List<Product>> getProductsByCateId(Map<String, String> params);
+//    APIRespone<List<Product>> getProductsByCateId(Map<String, String> params);
     Product createProduct(Product p);
     Product updateProduct(String id, Product product);
     DeleteResponseDto softDeleteProduct(String id);

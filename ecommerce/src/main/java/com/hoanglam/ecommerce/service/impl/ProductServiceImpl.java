@@ -61,20 +61,20 @@ public class ProductServiceImpl implements ProductService {
         return new APIRespone<>(result.getTotalPages(),result.getContent());
     }
 
-    @Override
-    public APIRespone<List<Product>> getProductsByCateId(Map<String, String> params) {
-        Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
-        String id = params.get("cateId");
-
-        Page<Product> result;
-        if (id != null && id != "") {
-            result = productRepository.findByCategoryCollection_Id(id, pageable);
-        } else {
-            result = productRepository.findAll(pageable);
-        }
-
-        return new APIRespone<>(result.getTotalPages(),result.getContent());
-    }
+//    @Override
+//    public APIRespone<List<Product>> getProductsByCateId(Map<String, String> params) {
+//        Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
+//        String id = params.get("cateId");
+//
+//        Page<Product> result;
+//        if (id != null && id != "") {
+//            result = productRepository.findByCategoryCollection_Id(id, pageable);
+//        } else {
+//            result = productRepository.findAll(pageable);
+//        }
+//
+//        return new APIRespone<>(result.getTotalPages(),result.getContent());
+//    }
 
 
     //-------------FOR ADMIN BELOW--------------
