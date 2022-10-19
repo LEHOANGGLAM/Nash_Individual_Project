@@ -33,11 +33,10 @@ public class RatingServiceImpl implements RatingService {
         UUID uuid = UUID.randomUUID();
         Rating rating = modelMapper.mapRatingRequestDtoToEntity(c);
 
-        List<Rating> ratinglist = ratingRepository.findByUserId(rating.getUserId());
-        for (Rating r : ratinglist) {
-            if (r.getOrderItem() == rating.getOrderItem()) {
-                throw new ResourceAlreadyExistException("User already rating this product");
-            }
+        Optional<Rating> ratingOptional = ratingRepository.findByUserIdAndOrderItem(rating.getUserId(), rating.getOrderItem());
+        if(ratingOptional.isPresent()){
+            //if()
+            throw new ResourceAlreadyExistException("User already rating this product");
         }
 
         rating.setId(uuid.toString());

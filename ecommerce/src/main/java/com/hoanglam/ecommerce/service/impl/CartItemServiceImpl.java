@@ -113,6 +113,4 @@ public class CartItemServiceImpl implements CartItemService {
         cartItemRepository.deleteById(id);
         return new DeleteResponseDto("Delete Item successfully!", HttpStatus.OK.value(), HttpStatus.OK);
     }
-
-
 }

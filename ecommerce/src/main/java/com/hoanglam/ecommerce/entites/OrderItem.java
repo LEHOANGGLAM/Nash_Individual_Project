@@ -5,6 +5,7 @@
 package com.hoanglam.ecommerce.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "order_item")
+@Builder
 public class OrderItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,9 +73,11 @@ public class OrderItem implements Serializable {
     public OrderItem() {
     }
 
-    public OrderItem(@Size(max = 36) String id, @NotNull BigDecimal price, @NotNull short quantity,
-                     @NotNull Date createdAt, Date updatedAt, @Size(max = 65535) String content,
-                     Order orderId, Product productId, com.hoanglam.ecommerce.entites.Size sizeId) {
+    public OrderItem(@Size(max = 36) String id, @NotNull BigDecimal price,
+                     @NotNull short quantity, @NotNull Date createdAt,
+                     Date updatedAt, @Size(max = 65535) String content,
+                     Order orderId, Product productId, com.hoanglam.ecommerce.entites.Size sizeId,
+                     Collection<Rating> ratingCollection) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
@@ -83,6 +87,7 @@ public class OrderItem implements Serializable {
         this.orderId = orderId;
         this.productId = productId;
         this.sizeId = sizeId;
+        this.ratingCollection = ratingCollection;
     }
 
     public OrderItem(String id) {

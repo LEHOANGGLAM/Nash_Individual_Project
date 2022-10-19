@@ -4,6 +4,8 @@
  */
 package com.hoanglam.ecommerce.entites;
 
+import lombok.Builder;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -18,8 +20,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "order1")
+@Builder
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -91,9 +92,9 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public Order(@Size(max = 36) String id, @NotNull short status, @NotNull float tax,
+    public Order(@Size(max = 36) String id, @NotNull short status, float tax,
                  @NotNull BigDecimal total, float discount, int numberItem,
-                 @NotNull Date createdAt, Date updatedAt,
+                 String paymentMethod, String address, @NotNull Date createdAt, Date updatedAt,
                  Collection<OrderItem> orderItemCollection, User userId) {
         this.id = id;
         this.status = status;
@@ -101,6 +102,8 @@ public class Order implements Serializable {
         this.total = total;
         this.discount = discount;
         this.numberItem = numberItem;
+        this.paymentMethod = paymentMethod;
+        this.address = address;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.orderItemCollection = orderItemCollection;

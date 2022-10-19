@@ -11,6 +11,7 @@ public class RatingRequestDto {
     private String content;
     private int rating;
 
+    private String productId;
 
     public String getUserId() {
         return userId;
@@ -42,5 +43,13 @@ public class RatingRequestDto {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 }

@@ -1,6 +1,9 @@
 package com.hoanglam.ecommerce.dto.request;
 
+import javax.validation.constraints.NotNull;
+
 public class OrderItemRequestDto {
+    @NotNull
     private short quantity;
     private String productId;
     private String sizeId;
