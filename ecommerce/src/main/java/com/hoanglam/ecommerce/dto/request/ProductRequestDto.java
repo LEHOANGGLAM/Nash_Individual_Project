@@ -11,6 +11,6 @@ public class ProductRequestDto {
     private BigDecimal price;
     private short quantity;
     private String title;
-    private Collection<CategoryRequestDto> categoryRequestDtos;
-    private Collection<SizeRequestDto> sizeCollection;
+    private Collection<String> categoryIds;
+    private Collection<String> sizeIds;
 }

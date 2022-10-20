@@ -52,8 +52,8 @@ public class ProductServiceImpl implements ProductService {
     public APIRespone<List<Product>> getAllProducts(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
 
-        Page<Product> result = productRepository.findByActive( true ,pageable);
-        return new APIRespone<>(result.getTotalPages(),result.getContent());
+        Page<Product> result = productRepository.findByActive(true, pageable);
+        return new APIRespone<>(result.getTotalPages(), result.getContent());
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
         } else {
             result = productRepository.findByPriceBetweenAndTitleContainingAndActiveOrderByCreatedDateDesc(fromPrice, toPrice, kw, true, pageable);
         }
-        return new APIRespone<>(result.getTotalPages(),result.getContent());
+        return new APIRespone<>(result.getTotalPages(), result.getContent());
     }
 
 //    @Override
@@ -96,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
         UUID uuid = UUID.randomUUID();
 
-        Product p = modelMapper.map( productRequestDto, Product.class);
+        Product p = modelMapper.map(productRequestDto, Product.class);
         p.setId(uuid.toString());
         p.setActive(true);
         p.setCreatedDate(new Date());
@@ -106,10 +106,10 @@ public class ProductServiceImpl implements ProductService {
 
         //add Category for product
         Collection<Category> categories = new HashSet<>();
-        productRequestDto.getCategoryRequestDtos().forEach(cateDto ->{
-            Optional<Category> category = categoryRepository.findByTitle(cateDto.getTitle());
-            if(category.isEmpty()){
-                throw new ResourceNotFoundException("Category not exist with title: " + cateDto.getTitle());
+        productRequestDto.getCategoryIds().forEach(cateDto -> {
+            Optional<Category> category = categoryRepository.findById(cateDto);
+            if (category.isEmpty()) {
+                throw new ResourceNotFoundException("Category not exist with id: " + cateDto);
             }
             categories.add(category.get());
         });
@@ -117,15 +117,14 @@ public class ProductServiceImpl implements ProductService {
 
         //add Size for product
         Collection<Size> sizes = new HashSet<>();
-        productRequestDto.getSizeCollection().forEach(sizeDto ->{
-            Optional<Size> size = sizeRepository.findBySizeName(sizeDto.getSizeName());
-            if(size.isEmpty()){
-                throw new ResourceNotFoundException("Size not exist with title: " + sizeDto.getSizeName());
+        productRequestDto.getSizeIds().forEach(sizeDto -> {
+            Optional<Size> size = sizeRepository.findById(sizeDto);
+            if (size.isEmpty()) {
+                throw new ResourceNotFoundException("Size not exist with id: " + sizeDto);
             }
             sizes.add(size.get());
         });
         p.setSizeCollection(sizes);
-
 
         Product savedProduct = productRepository.save(p);
         ProductResponseDto productResponseDto = modelMapper.map(savedProduct, ProductResponseDto.class);
@@ -133,10 +132,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDto updateProduct(String id, Product productUpdated) {
+    public ProductResponseDto updateProduct(String id, ProductRequestDto productRequestDto) {
         if (productRepository.findById(id).isEmpty()) {
             throw new ResourceNotFoundException("Product not exist with id: " + id);
         }
+        Product productUpdated = modelMapper.map(productRequestDto, Product.class);
+        productUpdated.setId(id);
+
+        //update new Category for product
+        Collection<Category> categories = new HashSet<>();
+        productRequestDto.getCategoryIds().forEach(cateDto -> {
+            Optional<Category> category = categoryRepository.findById(cateDto);
+            if (category.isEmpty()) {
+                throw new ResourceNotFoundException("Category not exist with id: " + cateDto);
+            }
+            categories.add(category.get());
+        });
+        productUpdated.setCategoryCollection(categories);
+
+        //update new Size for product
+        Collection<Size> sizes = new HashSet<>();
+        productRequestDto.getSizeIds().forEach(sizeDto -> {
+            Optional<Size> size = sizeRepository.findById(sizeDto);
+            if (size.isEmpty()) {
+                throw new ResourceNotFoundException("Size not exist with id: " + sizeDto);
+            }
+            sizes.add(size.get());
+        });
+        productUpdated.setSizeCollection(sizes);
+
         productUpdated = productRepository.save(productUpdated);
         ProductResponseDto productResponseDto = modelMapper.map(productUpdated, ProductResponseDto.class);
         return productResponseDto;

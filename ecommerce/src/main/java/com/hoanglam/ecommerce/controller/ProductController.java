@@ -55,7 +55,7 @@ public class ProductController {
     }
 
     @PutMapping("/admin/products/{id}")
-    public ProductResponseDto updateProduct(@PathVariable String id, @Valid @RequestBody Product product) {
+    public ProductResponseDto updateProduct(@PathVariable String id, @Valid @RequestBody ProductRequestDto product) {
         return this.productService.updateProduct(id, product);
     }
 

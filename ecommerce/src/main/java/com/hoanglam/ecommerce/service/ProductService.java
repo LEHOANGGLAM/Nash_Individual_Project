@@ -20,7 +20,7 @@ public interface ProductService {
     //    APIRespone<List<Product>> getProductsByCateId(Map<String, String> params);
     ProductResponseDto createProduct(ProductRequestDto p);
 
-    ProductResponseDto updateProduct(String id, Product product);
+    ProductResponseDto updateProduct(String id, ProductRequestDto product);
 
     DeleteResponseDto softDeleteProduct(String id);
 }
