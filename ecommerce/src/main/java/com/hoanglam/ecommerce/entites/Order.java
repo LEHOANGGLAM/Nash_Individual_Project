@@ -190,7 +190,6 @@ public class Order implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    @XmlTransient
     public Collection<OrderItem> getOrderItemCollection() {
         return orderItemCollection;
     }

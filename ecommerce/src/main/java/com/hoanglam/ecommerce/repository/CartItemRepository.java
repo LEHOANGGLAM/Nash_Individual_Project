@@ -8,10 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CartItemRepository extends JpaRepository<CartItem, String>, JpaSpecificationExecutor<CartItem> {
     List<CartItem> findByUserId(User id);
-    CartItem findByProductIdAndSizeId(Product productId, Size sizeId);
+    Optional<CartItem> findByUserIdAndProductId(User userId, Product productId);
 
     int countByUserId(User id);
 }

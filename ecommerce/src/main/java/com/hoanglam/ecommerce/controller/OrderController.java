@@ -25,7 +25,7 @@ public class OrderController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponseDto createCartItem(@Valid @RequestBody OrderResquestDto orderResquestDto){
+    public OrderResponseDto createOrder(@Valid @RequestBody OrderResquestDto orderResquestDto){
         return orderService.createOrder(orderResquestDto);
     }
 }

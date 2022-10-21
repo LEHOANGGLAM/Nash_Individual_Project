@@ -2,17 +2,20 @@ package com.hoanglam.ecommerce.service.impl;
 
 import com.hoanglam.ecommerce.dto.request.OrderItemRequestDto;
 import com.hoanglam.ecommerce.dto.request.OrderResquestDto;
+import com.hoanglam.ecommerce.dto.response.OrderItemResponeDto;
 import com.hoanglam.ecommerce.dto.response.OrderResponseDto;
-import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
+import com.hoanglam.ecommerce.entites.CartItem;
 import com.hoanglam.ecommerce.entites.Order;
 import com.hoanglam.ecommerce.entites.OrderItem;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.exception.MessageException;
 import com.hoanglam.ecommerce.mappers.OrderItemMapper;
 import com.hoanglam.ecommerce.mappers.OrderMapper;
+import com.hoanglam.ecommerce.repository.CartItemRepository;
 import com.hoanglam.ecommerce.repository.OrderItemRepository;
 import com.hoanglam.ecommerce.repository.OrderRepository;
 import com.hoanglam.ecommerce.repository.ProductRepository;
+import com.hoanglam.ecommerce.service.CartItemService;
 import com.hoanglam.ecommerce.service.OrderService;
 import com.hoanglam.ecommerce.service.ProductService;
 import org.modelmapper.ModelMapper;
@@ -26,6 +29,8 @@ import java.util.*;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private CartItemService cartItemService;
 
     @Autowired
     private OrderMapper orderMapper;
@@ -34,6 +39,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
+    private CartItemRepository cartItemRepository;
     @Autowired
     private ProductRepository productRepository;
 
@@ -66,11 +73,15 @@ public class OrderServiceImpl implements OrderService {
         //add OrderItem into Order
         order = addOrderItemIntoOrder(order, orderResquestDto.getOrderItems());
 
+        //delete CartItem When Order Product Exist In Cart
+        deleteCartItemWhenOrderProductExistInCart(order.getOrderItemCollection());
+
+        //Set Output Response
         OrderResponseDto orderResponseDto = modelMapper.map(order, OrderResponseDto.class);
         return orderResponseDto;
     }
 
-    public Order addOrderItemIntoOrder(Order order, List<OrderItemRequestDto> orderItemRequestDtos){
+    public Order addOrderItemIntoOrder(Order order, List<OrderItemRequestDto> orderItemRequestDtos) {
         Collection<OrderItem> orderItems = new HashSet<>();
         UUID uuid;
 
@@ -88,19 +99,23 @@ public class OrderServiceImpl implements OrderService {
             orderItems.add(orderItem);
         }
 
+        //delete CartItem When Order Product Exist In Cart
+        deleteCartItemWhenOrderProductExistInCart(orderItems);
+
         //set TotalPrice,numberItem for Order
         order.setTotal(getOrderTotalPrice(orderItems));
         order.setNumberItem(getNumberItem(orderItems));
+        order.setOrderItemCollection(orderItems);
 
         order = orderRepository.save(order);
         return order;
     }
 
-    public BigDecimal getOrderTotalPrice(Collection<OrderItem> orderItems){
+    public BigDecimal getOrderTotalPrice(Collection<OrderItem> orderItems) {
         BigDecimal totalPrice = new BigDecimal(0);
 
 
-        for (OrderItem orderItem: orderItems){
+        for (OrderItem orderItem : orderItems) {
             totalPrice = totalPrice.add(orderItem.getPrice());
 
             //Set Quantity And NumberSold after Oder
@@ -109,16 +124,25 @@ public class OrderServiceImpl implements OrderService {
             productRepository.save(orderItem.getProductId());
         }
 
-        return  totalPrice;
+        return totalPrice;
     }
 
-    public int getNumberItem(Collection<OrderItem> orderItems){
+    public int getNumberItem(Collection<OrderItem> orderItems) {
         int numberItem = 0;
 
-        for (OrderItem orderItem: orderItems){
+        for (OrderItem orderItem : orderItems) {
             numberItem += orderItem.getQuantity();
         }
 
-        return  numberItem;
+        return numberItem;
+    }
+
+    public void deleteCartItemWhenOrderProductExistInCart(Collection<OrderItem> orderItems) {
+        for (OrderItem o : orderItems) {
+            Optional<CartItem> cartItemOptional = cartItemRepository.findByUserIdAndProductId(o.getOrderId().getUserId(), o.getProductId());
+            if (cartItemOptional.isPresent()) {
+                cartItemService.deleteCartItem(cartItemOptional.get().getId());
+            }
+        }
     }
 }

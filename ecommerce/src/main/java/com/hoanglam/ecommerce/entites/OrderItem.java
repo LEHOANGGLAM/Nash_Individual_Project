@@ -41,18 +41,27 @@ public class OrderItem implements Serializable {
     @NotNull
     @Column(name = "quantity")
     private short quantity;
+
+    @JsonIgnore
     @Basic(optional = false)
     @NotNull
     @Column(name = "createdAt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+
+    @JsonIgnore
     @Column(name = "updatedAt")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
+    @JsonIgnore
     @Lob
     @Size(max = 65535)
     @Column(name = "content")
     private String content;
+
+    @JsonIgnore
     @JoinColumn(name = "orderId", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Order orderId;

@@ -2,6 +2,7 @@ package com.hoanglam.ecommerce.dto.response;
 
 import com.hoanglam.ecommerce.entites.OrderItem;
 import com.hoanglam.ecommerce.entites.User;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
