@@ -1,6 +1,7 @@
 package com.hoanglam.ecommerce.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlTransient;
@@ -9,6 +10,7 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "size")
+@Builder
 public class Size implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -21,6 +23,12 @@ public class Size implements Serializable {
     private String sizeName;
     @ManyToMany(mappedBy = "sizeCollection")
     private Collection<Product> productCollection;
+
+    public Size(@javax.validation.constraints.Size(max = 36) String id, String sizeName, Collection<Product> productCollection) {
+        this.id = id;
+        this.sizeName = sizeName;
+        this.productCollection = productCollection;
+    }
 
     public Size() {
     }

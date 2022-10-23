@@ -34,8 +34,6 @@ public class CartItemServiceImpl implements CartItemService {
     private UserRepository userRepository;
     @Autowired
     private CartItemRepository cartItemRepository;
-    @Autowired
-    private SizeRepository sizeRepository;
 
     @Autowired
     private ProductService productService;
@@ -44,6 +42,13 @@ public class CartItemServiceImpl implements CartItemService {
     private ModelMapper modelMapper;
     @Autowired
     private CartItemMapper cartItemMapper;
+
+    public CartItemServiceImpl(CartItemRepository cartItemRepository, UserRepository userRepository,  ProductService productService) {
+        super();
+        this.cartItemRepository = cartItemRepository;
+        this.userRepository = userRepository;
+        this.productService = productService;
+    }
 
     @Override
     public List<CartItem> getCartItemByUserId(String id) {
@@ -92,6 +97,7 @@ public class CartItemServiceImpl implements CartItemService {
         UUID uuid = UUID.randomUUID();
         cartItem = cartItemMapper.mapCartItemRequestDtoToEntity(cartItemDto);
         cartItem.setId(uuid.toString());
+        cartItem.setActive(true);
         cartItem.setCreatedAt(new Date());
         cartItem.setPrice(cartItem.getProductId().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
         cartItem = cartItemRepository.save(cartItem);

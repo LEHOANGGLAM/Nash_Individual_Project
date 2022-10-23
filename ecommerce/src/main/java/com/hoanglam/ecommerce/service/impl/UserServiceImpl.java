@@ -29,23 +29,31 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User getUserById(String id) {
+    public UserResponseDto getUserById(String id) {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("User not exist with id: " + id));
-        return user;
+        UserResponseDto userResponseDto = modelMapper.map(user, UserResponseDto.class);
+        return userResponseDto;
     }
 
     @Override
-    public List<User> getAllUsers(Map<String, String> params) {
+    public List<UserResponseDto> getAllUsers(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
         String kw = params.getOrDefault("username", "");
 
         Page<User> result  = userRepository.findByUsernameContainingOrderByUsernameAsc(kw ,pageable);
-        return result.getContent();
+
+        //map listUser to ListUserDto
+        List<UserResponseDto> userResponseDtos = new ArrayList<>();
+        result.getContent().forEach(u -> {
+            UserResponseDto userResponseDto = modelMapper.map(u, UserResponseDto.class);
+            userResponseDtos.add(userResponseDto);
+        });
+        return userResponseDtos;
     }
 
     @Override
-    public List<User> getUsersByRole(Map<String, String> params) {
+    public List<UserResponseDto> getUsersByRole(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
         String kw = params.getOrDefault("username", "");
         String id = params.get("roleId");
@@ -57,7 +65,13 @@ public class UserServiceImpl implements UserService {
             result = userRepository.findByUsernameContainingOrderByUsernameAsc(kw ,pageable);
         }
 
-        return result.getContent();
+        //map listUser to ListUserDto
+        List<UserResponseDto> userResponseDtos = new ArrayList<>();
+        result.getContent().forEach(u -> {
+            UserResponseDto userResponseDto = modelMapper.map(u, UserResponseDto.class);
+            userResponseDtos.add(userResponseDto);
+        } );
+        return userResponseDtos;
     }
 
 //    @Override
@@ -77,6 +91,7 @@ public class UserServiceImpl implements UserService {
         if(userRepository.findById(id).isEmpty()){
             throw new ResourceNotFoundException("User not exist with id: " + id);
         }
+        userUpdate.setId(userRepository.findById(id).get().getId());
         userUpdate = userRepository.save(userUpdate);
         UserResponseDto userResponseDto = modelMapper.map(userUpdate, UserResponseDto.class);
         return userResponseDto;

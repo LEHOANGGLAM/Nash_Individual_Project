@@ -20,7 +20,6 @@ public class UserResponseDto {
     private String lastName;
     private String mobile;
     private String email;
-    private String passwordHash;
     private String username;
     private Date registeredDate;
     private String avatarImage;

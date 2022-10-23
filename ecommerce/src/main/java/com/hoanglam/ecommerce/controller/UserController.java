@@ -28,7 +28,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users/{id}")
-    public User getUserById(@PathVariable String id) {
+    public UserResponseDto getUserById(@PathVariable String id) {
         return userService.getUserById(id);
     }
 
@@ -39,12 +39,12 @@ public class UserController {
 
 
     @GetMapping("/admin/users")
-    public List<User> getAllUsers(@RequestParam Map<String, String> params) {
+    public List<UserResponseDto> getAllUsers(@RequestParam Map<String, String> params) {
         return  userService.getAllUsers(params);
     }
 
     @GetMapping("/admin/users/role")
-    public List<User> getUserByRole(@RequestParam Map<String, String> params) {
+    public List<UserResponseDto> getUserByRole(@RequestParam Map<String, String> params) {
         return  userService.getUsersByRole(params);
     }
 

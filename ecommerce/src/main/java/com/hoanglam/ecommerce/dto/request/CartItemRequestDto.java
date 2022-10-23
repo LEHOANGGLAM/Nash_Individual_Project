@@ -1,10 +1,13 @@
 package com.hoanglam.ecommerce.dto.request;
 
+import lombok.Builder;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Builder
 public class CartItemRequestDto {
-    private boolean active;
+
     private short quantity;
     private String productId;
     private String sizeId;
@@ -18,13 +21,6 @@ public class CartItemRequestDto {
         this.userId = userId;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 
     public short getQuantity() {
         return quantity;

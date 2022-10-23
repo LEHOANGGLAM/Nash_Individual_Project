@@ -5,6 +5,7 @@
 package com.hoanglam.ecommerce.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -18,6 +19,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author dell
  */
 @Entity
+@Builder
 @Table(name = "user",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "username"),
@@ -50,14 +52,12 @@ public class User implements Serializable {
     @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "passwordHash")
-    @JsonIgnore
     private String passwordHash;
     @Basic(optional = false)
     @NotNull
     @Column(name = "username")
     private String username;
-    @Basic(optional = false)
-    @NotNull
+
     @Column(name = "registeredDate")
     @Temporal(TemporalType.TIMESTAMP)
     private Date registeredDate;
@@ -178,6 +178,34 @@ public class User implements Serializable {
         this.passwordHash = passwordHash;
         this.username = username;
         this.registeredDate = registeredDate;
+    }
+
+    public User(@Size(max = 36) String id, @Size(max = 50) String firstName,
+                @Size(max = 50) String lastName, @Size(max = 15) String mobile,
+                @Size(max = 50) String email, @Size(min = 1, max = 200) String passwordHash,
+                @NotNull String username, Date registeredDate, Date lastLogin, @Size(max = 16383) String profile,
+                @Size(max = 200) String avatarImage, @Size(max = 100) String address, @Size(max = 50) String gender,
+                Date dateOfBirth, Collection<Role> rolesCollection, Collection<CartItem> cartItemCollection,
+                Collection<Order> order1Collection, Collection<Rating> ratingCollection, @NotNull boolean active) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mobile = mobile;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.username = username;
+        this.registeredDate = registeredDate;
+        this.lastLogin = lastLogin;
+        this.profile = profile;
+        this.avatarImage = avatarImage;
+        this.address = address;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.rolesCollection = rolesCollection;
+        this.cartItemCollection = cartItemCollection;
+        this.order1Collection = order1Collection;
+        this.ratingCollection = ratingCollection;
+        this.active = active;
     }
 
     public String getId() {

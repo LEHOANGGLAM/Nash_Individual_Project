@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "product")
-@Builder
+@Builder(toBuilder = true)
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;

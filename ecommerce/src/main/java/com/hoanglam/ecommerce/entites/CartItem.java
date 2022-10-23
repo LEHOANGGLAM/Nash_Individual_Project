@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "cart_item")
-@Builder
+@Builder(toBuilder = true)
 public class CartItem implements Serializable {
 
     private static final long serialVersionUID = 1L;

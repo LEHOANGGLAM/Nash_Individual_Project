@@ -41,6 +41,14 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private SizeRepository sizeRepository;
 
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,SizeRepository sizeRepository, ModelMapper modelMapper) {
+        super();
+        this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
+        this.sizeRepository = sizeRepository;
+        this.modelMapper = modelMapper;
+    }
+
     @Override
     public Product getProductById(String id) {
         Product product = productRepository.findById(id).orElseThrow(() ->
@@ -161,7 +169,9 @@ public class ProductServiceImpl implements ProductService {
         });
         productUpdated.setSizeCollection(sizes);
 
+        //save new product
         productUpdated = productRepository.save(productUpdated);
+
         ProductResponseDto productResponseDto = modelMapper.map(productUpdated, ProductResponseDto.class);
         return productResponseDto;
     }

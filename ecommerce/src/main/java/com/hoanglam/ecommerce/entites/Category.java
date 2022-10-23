@@ -5,6 +5,7 @@
 package com.hoanglam.ecommerce.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -19,6 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "category")
+@Builder
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,6 +54,7 @@ public class Category implements Serializable {
     private Collection<Category> categoryCollection;
     @JoinColumn(name = "parentId", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private Category parentId;
 
     public Category() {
@@ -61,10 +64,18 @@ public class Category implements Serializable {
         this.id = id;
     }
 
-    public Category(String id, String title, String href) {
+    public Category(@Size(max = 36) String id, @NotNull @Size(min = 1, max = 75) String title,
+                    @Size(max = 100) String metaTitle, @Size(max = 65535) String content, String href,
+                    boolean active, Collection<Product> productCollection, Collection<Category> categoryCollection, Category parentId) {
         this.id = id;
         this.title = title;
+        this.metaTitle = metaTitle;
+        this.content = content;
         this.href = href;
+        this.active = active;
+        this.productCollection = productCollection;
+        this.categoryCollection = categoryCollection;
+        this.parentId = parentId;
     }
 
     public String getId() {

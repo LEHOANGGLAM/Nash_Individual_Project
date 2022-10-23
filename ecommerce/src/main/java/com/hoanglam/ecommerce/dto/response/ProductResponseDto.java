@@ -2,6 +2,7 @@ package com.hoanglam.ecommerce.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hoanglam.ecommerce.entites.*;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
