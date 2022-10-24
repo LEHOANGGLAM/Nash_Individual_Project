@@ -1,18 +1,15 @@
 package com.hoanglam.ecommerce.service.impl;
 
 import com.hoanglam.ecommerce.dto.request.CartItemRequestDto;
-import com.hoanglam.ecommerce.dto.response.CartItemResponseDto;
+import com.hoanglam.ecommerce.dto.response.entities.CartItemResponseDto;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
-import com.hoanglam.ecommerce.dto.response.ErrorResponse;
-import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
 import com.hoanglam.ecommerce.entites.*;
 import com.hoanglam.ecommerce.exception.MessageException;
+import com.hoanglam.ecommerce.exception.ResourceAlreadyExistException;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
-import com.hoanglam.ecommerce.exception.ValidationException;
 import com.hoanglam.ecommerce.mappers.CartItemMapper;
 import com.hoanglam.ecommerce.repository.CartItemRepository;
 import com.hoanglam.ecommerce.repository.ProductRepository;
-import com.hoanglam.ecommerce.repository.SizeRepository;
 import com.hoanglam.ecommerce.repository.UserRepository;
 import com.hoanglam.ecommerce.service.CartItemService;
 import com.hoanglam.ecommerce.service.ProductService;
@@ -26,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 public class CartItemServiceImpl implements CartItemService {
@@ -36,18 +32,22 @@ public class CartItemServiceImpl implements CartItemService {
     private CartItemRepository cartItemRepository;
 
     @Autowired
-    private ProductService productService;
+    private ProductRepository productRepository;
 
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
     private CartItemMapper cartItemMapper;
 
-    public CartItemServiceImpl(CartItemRepository cartItemRepository, UserRepository userRepository,  ProductService productService) {
+    public CartItemServiceImpl(CartItemRepository cartItemRepository, UserRepository userRepository,
+                               ProductRepository productRepository, CartItemMapper cartItemMapper,
+                               ModelMapper modelMapper) {
         super();
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
-        this.productService = productService;
+        this.productRepository = productRepository;
+        this.cartItemMapper = cartItemMapper;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -75,8 +75,9 @@ public class CartItemServiceImpl implements CartItemService {
     @Override
     public CartItemResponseDto createCartItem(CartItemRequestDto cartItemDto) {
         //Check quantity
-        Product product = productService.getProductById(cartItemDto.getProductId());
-        if (product.getQuantity() < cartItemDto.getQuantity()) {
+        Product pro = productRepository.findById(cartItemDto.getProductId()).orElseThrow(() ->
+                new ResourceNotFoundException("Product not exist with id: " + cartItemDto.getProductId()));
+        if (pro.getQuantity() < cartItemDto.getQuantity()) {
             throw new MessageException("Not enough quantity ");
         }
 
@@ -85,12 +86,15 @@ public class CartItemServiceImpl implements CartItemService {
         CartItem cartItem = cartItemList.stream().filter(c -> (c.getProductId().getId().equals(cartItemDto.getProductId()) && c.getSizeId().getId().equals(cartItemDto.getSizeId())))
                 .findFirst().orElse(null);
         if (cartItem != null) {
-            cartItem.setQuantity((short) (cartItem.getQuantity() + cartItemDto.getQuantity()));
-            cartItem.setPrice(cartItem.getProductId().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
-            cartItem = cartItemRepository.save(cartItem);
+            throw new ResourceAlreadyExistException("This product already exists in your cart");
 
-            CartItemResponseDto cartItemResponseDto = modelMapper.map(cartItem, CartItemResponseDto.class);
-            return cartItemResponseDto;
+            //The second way is update quantity and price
+//            cartItem.setQuantity((short) (cartItem.getQuantity() + cartItemDto.getQuantity()));
+//            cartItem.setPrice(cartItem.getProductId().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+//            cartItem = cartItemRepository.save(cartItem);
+//
+//            CartItemResponseDto cartItemResponseDto = modelMapper.map(cartItem, CartItemResponseDto.class);
+//            return cartItemResponseDto;
         }
 
         //When in cart does not exist the same product and size
@@ -99,8 +103,8 @@ public class CartItemServiceImpl implements CartItemService {
         cartItem.setId(uuid.toString());
         cartItem.setActive(true);
         cartItem.setCreatedAt(new Date());
-        cartItem.setPrice(cartItem.getProductId().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
-        cartItem = cartItemRepository.save(cartItem);
+        cartItem.setPrice(pro.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+        cartItemRepository.save(cartItem);
 
         CartItemResponseDto cartItemResponseDto = modelMapper.map(cartItem, CartItemResponseDto.class);
         return cartItemResponseDto;
@@ -112,11 +116,12 @@ public class CartItemServiceImpl implements CartItemService {
         CartItem cartItem = cartItemList.stream().filter(c -> (c.getProductId().getId().equals(cartItemDto.getProductId()) && c.getSizeId().getId().equals(cartItemDto.getSizeId())))
                 .findFirst().orElse(null);
         if (cartItem == null) {
-           throw new ResourceNotFoundException("Item not exist in cart");
+            throw new ResourceNotFoundException("Item not exist in cart");
         }
 
         cartItem.setQuantity(cartItemDto.getQuantity());
         cartItem.setPrice(cartItem.getProductId().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+        cartItemRepository.save(cartItem);
 
         CartItemResponseDto cartItemResponseDto = modelMapper.map(cartItem, CartItemResponseDto.class);
         return cartItemResponseDto;

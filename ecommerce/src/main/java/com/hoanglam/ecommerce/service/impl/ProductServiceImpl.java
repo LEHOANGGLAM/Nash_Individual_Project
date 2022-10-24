@@ -1,23 +1,18 @@
 package com.hoanglam.ecommerce.service.impl;
 
 import com.hoanglam.ecommerce.dto.request.ProductRequestDto;
-import com.hoanglam.ecommerce.dto.response.APIRespone;
-import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
-import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
-import com.hoanglam.ecommerce.dto.response.SuccessResponse;
+import com.hoanglam.ecommerce.dto.response.*;
+import com.hoanglam.ecommerce.dto.response.entities.ProductResponseDto;
 import com.hoanglam.ecommerce.entites.Category;
 import com.hoanglam.ecommerce.entites.Product;
-import com.hoanglam.ecommerce.entites.Role;
 import com.hoanglam.ecommerce.entites.Size;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import com.hoanglam.ecommerce.repository.CategoryRepository;
 import com.hoanglam.ecommerce.repository.ProductRepository;
 import com.hoanglam.ecommerce.repository.SizeRepository;
 import com.hoanglam.ecommerce.service.ProductService;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -57,15 +52,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public APIRespone<List<Product>> getAllProducts(Map<String, String> params) {
+    public APIRespone<List<ProductResponseDto>> getAllProducts(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
 
         Page<Product> result = productRepository.findByActive(true, pageable);
-        return new APIRespone<>(result.getTotalPages(), result.getContent());
+
+        //map to listDTO
+        List<ProductResponseDto> productResponseDtos = new ArrayList<>();
+        result.getContent().forEach(p -> {
+            ProductResponseDto productResponseDto = modelMapper.map(p, ProductResponseDto.class);
+            productResponseDtos.add(productResponseDto);
+        });
+        return new APIRespone<>(result.getTotalPages(), productResponseDtos);
     }
 
     @Override
-    public APIRespone<List<Product>> getProductsByPredicates(Map<String, String> params) {
+    public APIRespone<List<ProductResponseDto>> getProductsByPredicates(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
         BigDecimal fromPrice = BigDecimal.valueOf(Double.valueOf(params.getOrDefault("fromPrice", "0")));
         BigDecimal toPrice = BigDecimal.valueOf(Double.valueOf(params.getOrDefault("toPrice", "9999999999")));
@@ -79,7 +81,14 @@ public class ProductServiceImpl implements ProductService {
         } else {
             result = productRepository.findByPriceBetweenAndTitleContainingAndActiveOrderByCreatedDateDesc(fromPrice, toPrice, kw, true, pageable);
         }
-        return new APIRespone<>(result.getTotalPages(), result.getContent());
+
+        //map to listDTO
+        List<ProductResponseDto> productResponseDtos = new ArrayList<>();
+        result.getContent().forEach(p -> {
+            ProductResponseDto productResponseDto = modelMapper.map(p, ProductResponseDto.class);
+            productResponseDtos.add(productResponseDto);
+        });
+        return new APIRespone<>(result.getTotalPages(), productResponseDtos);
     }
 
 //    @Override
@@ -135,6 +144,8 @@ public class ProductServiceImpl implements ProductService {
         p.setSizeCollection(sizes);
 
         Product savedProduct = productRepository.save(p);
+
+        //map to responseDto
         ProductResponseDto productResponseDto = modelMapper.map(savedProduct, ProductResponseDto.class);
         return productResponseDto;
     }
@@ -172,6 +183,7 @@ public class ProductServiceImpl implements ProductService {
         //save new product
         productUpdated = productRepository.save(productUpdated);
 
+        //map to responseDto
         ProductResponseDto productResponseDto = modelMapper.map(productUpdated, ProductResponseDto.class);
         return productResponseDto;
     }

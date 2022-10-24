@@ -1,9 +1,7 @@
 package com.hoanglam.ecommerce.services.impl;
 
-import com.hoanglam.ecommerce.dto.request.CartItemRequestDto;
 import com.hoanglam.ecommerce.dto.request.ProductRequestDto;
-import com.hoanglam.ecommerce.dto.response.CartItemResponseDto;
-import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
+import com.hoanglam.ecommerce.dto.response.entities.ProductResponseDto;
 import com.hoanglam.ecommerce.entites.Category;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.entites.Size;
@@ -11,22 +9,17 @@ import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import com.hoanglam.ecommerce.repository.CategoryRepository;
 import com.hoanglam.ecommerce.repository.ProductRepository;
 import com.hoanglam.ecommerce.repository.SizeRepository;
-import com.hoanglam.ecommerce.service.ProductService;
-import com.hoanglam.ecommerce.service.impl.CartItemServiceImpl;
 import com.hoanglam.ecommerce.service.impl.ProductServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 
@@ -132,7 +125,7 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    public void createProduct_ShouldReturnProduct_WhenDataValid() {
+    public void createProduct_ShouldReturnValue_WhenDataValid() {
         initialProduct = mock(Product.class);
         expectedResponseDto = mock(ProductResponseDto.class);
 

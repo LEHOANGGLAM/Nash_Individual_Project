@@ -3,14 +3,11 @@ package com.hoanglam.ecommerce.controller;
 import com.hoanglam.ecommerce.dto.request.ProductRequestDto;
 import com.hoanglam.ecommerce.dto.response.APIRespone;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
-import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
-import com.hoanglam.ecommerce.dto.response.SuccessResponse;
+import com.hoanglam.ecommerce.dto.response.entities.ProductResponseDto;
 import com.hoanglam.ecommerce.entites.Product;
-import com.hoanglam.ecommerce.repository.ProductRepository;
 import com.hoanglam.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,12 +28,12 @@ public class ProductController {
 
 
     @GetMapping("/products")
-    public APIRespone<List<Product>> getAllProducts(@RequestParam Map<String, String> params) {
+    public APIRespone<List<ProductResponseDto>> getAllProducts(@RequestParam Map<String, String> params) {
         return productService.getAllProducts(params);
     }
 
     @GetMapping("/products/search")
-    public APIRespone<List<Product>> getProductsByPredicates(@RequestParam Map<String, String> params) {
+    public APIRespone<List<ProductResponseDto>> getProductsByPredicates(@RequestParam Map<String, String> params) {
         return productService.getProductsByPredicates(params);
     }
 

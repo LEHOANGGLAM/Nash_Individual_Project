@@ -2,19 +2,17 @@ package com.hoanglam.ecommerce.service.impl;
 
 import com.hoanglam.ecommerce.dto.request.OrderItemRequestDto;
 import com.hoanglam.ecommerce.dto.request.OrderResquestDto;
-import com.hoanglam.ecommerce.dto.response.OrderItemResponeDto;
-import com.hoanglam.ecommerce.dto.response.OrderResponseDto;
+import com.hoanglam.ecommerce.dto.response.entities.OrderResponseDto;
 import com.hoanglam.ecommerce.entites.CartItem;
 import com.hoanglam.ecommerce.entites.Order;
 import com.hoanglam.ecommerce.entites.OrderItem;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.exception.MessageException;
+import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
+import com.hoanglam.ecommerce.mappers.CartItemMapper;
 import com.hoanglam.ecommerce.mappers.OrderItemMapper;
 import com.hoanglam.ecommerce.mappers.OrderMapper;
-import com.hoanglam.ecommerce.repository.CartItemRepository;
-import com.hoanglam.ecommerce.repository.OrderItemRepository;
-import com.hoanglam.ecommerce.repository.OrderRepository;
-import com.hoanglam.ecommerce.repository.ProductRepository;
+import com.hoanglam.ecommerce.repository.*;
 import com.hoanglam.ecommerce.service.CartItemService;
 import com.hoanglam.ecommerce.service.OrderService;
 import com.hoanglam.ecommerce.service.ProductService;
@@ -27,8 +25,6 @@ import java.util.*;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    @Autowired
-    private ProductService productService;
     @Autowired
     private CartItemService cartItemService;
 
@@ -43,17 +39,31 @@ public class OrderServiceImpl implements OrderService {
     private CartItemRepository cartItemRepository;
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private ModelMapper modelMapper;
 
+
+    public OrderServiceImpl(OrderRepository orderRepository ,OrderItemRepository orderItemRepository,
+                            CartItemRepository cartItemRepository, ProductRepository productRepository,
+                            OrderMapper orderMapper, OrderItemMapper orderItemMapper, ModelMapper modelMapper) {
+        super();
+        this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
+        this.cartItemRepository = cartItemRepository;
+        this.productRepository = productRepository;
+        this.orderMapper = orderMapper;
+        this.orderItemMapper = orderItemMapper;
+        this.modelMapper = modelMapper;
+    }
+
     @Override
     public OrderResponseDto createOrder(OrderResquestDto orderResquestDto) {
         //Check quantity
         for (OrderItemRequestDto o : orderResquestDto.getOrderItems()) {
-            Product product = productService.getProductById(o.getProductId());
+            Product product = productRepository.findById(o.getProductId()).orElseThrow(() ->
+                    new ResourceNotFoundException("Product not exist with id: " + o.getProductId()));
             if (product.getQuantity() < o.getQuantity()) {
                 throw new MessageException("Not enough quantity with Item: " + product.getTitle());
             }
@@ -99,9 +109,6 @@ public class OrderServiceImpl implements OrderService {
             orderItems.add(orderItem);
         }
 
-        //delete CartItem When Order Product Exist In Cart
-        deleteCartItemWhenOrderProductExistInCart(orderItems);
-
         //set TotalPrice,numberItem for Order
         order.setTotal(getOrderTotalPrice(orderItems));
         order.setNumberItem(getNumberItem(orderItems));
@@ -139,7 +146,8 @@ public class OrderServiceImpl implements OrderService {
 
     public void deleteCartItemWhenOrderProductExistInCart(Collection<OrderItem> orderItems) {
         for (OrderItem o : orderItems) {
-            Optional<CartItem> cartItemOptional = cartItemRepository.findByUserIdAndProductId(o.getOrderId().getUserId(), o.getProductId());
+            Optional<CartItem> cartItemOptional = cartItemRepository.findByUserIdAndProductIdAndSizeId
+                    (o.getOrderId().getUserId(), o.getProductId(),o.getSizeId());
             if (cartItemOptional.isPresent()) {
                 cartItemService.deleteCartItem(cartItemOptional.get().getId());
             }

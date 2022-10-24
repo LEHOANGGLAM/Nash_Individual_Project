@@ -1,9 +1,11 @@
 package com.hoanglam.ecommerce.dto.request;
 
 import com.hoanglam.ecommerce.entites.OrderItem;
+import lombok.Builder;
 
 import java.util.List;
 
+@Builder
 public class OrderResquestDto {
     private String userId;
     private String address;

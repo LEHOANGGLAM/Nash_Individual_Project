@@ -1,15 +1,12 @@
 package com.hoanglam.ecommerce.controller;
 
 import com.hoanglam.ecommerce.dto.request.CartItemRequestDto;
-import com.hoanglam.ecommerce.dto.response.CartItemResponseDto;
+import com.hoanglam.ecommerce.dto.response.entities.CartItemResponseDto;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
-import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.CartItem;
-import com.hoanglam.ecommerce.entites.Category;
 import com.hoanglam.ecommerce.service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

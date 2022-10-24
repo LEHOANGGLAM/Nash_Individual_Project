@@ -1,19 +1,14 @@
 package com.hoanglam.ecommerce.controller;
 
 
-import com.hoanglam.ecommerce.dto.request.CartItemRequestDto;
-import com.hoanglam.ecommerce.dto.request.OrderItemRequestDto;
 import com.hoanglam.ecommerce.dto.request.OrderResquestDto;
-import com.hoanglam.ecommerce.dto.response.OrderResponseDto;
-import com.hoanglam.ecommerce.entites.CartItem;
-import com.hoanglam.ecommerce.entites.Order;
+import com.hoanglam.ecommerce.dto.response.entities.OrderResponseDto;
 import com.hoanglam.ecommerce.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController

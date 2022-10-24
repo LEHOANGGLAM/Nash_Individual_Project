@@ -1,4 +1,4 @@
-package com.hoanglam.ecommerce.dto.response;
+package com.hoanglam.ecommerce.dto.response.entities;
 
 import lombok.Builder;
 import lombok.Data;

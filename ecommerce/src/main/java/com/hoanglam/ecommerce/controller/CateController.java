@@ -1,20 +1,11 @@
 package com.hoanglam.ecommerce.controller;
 
-import com.hoanglam.ecommerce.dto.response.CategoryReponseDto;
+import com.hoanglam.ecommerce.dto.response.entities.CategoryReponseDto;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
-import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.Category;
-import com.hoanglam.ecommerce.entites.Product;
-import com.hoanglam.ecommerce.entites.User;
-import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
-import com.hoanglam.ecommerce.repository.CategoryRepository;
-import com.hoanglam.ecommerce.repository.UserRepository;
 import com.hoanglam.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

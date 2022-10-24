@@ -1,8 +1,7 @@
 package com.hoanglam.ecommerce.service;
 
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
-import com.hoanglam.ecommerce.dto.response.UserResponseDto;
-import com.hoanglam.ecommerce.entites.Product;
+import com.hoanglam.ecommerce.dto.response.entities.UserResponseDto;
 import com.hoanglam.ecommerce.entites.User;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.hoanglam.ecommerce.dto.response;
+package com.hoanglam.ecommerce.dto.response.entities;
 
 import com.hoanglam.ecommerce.entites.OrderItem;
 import com.hoanglam.ecommerce.entites.User;

@@ -1,12 +1,9 @@
 package com.hoanglam.ecommerce.service.impl;
 
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
-import com.hoanglam.ecommerce.dto.response.ProductResponseDto;
-import com.hoanglam.ecommerce.dto.response.UserResponseDto;
-import com.hoanglam.ecommerce.entites.Product;
+import com.hoanglam.ecommerce.dto.response.entities.UserResponseDto;
 import com.hoanglam.ecommerce.entites.User;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
-import com.hoanglam.ecommerce.repository.ProductRepository;
 import com.hoanglam.ecommerce.repository.UserRepository;
 import com.hoanglam.ecommerce.service.UserService;
 import org.modelmapper.ModelMapper;
