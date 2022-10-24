@@ -172,6 +172,12 @@ public class User implements Serializable {
         this.email = email;
         this.passwordHash = encode;
     }
+    public User(String username, String email, String encode,String mobile) {
+        this.username = username;
+        this.email = email;
+        this.passwordHash = encode;
+        this.mobile = mobile;
+    }
 
     public User(String id, String passwordHash, String username, Date registeredDate) {
         this.id = id;

@@ -8,6 +8,7 @@ import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,7 +22,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/product/{id}")
     public Product getProductById(@PathVariable String id) {
         return productService.getProductById(id);
     }
@@ -45,18 +46,21 @@ public class ProductController {
 
     //-------------FOR ADMIN BELOW--------------
     //------------FOR ADMIN BELOW------------------
-    @PostMapping("/admin/products")
+    @PostMapping("/products")
+    @PreAuthorize("hasAuthority('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponseDto addProduct(@Valid @RequestBody ProductRequestDto product) {
         return this.productService.createProduct(product);
     }
 
-    @PutMapping("/admin/products/{id}")
+    @PutMapping("/product/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ProductResponseDto updateProduct(@PathVariable String id, @Valid @RequestBody ProductRequestDto product) {
         return this.productService.updateProduct(id, product);
     }
 
-    @DeleteMapping("/admin/products/{id}")
+    @DeleteMapping("/product/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public DeleteResponseDto deleteProduct(@PathVariable String id) {
         return this.productService.softDeleteProduct(id);
     }

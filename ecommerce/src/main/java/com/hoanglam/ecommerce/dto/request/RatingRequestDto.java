@@ -8,7 +8,9 @@ public class RatingRequestDto {
     private String userId;
     @NotBlank(message = "orderItemId id is required")
     private String orderItemId;
+    @NotBlank(message = "content is required")
     private String content;
+    @NotBlank(message = "rating is required")
     private int rating;
 
     private String productId;

@@ -20,7 +20,7 @@ function App() {
 
           <Route path="/shoppinglist" component={ShoppingList}></Route>
           
-          <Route component={PageNotFound}></Route>
+          <Route component={PageNotFound}></Route> 
         </Switch>
         <Footer />
       </Router>

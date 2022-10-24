@@ -61,10 +61,10 @@ public class SecurityConfiguration {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/auth/**").permitAll()
-                .antMatchers("/all/**").permitAll()
-                .antMatchers("/user/**").hasAuthority("user")
-                .antMatchers("/admin/**").hasAuthority("admin");
+                .authorizeRequests().antMatchers("/auth/**").permitAll();
+//                .antMatchers("/all/**").permitAll()
+//                .antMatchers("/user/**").hasAuthority("user")
+//                .antMatchers("/admin/**").hasAuthority("admin");
 
 
         http.authenticationProvider(authenticationProvider());

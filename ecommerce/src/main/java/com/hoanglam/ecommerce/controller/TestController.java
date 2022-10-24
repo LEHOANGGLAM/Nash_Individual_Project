@@ -25,5 +25,4 @@ public class TestController {
         return "Admin content";
     }
 
-
 }

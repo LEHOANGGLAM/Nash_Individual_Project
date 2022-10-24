@@ -17,6 +17,10 @@ public class SignUpRequest {
     @Size(min = 6, max = 40)
     private String password;
 
+    @NotBlank
+    @Size(min = 6, max = 40)
+    private String mobile;
+
     private Collection<String> role;
 
     public String getUsername() {
@@ -41,6 +45,14 @@ public class SignUpRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public Collection<String> getRole() {

@@ -20,7 +20,7 @@ class Register extends Component {
         this.setState({ fields });
     }
 
-    handleValidation() {
+    handleValidation = () => {
         let fields = this.state.fields;
         let errors = {};
         let formIsValid = true;
@@ -38,7 +38,7 @@ class Register extends Component {
         return formIsValid;
     }
 
-    handleRegister(e) {
+    handleRegister = (e) => {
         e.preventDefault();
 
         this.setState({
@@ -51,6 +51,7 @@ class Register extends Component {
             AuthService.register(
                 this.state.fields["username"],
                 this.state.fields["email"],
+                this.state.fields["mobile"],
                 this.state.fields["password"],
                 ["user"],
             ).then(
@@ -91,9 +92,16 @@ class Register extends Component {
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="lastname">Email</label>
+                                <label for="lastname">Email:</label>
                                 <input type="email" class="form-control" placeholder=""
                                     name="email" onChange={this.handleChange.bind(this, "email")} required />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="lastname">Mobile phone:</label>
+                                <input type="tel" pattern="[0-9]{10}" class="form-control" placeholder=""
+                                    name="mobile" onChange={this.handleChange.bind(this, "mobile")} required />
                             </div>
                         </div>
                         <div class="col-md-12">

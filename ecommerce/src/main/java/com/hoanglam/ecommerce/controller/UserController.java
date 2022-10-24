@@ -5,6 +5,7 @@ import com.hoanglam.ecommerce.dto.response.entities.UserResponseDto;
 import com.hoanglam.ecommerce.entites.User;
 import com.hoanglam.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,28 +20,31 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/user/{id}")
     public UserResponseDto getUserById(@PathVariable String id) {
         return userService.getUserById(id);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/user/{id}")
     public UserResponseDto updateUserById(@PathVariable String id, @Valid @RequestBody User user) {
         return userService.updateUser(id, user);
     }
 
 
-    @GetMapping("/admin/users")
+    @GetMapping("/users")
+    @PreAuthorize("hasAuthority('admin')")
     public List<UserResponseDto> getAllUsers(@RequestParam Map<String, String> params) {
         return  userService.getAllUsers(params);
     }
 
-    @GetMapping("/admin/users/role")
+    @GetMapping("/users/role")
+    @PreAuthorize("hasAuthority('admin')")
     public List<UserResponseDto> getUserByRole(@RequestParam Map<String, String> params) {
         return  userService.getUsersByRole(params);
     }
 
-    @DeleteMapping("/admin/users/{id}")
+    @DeleteMapping("/user/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public DeleteResponseDto deleteUser(@PathVariable String id) {
         return  this.userService.softDeleteUser(id);
     }

@@ -7,6 +7,7 @@ import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,6 +26,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                             WebRequest request) {
         ErrorResponse error = new ErrorResponse( HttpStatus.NOT_FOUND.toString(), exception.getMessage());
         return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public final ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+        ErrorResponse errorDetails = new ErrorResponse(HttpStatus.FORBIDDEN.toString(), ex.getMessage());
+        return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler({ ResourceAlreadyExistException.class })
@@ -56,7 +62,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.toString() + "Validation Error", "Validation Error", errors);
+        ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST.toString() + "Validation Error", " Validation Error", errors);
         return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
     }
 

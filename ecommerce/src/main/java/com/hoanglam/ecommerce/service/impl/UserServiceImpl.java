@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         String id = params.get("roleId");
 
         Page<User> result;
-        if (id != null && id != "") {
+        if (id != null && !id.equals("")) {
             result = userRepository.findByRolesCollection_IdAndUsernameContainingOrderByUsernameAsc(id, kw, pageable);
         } else {
             result = userRepository.findByUsernameContainingOrderByUsernameAsc(kw ,pageable);

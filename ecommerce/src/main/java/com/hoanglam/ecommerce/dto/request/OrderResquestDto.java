@@ -3,12 +3,16 @@ package com.hoanglam.ecommerce.dto.request;
 import com.hoanglam.ecommerce.entites.OrderItem;
 import lombok.Builder;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Builder
 public class OrderResquestDto {
+    @NotBlank(message = "userId is required")
     private String userId;
+    @NotBlank(message = "address is required")
     private String address;
+    @NotBlank(message = "paymentMethod is required")
     private String paymentMethod;
     private List<OrderItemRequestDto> orderItems;
 

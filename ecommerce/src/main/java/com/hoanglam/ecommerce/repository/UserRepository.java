@@ -22,4 +22,5 @@ public interface UserRepository extends JpaRepository<User, String>, JpaSpecific
 
     Boolean existsByEmail(String email);
 
+    Boolean existsByMobile(String mobile);
 }

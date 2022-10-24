@@ -8,10 +8,13 @@ import com.hoanglam.ecommerce.dto.response.JwtResponse;
 import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.entites.Role;
 import com.hoanglam.ecommerce.entites.User;
+import com.hoanglam.ecommerce.exception.ResourceAlreadyExistException;
+import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import com.hoanglam.ecommerce.repository.RoleRepository;
 import com.hoanglam.ecommerce.repository.UserRepository;
 import com.hoanglam.ecommerce.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -66,19 +69,25 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ErrorResponse("03", "Error: Username is already taken!"));
+                    .body(new ResourceAlreadyExistException( "Error: Username is already in use!"));
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ErrorResponse("03","Error: Email is already in use!"));
+                    .body(new ResourceAlreadyExistException( "Error: Email is already in use!"));
+        }
+        if (userRepository.existsByMobile(signUpRequest.getMobile())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new ResourceAlreadyExistException( "Error: This phone is already in use!"));
         }
 
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+                encoder.encode(signUpRequest.getPassword()),
+                        signUpRequest.getMobile());
 
         Collection<String> strRoles = signUpRequest.getRole();
         Collection<Role> roles = new HashSet<>();
@@ -87,13 +96,13 @@ public class AuthServiceImpl implements AuthService {
             switch (role) {
                 case "admin":
                     Role adminRole = roleRepository.findByName("admin")
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                            .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found."));
                     roles.add(adminRole);
 
                     break;
                 case "user":
                     Role modRole = roleRepository.findByName("user")
-                            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                            .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found."));
                     roles.add(modRole);
                     break;
             }
