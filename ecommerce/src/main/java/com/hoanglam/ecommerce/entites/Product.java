@@ -42,7 +42,7 @@ public class Product implements Serializable {
     @Column(name = "metaTitle")
     private String metaTitle;
 
-    @Size(max = 255)
+    @Size(max = 1000)
     @Column(name = "desciption")
     private String desciption;
 
@@ -112,7 +112,6 @@ public class Product implements Serializable {
             @JoinColumn(name = "product_id", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "size_id", referencedColumnName = "id")})
     @ManyToMany
-    @JsonIgnore
     private Collection<com.hoanglam.ecommerce.entites.Size> sizeCollection;
 
     public Collection<com.hoanglam.ecommerce.entites.Size> getSizeCollection() {

@@ -30,6 +30,7 @@ public class ProductResponseDto {
     private Date updatedDate;
     private String content;
     private boolean active;
+    private Collection<Image> imageCollection;
     private Collection<Category> categoryCollection;
     private Collection<com.hoanglam.ecommerce.entites.Size> sizeCollection;
 

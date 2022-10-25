@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import AuthService from '../../../services/AuthService';
-import CateService from '../../../services/CateService';
-import UserService from '../../../services/UserService';
+import AuthService from '../../services/AuthService';
+import CateService from '../../services/CateService';
+import UserService from '../../services/UserService';
 
 
 class NavBar extends Component {
@@ -64,7 +64,7 @@ class NavBar extends Component {
             <div>
                 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
                     <div class="container">
-                        <a class="navbar-brand" href="">Minishop</a>
+                        <a class="navbar-brand" href="/">Minishop</a>
                         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="oi oi-menu"></span> Menu
                         </button>
@@ -76,14 +76,14 @@ class NavBar extends Component {
                                         <li className={isHovering ? 'nav-item dropdown show' : 'nav-item dropdown'}
                                             onMouseOver={this.handleMouseOver}
                                             onMouseOut={this.handleMouseOut}>
-                                            <a class="nav-link dropdown-toggle" href="/shoppinglist" id="dropdown04"
+                                            <a class="nav-link dropdown-toggle" href="/products" id="dropdown04"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalog</a>
                                             <div
                                                 className={isHovering ? 'dropdown-menu show' : 'dropdown-menu'}
                                                 onMouseOver={this.handleMouseOver}
                                                 onMouseOut={this.handleMouseOut} aria-labelledby="dropdown04">
                                                 {this.state.cates.map((cate, index) =>
-                                                    <a class="dropdown-item" href="/shoppinglist" key={index}>{cate.title}</a>
+                                                    <a class="dropdown-item" href="/products" key={index}>{cate.title}</a>
                                                 )}
 
                                             </div>
@@ -113,8 +113,8 @@ class NavBar extends Component {
                                             <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
                                                 aria-haspopup="true" aria-expanded="false">
 
-                                                {(currentUser.avatarImage == null || currentUser.avatarImage == '') ? (
-                                                    <img src={require('../../../images/default_ava.jpg')} alt=""
+                                                {(currentUser.avatarImage === null || currentUser.avatarImage === '') ? (
+                                                    <img src={require('../../images/default_ava.jpg')} alt=""
                                                         style={{ width: 25, height: 25, display: 'inline-block', borderRadius: '50%', verticalAlign: 'middle', marginRight: 10 }} />
                                                 ) : (
                                                     <img src={currentUser.avatarImage} alt=""

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AuthService from '../../../services/AuthService';
+import AuthService from '../../services/AuthService';
 import { withRouter } from 'react-router-dom';
 
 class Login extends Component {
@@ -22,7 +22,7 @@ class Login extends Component {
         fields[field] = e.target.value;
         this.setState({ fields });
     }
-    handleLogin(e) {
+    handleLogin = (e) => {
         e.preventDefault();
 
         this.setState({
@@ -38,16 +38,16 @@ class Login extends Component {
             },
             error => {
                 const resMessage =
-                (error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                error.message ||
-                error.toString();
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                    error.message ||
+                    error.toString();
 
-            this.setState({
-                successful: false,
-                message: resMessage
-            });
+                this.setState({
+                    successful: false,
+                    message: resMessage
+                });
             }
         );
     }

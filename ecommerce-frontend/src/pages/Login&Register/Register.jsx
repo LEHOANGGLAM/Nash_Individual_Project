@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AuthService from '../../../services/AuthService';
+import AuthService from '../../services/AuthService';
 
 class Register extends Component {
     constructor(props) {
@@ -25,7 +25,7 @@ class Register extends Component {
         let errors = {};
         let formIsValid = true;
 
-        if (this.state.fields["password"] != this.state.fields["password2"]) {
+        if (this.state.fields["password"] !== this.state.fields["password2"]) {
             this.setState({
                 successful: false,
                 message: "Repeat password doesn't match"

@@ -7,6 +7,34 @@ import image4 from '../../images/gallery-4.jpg'
 import image5 from '../../images/gallery-5.jpg'
 import image6 from '../../images/gallery-6.jpg'
 
+
+const tempData = [
+    {
+
+        "image": image1
+    },
+    {
+
+        "image": image2
+    },
+    {
+
+        "image": image3
+    },
+    {
+
+        "image": image4
+    },
+    {
+
+        "image": image5
+    },
+    {
+
+        "image": image6
+    },
+]
+
 class ImageGallery extends Component {
     render() {
         return (
@@ -22,48 +50,15 @@ class ImageGallery extends Component {
                     </div>
                     <div class="container-fluid px-0">
                         <div class="row no-gutters">
-                            <div class="col-md-4 col-lg-2 ftco-animate fadeInUp ftco-animated">
-                                <a href={image1} class="gallery image-popup img d-flex align-items-center" style={{backgroundImage: `url(${image1})` }}>
-                                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
-                                        <span class="icon-instagram"></span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-lg-2 ftco-animate fadeInUp ftco-animated">
-                                <a href={image2} class="gallery image-popup img d-flex align-items-center" style={{backgroundImage: `url(${image2})` }}>
-                                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
-                                        <span class="icon-instagram"></span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-lg-2 ftco-animate fadeInUp ftco-animated">
-                                <a href={image3} class="gallery image-popup img d-flex align-items-center" style={{backgroundImage: `url(${image3})` }}>
-                                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
-                                        <span class="icon-instagram"></span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-lg-2 ftco-animate fadeInUp ftco-animated">
-                                <a href={image4} class="gallery image-popup img d-flex align-items-center" style={{backgroundImage: `url(${image4})` }}>
-                                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
-                                        <span class="icon-instagram"></span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-lg-2 ftco-animate fadeInUp ftco-animated">
-                                <a href={image5} class="gallery image-popup img d-flex align-items-center" style={{backgroundImage: `url(${image5})` }}>
-                                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
-                                        <span class="icon-instagram"></span>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-md-4 col-lg-2 ftco-animate fadeInUp ftco-animated">
-                                <a href={image6} class="gallery image-popup img d-flex align-items-center" style={{backgroundImage: `url(${image6})` }}>
-                                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
-                                        <span class="icon-instagram"></span>
-                                    </div>
-                                </a>
-                            </div>
+                            {tempData.map(item =>
+                                <div class="col-md-4 col-lg-2 ftco-animate fadeInUp ftco-animated">
+                                    <a href={item.image} class="gallery image-popup img d-flex align-items-center" style={{ backgroundImage: `url(${item.image})` }}>
+                                        <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                                            <span class="icon-instagram"></span>
+                                        </div>
+                                    </a>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </section>
