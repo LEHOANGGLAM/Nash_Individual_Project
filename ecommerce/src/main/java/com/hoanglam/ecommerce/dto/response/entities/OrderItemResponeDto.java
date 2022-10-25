@@ -3,7 +3,6 @@ package com.hoanglam.ecommerce.dto.response.entities;
 import lombok.Builder;
 import lombok.Data;
 
-@Builder
 @Data
 public class OrderItemResponeDto {
     private short quantity;

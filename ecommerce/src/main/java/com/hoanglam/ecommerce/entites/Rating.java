@@ -34,6 +34,9 @@ public class Rating {
     @Column(name = "rating")
     private Integer rating;
 
+    @Column(name = "productId")
+    private String productId;
+
     public Rating() {
     }
 
@@ -41,13 +44,22 @@ public class Rating {
         this.id = id;
     }
 
-    public Rating(String id, String content, Date createdDate, OrderItem orderItemId, User userId, Integer rating) {
+    public Rating(String id, String content, Date createdDate, OrderItem orderItem, User userId, Integer rating, String productId) {
         this.id = id;
         this.content = content;
         this.createdDate = createdDate;
-        this.orderItem = orderItemId;
+        this.orderItem = orderItem;
         this.userId = userId;
         this.rating = rating;
+        this.productId = productId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public OrderItem getOrderItem() {

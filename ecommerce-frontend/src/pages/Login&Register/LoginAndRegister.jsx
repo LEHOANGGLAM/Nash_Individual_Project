@@ -14,7 +14,6 @@ class LoginAndRegister extends Component {
                     <div class="row justify-content-center " >
                         <div class="col-xl-10 ftco-animate fadeInUp ftco-animated " style={{ paddingLeft: '20%', paddingRight: '20%' }}>
                             <Tabs>
-
                                 <TabList>
                                     <ul class="tabs-nav">
                                         <Tab><li><a>Login</a></li></Tab>

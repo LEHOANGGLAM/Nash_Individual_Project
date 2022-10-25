@@ -46,7 +46,7 @@ public class ProductController {
 
     //-------------FOR ADMIN BELOW--------------
     //------------FOR ADMIN BELOW------------------
-    @PostMapping("/products")
+    @PostMapping("/product")
     @PreAuthorize("hasAuthority('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponseDto addProduct(@Valid @RequestBody ProductRequestDto product) {

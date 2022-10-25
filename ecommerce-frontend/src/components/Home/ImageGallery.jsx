@@ -50,8 +50,8 @@ class ImageGallery extends Component {
                     </div>
                     <div class="container-fluid px-0">
                         <div class="row no-gutters">
-                            {tempData.map(item =>
-                                <div class="col-md-4 col-lg-2 ftco-animate fadeInUp ftco-animated">
+                            {tempData.map((item, index) =>
+                                <div class="col-md-4 col-lg-2 ftco-animate fadeInUp ftco-animated" key={index}>
                                     <a href={item.image} class="gallery image-popup img d-flex align-items-center" style={{ backgroundImage: `url(${item.image})` }}>
                                         <div class="icon mb-4 d-flex align-items-center justify-content-center">
                                             <span class="icon-instagram"></span>

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import ProductService from '../../services/ProductService';
 import HeadWrap from '../../components/HeadWrap/HeadWrap';
-import Filter from '../../components/ProductList/Filter';
-import Products from '../../components/ProductList/Products';
-import Pagination from '../../components/Pagination/Pagination';
+import Filter from '../../components/Product/Filter';
+import Products from '../../components/Product/Products';
+import Pagination from '../../components/Pagination';
 import queryString from 'query-string';
 
 
@@ -29,7 +29,7 @@ function ProductList(props) {
   
     const fetchProducts = async (filters) => {
         let predicates = queryString.stringify(filters);
-        ProductService.getAllProducts(predicates).then((res) => {
+        ProductService.getProductsByPredicates(predicates).then((res) => {
             setProducts(res.data.listResponse)
             setTotalPage(res.data.totalPage )
         })

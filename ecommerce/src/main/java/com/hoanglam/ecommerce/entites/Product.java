@@ -92,7 +92,6 @@ public class Product implements Serializable {
             @JoinColumn(name = "productId", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "categoryId", referencedColumnName = "id")})
     @ManyToMany(cascade = {CascadeType.ALL})
-    @JsonIgnore
     private Collection<Category> categoryCollection;
 
     @OneToMany(mappedBy = "productId")

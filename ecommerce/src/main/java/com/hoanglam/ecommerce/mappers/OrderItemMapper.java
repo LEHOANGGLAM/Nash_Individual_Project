@@ -40,15 +40,5 @@ public class OrderItemMapper {
                 .build();
     }
 
-    public Collection<OrderItemResponeDto> mapEntitysToResponseDtos(Collection<OrderItem> orderItems) {
-        List<OrderItemResponeDto> orderItemResponeDtos = new ArrayList<>();
-        for (OrderItem o : orderItems) {
-            orderItemResponeDtos.add(OrderItemResponeDto.builder()
-                    .quantity(o.getQuantity())
-                    .productName(o.getProductId().getTitle())
-                    .sizeName(o.getSizeId().getSizeName())
-                    .build());
-        }
-        return orderItemResponeDtos;
-    }
+
 }

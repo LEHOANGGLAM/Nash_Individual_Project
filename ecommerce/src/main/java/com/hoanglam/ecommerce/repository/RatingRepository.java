@@ -12,4 +12,5 @@ import java.util.Optional;
 
 public interface RatingRepository extends JpaRepository<Rating, String>, JpaSpecificationExecutor<Rating> {
     Optional<Rating> findByUserIdAndOrderItem(User userId, OrderItem orderItemId);
+    List<Rating> findByProductId(String id);
 }

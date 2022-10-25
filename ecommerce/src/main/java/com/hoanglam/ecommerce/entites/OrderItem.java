@@ -67,6 +67,7 @@ public class OrderItem implements Serializable {
     private Order orderId;
     @JoinColumn(name = "productId", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Product productId;
     @JoinColumn(name = "sizeId", referencedColumnName = "id")
     @ManyToOne

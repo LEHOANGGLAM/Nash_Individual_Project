@@ -40,10 +40,21 @@ public class RatingServiceImpl implements RatingService {
 
         rating.setId(uuid.toString());
         rating.setCreatedDate(new Date());
+        rating.setProductId(c.getProductId());
         Rating savedRating = ratingRepository.save(rating);
 
         averageRating(savedRating.getOrderItem().getProductId(), savedRating.getRating());
         return savedRating;
+    }
+
+    @Override
+    public List<Rating> getRatingsByProductId(String proId) {
+        if(productRepository.findById(proId).isEmpty()){
+            throw new ResourceNotFoundException("Product not exists with id: " + proId);
+        }
+
+        List<Rating> ratings = ratingRepository.findByProductId(proId);
+        return ratings;
     }
 
     private float averageRating(Product product, int rating) {
@@ -54,4 +65,6 @@ public class RatingServiceImpl implements RatingService {
         productRepository.save(product);
         return average;
     }
+
+
 }

@@ -33,7 +33,7 @@ public class CateController {
         return categoryService.getCateById(id);
     }
 
-    @PostMapping("/categories")
+    @PostMapping("/category")
     @PreAuthorize("hasAuthority('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryReponseDto addCate(@Valid @RequestBody Category cate) {

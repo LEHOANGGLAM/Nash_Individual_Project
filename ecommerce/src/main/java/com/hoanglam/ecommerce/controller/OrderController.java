@@ -12,7 +12,7 @@ import javax.validation.Valid;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/order")
 public class OrderController {
     @Autowired
     private OrderService orderService;

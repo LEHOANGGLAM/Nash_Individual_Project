@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -16,9 +17,15 @@ public class RatingController {
     @Autowired
     public RatingService ratingService;
 
-    @PostMapping("/ratings")
+    @PostMapping("/rating")
     @ResponseStatus(HttpStatus.CREATED)
     public Rating createComment(@Valid @RequestBody RatingRequestDto c){
         return ratingService.createRating(c);
+    }
+
+
+    @GetMapping("/ratings/product/{id}")
+    public List<Rating> getRatingByProductId(@PathVariable String id){
+        return ratingService.getRatingsByProductId(id);
     }
 }

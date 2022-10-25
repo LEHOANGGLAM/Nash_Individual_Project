@@ -1,5 +1,5 @@
 import React from 'react';
-import StarRatingFormat from '../Common/StarRatingFormat';
+import StarRatings from 'react-star-ratings';
 import currencyFormat from '../Common/CurrencyFormat';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
@@ -17,12 +17,11 @@ function Products(props) {
 
     return (
         <div class="row">
-            {products.map((pro, index) =>
-
+            {products?.map((pro, index) =>
                 <div class="col-sm-12 col-md-12 col-lg-4 ftco-animate d-flex fadeInUp ftco-animated" key={index}>
-                    <Link to={`/product/${pro.id}`} >
+                    <Link to={`/product-${pro.id}`} target='_parent'>
                         <div class="product d-flex flex-column">
-                            <a href="/" class="img-prod"><img class="img-fluid" src={pro.imageCollection[0].link} alt="Colorlib Template" />
+                            <a href={`/product-${pro.id}`} class="img-prod"><img class="img-fluid" src={pro?.imageCollection[0]?.link} alt="Colorlib Template" />
                                 <div class="overlay"></div>
                             </a>
                             <div class="text py-3 pb-4 px-3">
@@ -32,7 +31,13 @@ function Products(props) {
                                     </div>
                                     <div class="rating">
                                         <p class="text-right mb-0">
-                                            <StarRatingFormat number={pro.averageRating} />
+                                            <StarRatings starDimension="14px"
+                                                starSpacing="0"
+                                                rating={pro.averageRating}
+                                                starRatedColor="brown"
+                                                numberOfStars={5}
+                                                name='rating'
+                                            />
                                         </p>
                                     </div>
                                 </div>
@@ -52,6 +57,10 @@ function Products(props) {
                 </div>
 
             )}
+
+            {/* <div class="pricing">
+                                <p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
+                            </div> */}
         </div>
     )
 }

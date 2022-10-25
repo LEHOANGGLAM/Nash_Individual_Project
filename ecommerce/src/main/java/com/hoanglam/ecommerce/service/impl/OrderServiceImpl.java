@@ -19,6 +19,7 @@ import com.hoanglam.ecommerce.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -111,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
 
         //set TotalPrice,numberItem for Order
         order.setTotal(getOrderTotalPrice(orderItems));
-        order.setNumberItem(getNumberItem(orderItems));
+        order.setNumberItem(orderItems.size());
         order.setOrderItemCollection(orderItems);
 
         order = orderRepository.save(order);
@@ -121,27 +122,16 @@ public class OrderServiceImpl implements OrderService {
     public BigDecimal getOrderTotalPrice(Collection<OrderItem> orderItems) {
         BigDecimal totalPrice = new BigDecimal(0);
 
-
         for (OrderItem orderItem : orderItems) {
             totalPrice = totalPrice.add(orderItem.getPrice());
 
             //Set Quantity And NumberSold after Oder
-            orderItem.getProductId().setNumberSold(orderItem.getProductId().getNumberSold() + orderItem.getQuantity());
-            orderItem.getProductId().setQuantity((short) (orderItem.getProductId().getQuantity() - orderItem.getQuantity()));
-            productRepository.save(orderItem.getProductId());
+//            orderItem.getProductId().setNumberSold(orderItem.getProductId().getNumberSold() + orderItem.getQuantity());
+//            orderItem.getProductId().setQuantity((short) (orderItem.getProductId().getQuantity() - orderItem.getQuantity()));
+//            productRepository.save(orderItem.getProductId());
         }
 
         return totalPrice;
-    }
-
-    public int getNumberItem(Collection<OrderItem> orderItems) {
-        int numberItem = 0;
-
-        for (OrderItem orderItem : orderItems) {
-            numberItem += orderItem.getQuantity();
-        }
-
-        return numberItem;
     }
 
     public void deleteCartItemWhenOrderProductExistInCart(Collection<OrderItem> orderItems) {
