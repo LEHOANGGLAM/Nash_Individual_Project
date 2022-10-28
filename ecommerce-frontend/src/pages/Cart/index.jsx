@@ -7,32 +7,26 @@ import AuthService from '../../services/AuthService';
 
 const Cart = () => {
     const [items, setItems] = useState([]);
-    const [user, setCurrentUser] = useState([]);
-
+    const [isUpdate, setUpdate] = useState(false);
     // const [checkedState, setCheckedState] = useState(
     //     new Array(items.length).fill(false)
     // );
 
     useEffect(() => {
-        fetchCurrentUser()
-    }, [])
+        fetchCartItem();
+    }, [isUpdate])
 
-    useEffect(() => {
-        fetchCartItem(user.id);
-    }, [user])
-    //}, [user, items])
-
-    const fetchCartItem = async (id) => {
-        CartService.getCartItemsByUserId(id).then((res) => {
-            setItems(res.data)
-        })
-    }
-    const fetchCurrentUser = async () => {
-        AuthService.getCurrentUser().then((res) => {
-            setCurrentUser(res.data)
+    const fetchCartItem = async () => {
+        const user = AuthService.getCurrentUser();
+        CartService.getCartItemsByUserId(user.id).then((res) => {
+            setItems(res.data);
+            setUpdate(false)
         })
     }
 
+    const handleUpdate = (boolean) => {
+        setUpdate(boolean)
+    }
     // const handleOnChange = (position) => {
     //     const updatedCheckedState = checkedState.map((item, index) =>
     //         index === position ? !item : item
@@ -59,7 +53,7 @@ const Cart = () => {
             <HeadWrap />
             <section class="ftco-section ftco-cart">
                 <div class="container">
-                    <CartItems items={items} />
+                    <CartItems items={items} handleUpdate={handleUpdate} />
                     <CartTotal items={items} />
                 </div>
             </section>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AuthService from '../../services/AuthService';
+import UserService from '../../services/UserService';
 import CateService from '../../services/CateService';
 
 class NavBar extends Component {
@@ -28,18 +29,17 @@ class NavBar extends Component {
     };
 
     componentDidMount() {
-        // ProductService.getProductsByPredicates(predicates).then((res) => {
-        //     setProducts(res.data.listResponse)
-        //     setTotalPage(res.data.totalPage)
-        // })
-        AuthService.getCurrentUser().then((res) => {
-            this.setState({
-                currentUser: res.data,
-                showAdmin: JSON.stringify(res.data?.rolesCollection).includes("admin"),
-                showUser: JSON.stringify(res.data?.rolesCollection).includes("user")
-            });
-        });
-       
+        const user = AuthService.getCurrentUser();
+        if (user) {
+            UserService.getUserById(user.id).then((res) => {
+                this.setState({
+                    currentUser: res.data,
+                    showUser: user.roles.includes("user"),
+                    showAdmin: user.roles.includes("admin"),
+                });
+            })
+        }
+
         CateService.getAllCates().then((res) => {
             this.setState({
                 cates: res.data,

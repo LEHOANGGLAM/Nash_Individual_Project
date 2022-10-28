@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface CartItemService {
 
-    CartItemResponseDto createCartItem(CartItemRequestDto c);
-    CartItemResponseDto updateCartItem(CartItemRequestDto c);
+    CartItemResponseDto createCartItem(CartItem c, String userId);
+    CartItemResponseDto updateCartItem(String cartId, CartItem c);
 
     DeleteResponseDto deleteCartItem(String id);
 

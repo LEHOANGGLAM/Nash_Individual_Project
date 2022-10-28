@@ -14,15 +14,14 @@ function CartTotal(props) {
     const { items } = props;
     const [totalPrice, setTotal] = useState(0);
 
-
     useEffect(() => {
-        const totalPri = items.reduce(
+        const total = items.reduce(
             (sum, value, index) => {               
                 return sum + items[index].price;
             },
             0
         );
-        setTotal(totalPri);
+        setTotal(total);
     }, [items])
 
     return (

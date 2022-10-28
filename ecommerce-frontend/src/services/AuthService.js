@@ -1,7 +1,8 @@
 import axios from "axios";
-import authHeader from './AuthHeader';
+import Cookies from 'universal-cookie';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/auth`;
+const cookies = new Cookies();
 
 class AuthService {
     login(username, password) {
@@ -9,23 +10,25 @@ class AuthService {
             username, password
         }).then(res => {
             if (res.data.accessToken) {
-                localStorage.setItem("user", JSON.stringify(res.data));
+                cookies.set("user", JSON.stringify(res.data));
+                //localStorage.setItem("user", JSON.stringify(res.data));
             }
             return res.data;
         })
     }
 
     getCurrentUser() {
-        return axios.get(API_BASE_URL + '/user', { headers: authHeader() });
+        return cookies.get('user');
+        //return  JSON.parse(localStorage.getItem('user'));
     }
 
     logout() {
-        localStorage.clear();
+        cookies.remove('user')
     }
 
     register(username, email, mobile, password, role) {
         return axios.post(API_BASE_URL + "/signup", {
-            username, email, mobile ,password, role
+            username, email, mobile, password, role
         })
     }
 }

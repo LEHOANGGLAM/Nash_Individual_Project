@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CartItemRepository extends JpaRepository<CartItem, String>, JpaSpecificationExecutor<CartItem> {
-    List<CartItem> findByUserId(User id);
+    List<CartItem> findByUserIdOrderByProductId(User id);
     Optional<CartItem> findByUserIdAndProductIdAndSizeId(User userId, Product productId,Size sizeId);
 
     int countByUserId(User id);

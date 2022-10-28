@@ -6,6 +6,7 @@ import Products from '../../components/Product/Products';
 import Pagination from '../../components/Pagination';
 import queryString from 'query-string';
 import background from '../../images/searchicon.png'
+import { Modal, ModalHeader } from 'reactstrap';
 
 ProductList.propTypes = {
 
@@ -27,6 +28,14 @@ function ProductList(props) {
         fromPrice: undefined,
         toPrice: undefined
     });
+
+    //handle POPUP MODAL
+    const [isOpenPopUp, setOpen] = useState(false);
+    const [message, setMessage] = useState('');
+    const handleOpenModal = (boolean, message) => {
+        setOpen(boolean)
+        setMessage(message)
+    }
 
     useEffect(() => {
         fetchProducts(filters);
@@ -58,7 +67,7 @@ function ProductList(props) {
         }
         typingTimeOutRef.current = setTimeout(() => {
             handleFiltersChange(0, filters.cateId,
-                e.target.value, 
+                e.target.value,
                 filters.fromPrice,
                 filters.toPrice)
         }, 500);
@@ -72,10 +81,16 @@ function ProductList(props) {
                     <div class="row">
                         <Filter handleFiltersChange={handleFiltersChange} filters={filters} />
                         <div class="col-md-8 col-lg-10 order-md-last">
-                            <input className='search' type="text" onChange={handleSearchChange} placeholder="Search" style={{ marginBottom: 20, backgroundImage: `url(${background})`}} />
-                            
-                            <Products products={products} />
+                            <input className='search' type="text" onChange={handleSearchChange} placeholder="Search" style={{ marginBottom: 20, backgroundImage: `url(${background})` }} />
+
+                            <Products products={products} handleOpenModal={handleOpenModal} />
                             <Pagination currentPage={filters.page} totalPage={totalPage} handleFilterPageChange={handleFiltersChange} />
+
+                            <Modal isOpen={isOpenPopUp} toggle={() => setOpen(!isOpenPopUp)} size='lg' style={{ top: '35%' }}>
+                                <ModalHeader toggle={() => setOpen(!isOpenPopUp)}>
+                                    {message}
+                                </ModalHeader>
+                            </Modal>
                         </div>
                     </div>
                 </div>

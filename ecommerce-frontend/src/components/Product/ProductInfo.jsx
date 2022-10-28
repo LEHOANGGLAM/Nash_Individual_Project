@@ -2,6 +2,9 @@ import PropTypes from 'prop-types'
 import StarRatings from 'react-star-ratings';
 import CartService from '../../services/CartService';
 import currencyFormat from '../Common/CurrencyFormat';
+import AuthService from '../../services/AuthService';
+import { useState } from 'react';
+import { Modal, ModalHeader } from 'reactstrap';
 
 ProductInfo.propTypes = {
     product: PropTypes.object,
@@ -14,20 +17,36 @@ ProductInfo.defaultProps = {
 
 function ProductInfo(props) {
     const { product } = props;
+    const [sizeId, setSizeId] = useState(
+        product.sizeCollection[0] ? product.sizeCollection[0]?.id : null
+    );
 
-    const addToCart = (item) => {
+    //handle POPUP MODEL
+    const [isOpen, setOpen] = useState(false);
+    const [message, setMessage] = useState();
+
+    const addToCart = (pro) => {
+        const user = AuthService.getCurrentUser();
         const cartItem = {
-            // quantity: e.target.value,
-            // productId: productId,
-            // sizeId: sizeId,
-            // userId: userId
+            quantity: 1,
+            productId: pro.id,
+            sizeId: {
+                id: sizeId
+            },
         }
-        CartService.addItemIntoCart(item).then((res) => {
-
+        CartService.addItemIntoCart(cartItem, user.id).then((res) => {
+            res.data.code ? setMessage(res.data.message) : setMessage("Add product successful!")
         }, (err) => {
-
+            console.log(err);
         }
         )
+
+        //handle POPUP MODEL
+        setOpen(true);
+    }
+
+    const handleSizeChange = (e) => {
+        setSizeId(e.target.value)
     }
 
     return (
@@ -61,7 +80,8 @@ function ProductInfo(props) {
                         <div class="form-group d-flex">
                             <div class="select-wrap">
                                 <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                <select name="" id="" class="form-control" style={{ width: 150 }}>
+                                <select name="" id="" class="form-control" style={{ width: 150 }}
+                                    value={sizeId} onChange={(e) => handleSizeChange(e)}>
                                     {product?.sizeCollection?.map(size =>
                                         <option value={size.id} key={size.id}>{size.sizeName}</option>
                                     )}
@@ -88,7 +108,12 @@ function ProductInfo(props) {
                         <p style={{ color: "#000" }}>{product.quantity} piece available</p>
                     </div>
                 </div>
-                <p><a class="btn btn-black py-3 px-5 mr-2" onClick={()=>addToCart}>Add to Cart</a><a href="/checkout" class="btn btn-primary py-3 px-5">Buy now</a></p>
+                <p><a class="btn btn-black py-3 px-5 mr-2" onClick={() => addToCart(product)}>Add to Cart</a><a href="/checkout" class="btn btn-primary py-3 px-5">Buy now</a></p>
+                <Modal isOpen={isOpen} toggle={() => setOpen(!isOpen)} size='lg' style={{top: '35%'}}>
+                    <ModalHeader toggle={() => setOpen(!isOpen)}>
+                        {message}
+                    </ModalHeader>
+                </Modal>
             </div>
         </>
     )

@@ -21,6 +21,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,13 +44,13 @@ public class CartItemServiceImplTest {
     CartItemServiceImpl cartItemServiceImpl;
     AutoCloseable autoCloseable;
 
-    String token;
-    String usernameFromToken;
+    CartItem inputCartItem;
     CartItem savedCartItem;
     CartItemResponseDto expectedCartItemResponseDto;
     CartItemRequestDto cartItemRequestDto;
     Product product;
     User user;
+    Size size;
 
     List<CartItem> cartItems = new ArrayList<>();
     CartItem cartItem;
@@ -64,38 +65,32 @@ public class CartItemServiceImplTest {
     CartItemMapper cartItemMapper;
     @Mock
     ModelMapper modelMapper;
-    @Mock
-    AuthTokenFilter AuthTokenFilter;
-    @Mock
-    JwtUtils jwtUtils;
-
 
     @BeforeEach
     void beforeEach() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         cartItemServiceImpl = new CartItemServiceImpl(cartItemRepository, userRepository, productRepository,
-                cartItemMapper, modelMapper, AuthTokenFilter, jwtUtils);
+                cartItemMapper, modelMapper);
         product = Product.builder().id("1").quantity((short) 100).price(BigDecimal.valueOf(100)).build();
         user = User.builder().id("2").build();
+        size = Size.builder().id("2").build();
 
-        savedCartItem =  CartItem.builder().id("1").quantity((short) 1)
+        savedCartItem = CartItem.builder().id("1").quantity((short) 1)
                 .productId(product)
                 .sizeId(Size.builder().id("2").build())
                 .userId(user).build();
 
-        when(AuthTokenFilter.parseJwt(any())).thenReturn(token);
-        when(jwtUtils.getUserNameFromJwtToken(token)).thenReturn(usernameFromToken);
-        when(userRepository.findByUsername(usernameFromToken)).thenReturn(Optional.of(user));
+        when(cartItemRepository.findById("1")).thenReturn(Optional.of(savedCartItem));
         when(cartItemRepository.save(any())).thenReturn(savedCartItem);
-        when(productRepository.findById("1")).thenReturn(Optional.of(product));
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
         when(userRepository.findById("2")).thenReturn(Optional.of(user));
 
 
         //init input
-        cartItemRequestDto = CartItemRequestDto.builder().quantity((short) 1)
-                .productId("1")
-                .sizeId("2")
-                .userId("2").build();
+        inputCartItem = CartItem.builder().id("1").quantity((short) 1)
+                .productId(product)
+                .sizeId(size)
+                .userId(user).build();
     }
 
     @AfterEach
@@ -105,42 +100,32 @@ public class CartItemServiceImplTest {
 
     @Test
     public void createCartItem_ShouldThrowException_WhenQuantityNotEnough() {
-        cartItemRequestDto.setQuantity((short) 101);
+        inputCartItem.setQuantity((short) 101);
         MessageException messageException = Assertions.assertThrows(MessageException.class,
-                () -> cartItemServiceImpl.createCartItem(cartItemRequestDto));
+                () -> cartItemServiceImpl.createCartItem(inputCartItem, "2"));
 
         Assertions.assertEquals("Not enough quantity ", messageException.getMessage());
     }
 
     @Test
     public void createCartItem_ShouldReturnValue_WhenCartItemIsExists() {
-        cartItem = CartItem.builder().id("1")
-                .quantity((short) 1)
-                .productId(product)
-                .sizeId(Size.builder().id("2").build())
-                .userId(user).build();
-        cartItems.add(cartItem);
-
-        when(cartItemServiceImpl.getCartItemByUserId(cartItemRequestDto.getUserId())).thenReturn(cartItems);
+        when(cartItemRepository.findByUserIdAndProductIdAndSizeId(inputCartItem.getUserId()
+                , inputCartItem.getProductId(), inputCartItem.getSizeId())).thenReturn(Optional.of(savedCartItem));
 
         ResourceAlreadyExistException messageException = Assertions.assertThrows(ResourceAlreadyExistException.class,
-                () -> cartItemServiceImpl.createCartItem(cartItemRequestDto));
+                () -> cartItemServiceImpl.createCartItem(inputCartItem, "2"));
 
         Assertions.assertEquals("This product already exists in your cart", messageException.getMessage());
     }
 
     @Test
     public void createCartItem_ShouldReturnValue_WhenNewDataValid() {
-        savedCartItem = mock(CartItem.class);
         expectedCartItemResponseDto = mock(CartItemResponseDto.class);
 
-        when(cartItemMapper.mapCartItemRequestDtoToEntity(cartItemRequestDto)).thenReturn(savedCartItem);
-        when(modelMapper.map(savedCartItem, CartItemResponseDto.class)).thenReturn(expectedCartItemResponseDto);
+        when(modelMapper.map(inputCartItem, CartItemResponseDto.class)).thenReturn(expectedCartItemResponseDto);
 
-        CartItemResponseDto result = cartItemServiceImpl.createCartItem(cartItemRequestDto);
+        CartItemResponseDto result = cartItemServiceImpl.createCartItem(inputCartItem, "2");
 
-        verify(savedCartItem).setActive(true);
-        verify(savedCartItem).setPrice(product.getPrice().multiply(BigDecimal.valueOf(savedCartItem.getQuantity())));
         assertThat(result, is(expectedCartItemResponseDto));
     }
 }

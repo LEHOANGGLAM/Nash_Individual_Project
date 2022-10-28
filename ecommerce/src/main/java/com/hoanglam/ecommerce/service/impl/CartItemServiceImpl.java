@@ -43,26 +43,16 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private CartItemMapper cartItemMapper;
 
-    @Autowired
-    HttpServletRequest httpServletRequest;
-
-    @Autowired
-    AuthTokenFilter AuthTokenFilter;
-
-    @Autowired
-    JwtUtils jwtUtils;
 
     public CartItemServiceImpl(CartItemRepository cartItemRepository, UserRepository userRepository,
                                ProductRepository productRepository, CartItemMapper cartItemMapper,
-                               ModelMapper modelMapper,AuthTokenFilter AuthTokenFilter, JwtUtils jwtUtils) {
+                               ModelMapper modelMapper) {
         super();
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.cartItemMapper = cartItemMapper;
         this.modelMapper = modelMapper;
-        this.AuthTokenFilter = AuthTokenFilter;
-        this.jwtUtils = jwtUtils;
     }
 
     @Override
@@ -72,7 +62,7 @@ public class CartItemServiceImpl implements CartItemService {
             throw new ResourceNotFoundException("User not exist with id: " + id);
         }
 
-        List<CartItem> list = cartItemRepository.findByUserId(userOptional.get());
+        List<CartItem> list = cartItemRepository.findByUserIdOrderByProductId(userOptional.get());
         return list;
     }
 
@@ -88,24 +78,20 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public CartItemResponseDto createCartItem(CartItemRequestDto cartItemDto) {
-        String token = AuthTokenFilter.parseJwt(httpServletRequest);
-        String username = jwtUtils.getUserNameFromJwtToken(token);
-
+    public CartItemResponseDto createCartItem(CartItem cartItem, String userId) {
         //Check quantity
-        Product pro = productRepository.findById(cartItemDto.getProductId()).orElseThrow(() ->
-                new ResourceNotFoundException("Product not exist with id: " + cartItemDto.getProductId()));
-        if (pro.getQuantity() < cartItemDto.getQuantity()) {
+        Product product = productRepository.findById(cartItem.getProductId().getId()).orElseThrow(() ->
+                new ResourceNotFoundException("Product not exist with id: " + cartItem.getProductId().getId()));
+        if (product.getQuantity() < cartItem.getQuantity()) {
             throw new MessageException("Not enough quantity ");
         }
 
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + userId));
         //When in cart already exists  the same product and size
-        List<CartItem> cartItemList = getCartItemByUserId(user.getId());
-        CartItem cartItem = cartItemList.stream().filter(c -> (c.getProductId().getId().equals(cartItemDto.getProductId()) && c.getSizeId().getId().equals(cartItemDto.getSizeId())))
-                .findFirst().orElse(null);
-        if (cartItem != null) {
+        Optional<CartItem> optionalCartItem =
+                cartItemRepository.findByUserIdAndProductIdAndSizeId(user, product, cartItem.getSizeId());
+        if (optionalCartItem.isPresent()) {
             throw new ResourceAlreadyExistException("This product already exists in your cart");
 
             //The second way is update quantity and price
@@ -119,11 +105,12 @@ public class CartItemServiceImpl implements CartItemService {
 
         //When in cart does not exist the same product and size
         UUID uuid = UUID.randomUUID();
-        cartItem = cartItemMapper.mapCartItemRequestDtoToEntity(cartItemDto);
+        //cartItem = cartItemMapper.mapCartItemRequestDtoToEntity(cartItemDto);
         cartItem.setId(uuid.toString());
         cartItem.setActive(true);
         cartItem.setCreatedAt(new Date());
-        cartItem.setPrice(pro.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+        cartItem.setUserId(user);
+        cartItem.setPrice(product.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
         cartItemRepository.save(cartItem);
 
         CartItemResponseDto cartItemResponseDto = modelMapper.map(cartItem, CartItemResponseDto.class);
@@ -131,22 +118,24 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public CartItemResponseDto updateCartItem(CartItemRequestDto cartItemDto) {
-        String token = AuthTokenFilter.parseJwt(httpServletRequest);
-        String username = jwtUtils.getUserNameFromJwtToken(token);
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+    public CartItemResponseDto updateCartItem(String cartId, CartItem cartItem) {
+        User user = userRepository.findById(cartItem.getUserId().getId())
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + cartItem.getUserId().getId()));
 
-
-        List<CartItem> cartItemList = getCartItemByUserId(user.getId());
-        CartItem cartItem = cartItemList.stream().filter(c -> (c.getProductId().getId().equals(cartItemDto.getProductId()) && c.getSizeId().getId().equals(cartItemDto.getSizeId())))
-                .findFirst().orElse(null);
-        if (cartItem == null) {
-            throw new ResourceNotFoundException("Item not exist in cart");
+        Optional<CartItem> optionalCartItem =
+                cartItemRepository.findById(cartId);
+        if (optionalCartItem.isEmpty()) {
+            throw new ResourceNotFoundException("This product not exists in your cart");
         }
 
-        cartItem.setQuantity(cartItemDto.getQuantity());
-        cartItem.setPrice(cartItem.getProductId().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
+        Product product = productRepository.findById(cartItem.getProductId().getId()).orElseThrow(() ->
+                new ResourceNotFoundException("Product not exist "));
+        if (product.getQuantity() < cartItem.getQuantity()) {
+            throw new MessageException("Not enough quantity ");
+        }
+
+        cartItem.setId(optionalCartItem.get().getId());
+        cartItem.setPrice(product.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity())));
         cartItemRepository.save(cartItem);
 
         CartItemResponseDto cartItemResponseDto = modelMapper.map(cartItem, CartItemResponseDto.class);

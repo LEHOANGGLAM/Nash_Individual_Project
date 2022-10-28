@@ -5,37 +5,36 @@ import CartService from '../../services/CartService';
 
 CartItems.propTypes = {
     items: PropTypes.array,
+    handleUpdate: PropTypes.func,
     //     checkedState: PropTypes.array,
     //     handlecheckedItems: PropTypes.func,
 }
 
 CartItems.defaultProps = {
     items: null,
+    handleUpdate: null,
     // checkedState: [],
     // handlecheckedItems: null,
 }
 
 function CartItems(props) {
-    const { items } = props;
+    const { items, handleUpdate } = props;
 
 
-    const handleInputsQuantity = (e, productId, sizeId, userId) => {
+    const handleInputsQuantity = (e, item) => {
         if (e.target.value != 0) {
-            const cartItem = {
-                quantity: e.target.value,
-                productId: productId,
-                sizeId: sizeId,
-    
-            }
-            CartService.updateCartItem(cartItem)
+            item.quantity = e.target.value;
+            CartService.updateCartItem(item.id, item);
+            handleUpdate(true)
         }
     }
 
     const handleDeleteCartItem = (id) => {
         CartService.deleteCartItem(id);
+        handleUpdate(true)
     }
 
-    // const handleOnChange = (index) => {
+    // const handleOnChange = (index) => { 
     //     if (handlecheckedItems) {
     //         handlecheckedItems(index);
     //     }
@@ -48,7 +47,7 @@ function CartItems(props) {
                     <table class="table">
                         <thead class="thead-primary">
                             <tr class="text-center">
-                                <th>&nbsp;</th>
+                                {/* <th>&nbsp;</th> */}
                                 <th>&nbsp;</th>
                                 <th>&nbsp;</th>
                                 <th>Product</th>
@@ -79,7 +78,7 @@ function CartItems(props) {
 
                                     <td class="quantity">
                                         <div class="input-group mb-3">
-                                            <input type="number" name="quantity" class="quantity form-control input-number" onChange={(e) => handleInputsQuantity(e, item.productId.id, item.sizeId.id)}
+                                            <input type="number" name="quantity" class="quantity form-control input-number" onChange={(e) => handleInputsQuantity(e, item)}
                                                 value={item.quantity} min="1" max="100" />
                                         </div>
                                     </td>

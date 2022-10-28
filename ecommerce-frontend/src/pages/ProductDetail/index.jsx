@@ -13,7 +13,7 @@ ProductDetail.propTypes = {
 }
 
 ProductDetail.defaultProps = {
-
+    
 }
 
 

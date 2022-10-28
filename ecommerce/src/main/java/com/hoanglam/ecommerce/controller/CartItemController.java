@@ -14,32 +14,32 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/carts")
+@RequestMapping("")
 public class CartItemController {
     @Autowired
     public CartItemService cartItemService;
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/user/{id}/carts")
     public List<CartItem> getCartItemByUserId(@PathVariable String id) {
         return cartItemService.getCartItemByUserId(id);
     }
-    @GetMapping("/user/{id}/count")
+    @GetMapping("/user/{id}/carts/count")
     public int countCartItemByUserId(@PathVariable String id) {
         return cartItemService.countCartItemByUserId(id);
     }
 
-    @PostMapping("")
+    @PostMapping("/user/{userId}/carts")
     @ResponseStatus(HttpStatus.CREATED)
-    public CartItemResponseDto createCartItem(@Valid @RequestBody CartItemRequestDto cartItemRequestDto){
-        return cartItemService.createCartItem(cartItemRequestDto);
+    public CartItemResponseDto createCartItem(@PathVariable String userId, @Valid @RequestBody CartItem c){
+        return cartItemService.createCartItem(c, userId );
     }
 
-    @PutMapping("")
-    public CartItemResponseDto updateCartItem(@Valid @RequestBody CartItemRequestDto cartItemRequestDto){
-        return cartItemService.updateCartItem(cartItemRequestDto);
+    @PutMapping("/carts/{id}")
+    public CartItemResponseDto updateCartItem(@PathVariable String id,@Valid @RequestBody CartItem c){
+        return cartItemService.updateCartItem(id, c);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/carts/{id}")
     public DeleteResponseDto deleteCartItem(@PathVariable String id) {
         return this.cartItemService.deleteCartItem(id);
     }
