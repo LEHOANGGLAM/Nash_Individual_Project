@@ -15,7 +15,6 @@ public class CartItemRequestDto {
     private String productId;
     @NotBlank
     private String sizeId;
-    @NotBlank
     private String userId;
 
     public String getUserId() {

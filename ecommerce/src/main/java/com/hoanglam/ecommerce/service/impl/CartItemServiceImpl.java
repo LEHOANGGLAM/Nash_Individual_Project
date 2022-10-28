@@ -1,5 +1,7 @@
 package com.hoanglam.ecommerce.service.impl;
 
+import com.hoanglam.ecommerce.config.jwt.AuthTokenFilter;
+import com.hoanglam.ecommerce.config.jwt.JwtUtils;
 import com.hoanglam.ecommerce.dto.request.CartItemRequestDto;
 import com.hoanglam.ecommerce.dto.response.entities.CartItemResponseDto;
 import com.hoanglam.ecommerce.dto.response.DeleteResponseDto;
@@ -16,8 +18,10 @@ import com.hoanglam.ecommerce.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -39,15 +43,26 @@ public class CartItemServiceImpl implements CartItemService {
     @Autowired
     private CartItemMapper cartItemMapper;
 
+    @Autowired
+    HttpServletRequest httpServletRequest;
+
+    @Autowired
+    AuthTokenFilter AuthTokenFilter;
+
+    @Autowired
+    JwtUtils jwtUtils;
+
     public CartItemServiceImpl(CartItemRepository cartItemRepository, UserRepository userRepository,
                                ProductRepository productRepository, CartItemMapper cartItemMapper,
-                               ModelMapper modelMapper) {
+                               ModelMapper modelMapper,AuthTokenFilter AuthTokenFilter, JwtUtils jwtUtils) {
         super();
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
         this.cartItemMapper = cartItemMapper;
         this.modelMapper = modelMapper;
+        this.AuthTokenFilter = AuthTokenFilter;
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
@@ -74,6 +89,9 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public CartItemResponseDto createCartItem(CartItemRequestDto cartItemDto) {
+        String token = AuthTokenFilter.parseJwt(httpServletRequest);
+        String username = jwtUtils.getUserNameFromJwtToken(token);
+
         //Check quantity
         Product pro = productRepository.findById(cartItemDto.getProductId()).orElseThrow(() ->
                 new ResourceNotFoundException("Product not exist with id: " + cartItemDto.getProductId()));
@@ -81,8 +99,10 @@ public class CartItemServiceImpl implements CartItemService {
             throw new MessageException("Not enough quantity ");
         }
 
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
         //When in cart already exists  the same product and size
-        List<CartItem> cartItemList = getCartItemByUserId(cartItemDto.getUserId());
+        List<CartItem> cartItemList = getCartItemByUserId(user.getId());
         CartItem cartItem = cartItemList.stream().filter(c -> (c.getProductId().getId().equals(cartItemDto.getProductId()) && c.getSizeId().getId().equals(cartItemDto.getSizeId())))
                 .findFirst().orElse(null);
         if (cartItem != null) {
@@ -112,7 +132,13 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public CartItemResponseDto updateCartItem(CartItemRequestDto cartItemDto) {
-        List<CartItem> cartItemList = getCartItemByUserId(cartItemDto.getUserId());
+        String token = AuthTokenFilter.parseJwt(httpServletRequest);
+        String username = jwtUtils.getUserNameFromJwtToken(token);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+
+
+        List<CartItem> cartItemList = getCartItemByUserId(user.getId());
         CartItem cartItem = cartItemList.stream().filter(c -> (c.getProductId().getId().equals(cartItemDto.getProductId()) && c.getSizeId().getId().equals(cartItemDto.getSizeId())))
                 .findFirst().orElse(null);
         if (cartItem == null) {

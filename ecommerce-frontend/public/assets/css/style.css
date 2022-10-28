@@ -42,6 +42,12 @@
   box-sizing: border-box;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 input[type=text].search {
   width: 130px;
   box-sizing: border-box;
@@ -13509,6 +13515,7 @@ h5,
   border: 1px solid transparent !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
+
 
 .table tbody tr td.product-remove a {
   background: #dbcc8f;

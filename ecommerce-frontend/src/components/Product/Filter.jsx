@@ -53,6 +53,7 @@ function Filter(props) {
             handleFiltersChange(0, newCateId, filters.name, filters.fromPrice, filters.toPrice)
         }
     }
+
     const handleInputsChange = e => {
         handleValidation()
         setInputs({
@@ -60,6 +61,7 @@ function Filter(props) {
             [e.target.name]: e.target.value === '' ? undefined : e.target.value,
         });
     }
+
     const handleValidation = () => {
         let isValid = true;
         if (Number(inputs.fromPrice) >= Number(inputs.toPrice)) {
@@ -109,7 +111,7 @@ function Filter(props) {
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="guests">Price from:</label>
-                                    <TextField type="number" id="filled-basic" label="" variant="filled"  
+                                    <TextField type="number" id="filled-basic" label="" variant="filled"
                                         name='fromPrice' value={Number(inputs.fromPrice).toString() || 0} onChange={handleInputsChange}
                                     />
                                     {errors.fromPrice && (
@@ -122,7 +124,7 @@ function Filter(props) {
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="guests">Price to:</label>
-                                    <TextField type="number" id="filled-basic" label="" variant="filled" valida
+                                    <TextField type="number" id="filled-basic" label="" variant="filled" 
                                         name='toPrice' value={Number(inputs.toPrice).toString() || 0} onChange={handleInputsChange}
                                     />
                                      {errors.toPrice && (

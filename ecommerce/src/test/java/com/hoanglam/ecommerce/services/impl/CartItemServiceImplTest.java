@@ -1,5 +1,7 @@
 package com.hoanglam.ecommerce.services.impl;
 
+import com.hoanglam.ecommerce.config.jwt.AuthTokenFilter;
+import com.hoanglam.ecommerce.config.jwt.JwtUtils;
 import com.hoanglam.ecommerce.dto.request.CartItemRequestDto;
 import com.hoanglam.ecommerce.dto.response.entities.CartItemResponseDto;
 import com.hoanglam.ecommerce.dto.response.entities.ProductResponseDto;
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,6 +43,8 @@ public class CartItemServiceImplTest {
     CartItemServiceImpl cartItemServiceImpl;
     AutoCloseable autoCloseable;
 
+    String token;
+    String usernameFromToken;
     CartItem savedCartItem;
     CartItemResponseDto expectedCartItemResponseDto;
     CartItemRequestDto cartItemRequestDto;
@@ -59,11 +64,17 @@ public class CartItemServiceImplTest {
     CartItemMapper cartItemMapper;
     @Mock
     ModelMapper modelMapper;
+    @Mock
+    AuthTokenFilter AuthTokenFilter;
+    @Mock
+    JwtUtils jwtUtils;
+
 
     @BeforeEach
     void beforeEach() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        cartItemServiceImpl = new CartItemServiceImpl(cartItemRepository, userRepository, productRepository, cartItemMapper, modelMapper);
+        cartItemServiceImpl = new CartItemServiceImpl(cartItemRepository, userRepository, productRepository,
+                cartItemMapper, modelMapper, AuthTokenFilter, jwtUtils);
         product = Product.builder().id("1").quantity((short) 100).price(BigDecimal.valueOf(100)).build();
         user = User.builder().id("2").build();
 
@@ -72,6 +83,9 @@ public class CartItemServiceImplTest {
                 .sizeId(Size.builder().id("2").build())
                 .userId(user).build();
 
+        when(AuthTokenFilter.parseJwt(any())).thenReturn(token);
+        when(jwtUtils.getUserNameFromJwtToken(token)).thenReturn(usernameFromToken);
+        when(userRepository.findByUsername(usernameFromToken)).thenReturn(Optional.of(user));
         when(cartItemRepository.save(any())).thenReturn(savedCartItem);
         when(productRepository.findById("1")).thenReturn(Optional.of(product));
         when(userRepository.findById("2")).thenReturn(Optional.of(user));

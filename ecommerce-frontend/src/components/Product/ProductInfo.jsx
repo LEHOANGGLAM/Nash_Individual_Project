@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import StarRatings from 'react-star-ratings';
+import CartService from '../../services/CartService';
 import currencyFormat from '../Common/CurrencyFormat';
 
 ProductInfo.propTypes = {
@@ -13,6 +14,21 @@ ProductInfo.defaultProps = {
 
 function ProductInfo(props) {
     const { product } = props;
+
+    const addToCart = (item) => {
+        const cartItem = {
+            // quantity: e.target.value,
+            // productId: productId,
+            // sizeId: sizeId,
+            // userId: userId
+        }
+        CartService.addItemIntoCart(item).then((res) => {
+
+        }, (err) => {
+
+        }
+        )
+    }
 
     return (
         <>
@@ -72,7 +88,7 @@ function ProductInfo(props) {
                         <p style={{ color: "#000" }}>{product.quantity} piece available</p>
                     </div>
                 </div>
-                <p><a href="/" class="btn btn-black py-3 px-5 mr-2">Add to Cart</a><a href="/" class="btn btn-primary py-3 px-5">Buy now</a></p>
+                <p><a class="btn btn-black py-3 px-5 mr-2" onClick={()=>addToCart}>Add to Cart</a><a href="/checkout" class="btn btn-primary py-3 px-5">Buy now</a></p>
             </div>
         </>
     )
