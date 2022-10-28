@@ -29,7 +29,6 @@ class LoginAndRegister extends Component {
                                     </TabPanel>
                                 </div>
                             </Tabs>
-
                         </div>
                     </div>
                 </div>

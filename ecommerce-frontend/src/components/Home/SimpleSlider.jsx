@@ -29,7 +29,7 @@ export default class SimpleSlider extends Component {
             <div class="owl-stage-outer">
               <OwlCarousel className='owl-stage' dots items={1} autoplay loop autoplayTimeout={3000}>
                 {tempData.map((item, index)=> 
-                  <div class="item " style={{ width: 1519.2 }}>
+                  <div class="item " style={{ width: 1519.2 }} key={index}>
                     <div class="slider-item js-fullheight" >
                       <div class="overlay"></div>
                       <div class="container-fluid p-0">

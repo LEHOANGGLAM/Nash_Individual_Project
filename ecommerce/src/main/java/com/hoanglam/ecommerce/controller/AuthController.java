@@ -2,6 +2,7 @@ package com.hoanglam.ecommerce.controller;
 
 
 import com.hoanglam.ecommerce.config.jwt.JwtUtils;
+import com.hoanglam.ecommerce.dto.response.entities.UserResponseDto;
 import com.hoanglam.ecommerce.entites.Role;
 import com.hoanglam.ecommerce.entites.User;
 import com.hoanglam.ecommerce.repository.RoleRepository;
@@ -21,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,6 +37,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(authService.authenticateUser(loginRequest));
+    }
+
+    @GetMapping("/user")
+    public UserResponseDto getUserByToken(HttpServletRequest headerToken) {
+        return authService.getUserByJwtToken(headerToken);
     }
 
     @PostMapping("/signup")

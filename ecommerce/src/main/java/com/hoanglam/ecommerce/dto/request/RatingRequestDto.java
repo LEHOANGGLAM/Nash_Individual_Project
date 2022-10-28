@@ -1,6 +1,7 @@
 package com.hoanglam.ecommerce.dto.request;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class RatingRequestDto {
@@ -10,10 +11,9 @@ public class RatingRequestDto {
     private String orderItemId;
     @NotBlank(message = "content is required")
     private String content;
-    @NotBlank(message = "rating is required")
+    @NotNull
     private int rating;
 
-    private String productId;
 
     public String getUserId() {
         return userId;
@@ -47,11 +47,4 @@ public class RatingRequestDto {
         this.rating = rating;
     }
 
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
 }

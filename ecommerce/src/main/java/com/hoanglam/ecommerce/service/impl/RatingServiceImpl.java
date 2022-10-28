@@ -12,6 +12,7 @@ import com.hoanglam.ecommerce.repository.ProductRepository;
 import com.hoanglam.ecommerce.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -40,7 +41,7 @@ public class RatingServiceImpl implements RatingService {
 
         rating.setId(uuid.toString());
         rating.setCreatedDate(new Date());
-        rating.setProductId(c.getProductId());
+        rating.setProductId(rating.getOrderItem().getProductId().getId());
         Rating savedRating = ratingRepository.save(rating);
 
         averageRating(savedRating.getOrderItem().getProductId(), savedRating.getRating());
@@ -57,6 +58,7 @@ public class RatingServiceImpl implements RatingService {
         return ratings;
     }
 
+    @Transactional
     private float averageRating(Product product, int rating) {
         float average = (product.getAverageRating() + rating) / 2;
         product.setAverageRating(average);

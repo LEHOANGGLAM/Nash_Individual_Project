@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import AuthService from '../../services/AuthService';
 import CateService from '../../services/CateService';
-import UserService from '../../services/UserService';
-
 
 class NavBar extends Component {
     constructor(props) {
@@ -10,6 +8,7 @@ class NavBar extends Component {
         this.state = {
             showUser: false,
             showAdmin: false,
+            roles: [],
             currentUser: undefined,
             isHovering: false,
 
@@ -29,17 +28,18 @@ class NavBar extends Component {
     };
 
     componentDidMount() {
-        const user = AuthService.getCurrentUser();
-        if (user) {
-            UserService.getUserById(user.id).then((res) => {
-                this.setState({
-                    currentUser: res.data,
-                    showUser: user.roles.includes("user"),
-                    showAdmin: user.roles.includes("admin"),
-                });
-            })
-        }
-
+        // ProductService.getProductsByPredicates(predicates).then((res) => {
+        //     setProducts(res.data.listResponse)
+        //     setTotalPage(res.data.totalPage)
+        // })
+        AuthService.getCurrentUser().then((res) => {
+            this.setState({
+                currentUser: res.data,
+                showAdmin: JSON.stringify(res.data?.rolesCollection).includes("admin"),
+                showUser: JSON.stringify(res.data?.rolesCollection).includes("user")
+            });
+        });
+       
         CateService.getAllCates().then((res) => {
             this.setState({
                 cates: res.data,
@@ -58,7 +58,7 @@ class NavBar extends Component {
     }
 
     render() {
-        const { currentUser, showAdmin, showUser } = this.state;
+        const { currentUser, showAdmin, showUser} = this.state;
         const isHovering = this.state.isHovering;
         return (
             <div>
@@ -92,7 +92,7 @@ class NavBar extends Component {
                                         <li class="nav-item"><a href="" class="nav-link">Blog</a></li>
                                         <li class="nav-item"><a href="" class="nav-link">Contact</a></li>
 
-                                        <li class="nav-item cta cta-colored"><a href="" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+                                        <li class="nav-item cta cta-colored"><a href="/cart" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
 
                                     </>
                                 )}

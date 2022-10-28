@@ -8,6 +8,7 @@ import LoginAndRegister from './pages/Login&Register/LoginAndRegister';
 import PageNotFound from './pages/Error/PageNotFound';
 import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
+import Cart from './pages/Cart';
 
 function App() {
   return (
@@ -15,11 +16,13 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <Route exact path="/"><Home /></Route>
-          <Route path="/login"> <LoginAndRegister /></Route>
+          <Route exact path="/"             component={Home}></Route>
+          <Route path="/login"              component={LoginAndRegister}></Route>
 
-          <Route path="/products"><ProductList /></Route>
-          <Route path="/product-:productId"><ProductDetail /></Route>
+          <Route path="/products"           component={ProductList}></Route>
+          <Route path="/product-:productId" component={ProductDetail}></Route>
+
+          <Route path="/cart" component={Cart}></Route>
 
           <Route path="*"> <PageNotFound /></Route>
         </Switch>

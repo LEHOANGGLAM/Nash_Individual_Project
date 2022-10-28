@@ -6,7 +6,6 @@ class Register extends Component {
         super(props)
         this.state = {
             fields: {},
-            errors: {},
             successful: false,
             message: "",
         }
@@ -21,10 +20,7 @@ class Register extends Component {
     }
 
     handleValidation = () => {
-        let fields = this.state.fields;
-        let errors = {};
         let formIsValid = true;
-
         if (this.state.fields["password"] !== this.state.fields["password2"]) {
             this.setState({
                 successful: false,
@@ -33,8 +29,7 @@ class Register extends Component {
             formIsValid = false;
             return formIsValid;
         }
-        this.setState({ fields })
-        this.setState({ errors: errors });
+       
         return formIsValid;
     }
 

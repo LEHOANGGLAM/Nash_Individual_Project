@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import Moment from 'react-moment';
 import PropTypes from 'prop-types'
 import ProductService from '../../services/ProductService';
 import Products from './Products';
 import queryString from 'query-string';
+import RatingService from '../../services/RatingService';
+import StarRatings from 'react-star-ratings';
 
 Rating.propTypes = {
     product: PropTypes.object,
@@ -19,19 +21,26 @@ function Rating(props) {
     const { product } = props;
     const { cateId } = props;
     const [otherProducts, setOthers] = useState([])
-
+    const [ratings, setRatings] = useState([])
 
     useEffect(() => {
-        fetchProducts(cateId);
+        fetchSimilarProducts(cateId);
+        fetchRatings(product.id);
     }, [])
 
-    const fetchProducts = async (cateId) => {
+    const fetchSimilarProducts = async (cateId) => {
         const filters = {
             cateId: cateId,
         }
         let predicates = queryString.stringify(filters);
         ProductService.getProductsByPredicates(predicates).then((res) => {
             setOthers(res.data.listResponse.slice(0, 3))
+        })
+    }
+    
+    const fetchRatings = async (id) => {
+        RatingService.getRatingsByProductId(id).then((res) => {
+            setRatings(res.data)
         })
     }
 
@@ -59,31 +68,31 @@ function Rating(props) {
 
                     <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-day-2-tab">
                         <div class="row">
-                            <div class="col-md-12" >
+                            <div class="col-md-11" style={{width: 1000}}>
                                 <div class="p-4">
-                                    <h3 class="mb-4" style={{ marginRight: 50 }}>23 Reviews</h3>
+                                    <h3 class="mb-4" style={{ marginRight: 50 }}>{ratings.length} Reviews</h3>
                                 </div>
-                                <div class="review">
-                                    <div class="user-img" style={{ backgroundImage: `url(images/person_2.jpg)` }}></div>
-                                    <div class="desc">
-                                        <h4>
-                                            <span class="text-left">Jacob Webb</span>
-                                            <span class="text-right">14 March 2018</span>
-                                        </h4>
-                                        <p class="star">
-                                            <span>
-                                                <i class="ion-ios-star-outline"></i>
-                                                <i class="ion-ios-star-outline"></i>
-                                                <i class="ion-ios-star-outline"></i>
-                                                <i class="ion-ios-star-outline"></i>
-                                                <i class="ion-ios-star-outline"></i>
-                                            </span>
-                                            <span class="text-right"><a href="#" class="reply"><i class="icon-reply"></i></a></span>
-                                        </p>
-                                        <p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
-                                    </div>
-                                </div>
-                                
+                                {
+                                    ratings.map((rating, index) =>
+                                        <div class="review" key={index} style={{marginLeft: 30}}>
+                                            <div class="user-img" style={{ backgroundImage: `url(${rating.userId.avatarImage})`  }}></div>
+                                            <div class="desc">
+                                                <h4>
+                                                    <span class="text-left">{rating.userId.firstName} {rating.userId.lastName}</span>
+                                                    <p style={{color: "#b3b3b3", fontSize: 15}} > On <Moment date={rating.createdDate} format="YYYY/MM/DD"  /> </p>
+                                                </h4>
+                                                    <StarRatings starDimension="14px"
+                                                        starSpacing="0"
+                                                        rating={rating.rating}
+                                                        starRatedColor="brown"
+                                                        numberOfStars={5}
+                                                        name='rating'
+                                                    />
+                                                <p>{rating.content}</p>
+                                            </div>
+                                        </div>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
@@ -98,7 +107,6 @@ function Rating(props) {
                                     : <>No Product found</>
                                 }
                             </div>
-
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import authHeader from './AuthHeader';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/auth`;
 
@@ -15,7 +16,7 @@ class AuthService {
     }
 
     getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user'));
+        return axios.get(API_BASE_URL + '/user', { headers: authHeader() });
     }
 
     logout() {

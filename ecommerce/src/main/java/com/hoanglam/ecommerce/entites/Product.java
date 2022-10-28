@@ -42,7 +42,7 @@ public class Product implements Serializable {
     @Column(name = "metaTitle")
     private String metaTitle;
 
-    @Size(max = 1000)
+    @Size(max = 2000)
     @Column(name = "desciption")
     private String desciption;
 
@@ -105,8 +105,6 @@ public class Product implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productId")
     private Collection<CartItem> cartItemCollection;
 
-
-
     @JoinTable(name = "product_size", joinColumns = {
             @JoinColumn(name = "product_id", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "size_id", referencedColumnName = "id")})
@@ -129,10 +127,11 @@ public class Product implements Serializable {
     }
 
     public Product(@Size(max = 36) String id, @NotNull @Size(min = 1, max = 75) String title,
-                   @Size(max = 100) String metaTitle, @Size(max = 255) String desciption, @NotNull BigDecimal price,
-                   float discount, float averageRating, int numberSold, int numberRating, String detail, @NotNull short quantity,
-                   Date createdDate, Date updatedDate, @Size(max = 9000) String content, @NotNull boolean active, Collection<Category> categoryCollection,
-                   Collection<Image> imageCollection, Collection<OrderItem> orderItemCollection, Collection<CartItem> cartItemCollection,
+                   @Size(max = 100) String metaTitle,     @Size(max = 2000) String desciption, @NotNull BigDecimal price,
+                   float discount, float averageRating, int numberSold, int numberRating, String detail,
+                   @NotNull short quantity, Date createdDate, Date updatedDate, @Size(max = 9000) String content,
+                   @NotNull boolean active, Collection<Category> categoryCollection, Collection<Image> imageCollection,
+                   Collection<OrderItem> orderItemCollection, Collection<CartItem> cartItemCollection,
                    Collection<com.hoanglam.ecommerce.entites.Size> sizeCollection) {
         this.id = id;
         this.title = title;

@@ -4,6 +4,8 @@
  */
 package com.hoanglam.ecommerce.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.*;
@@ -27,6 +29,7 @@ public class Role implements Serializable {
     @Column(name = "name")
     private String name;
     @ManyToMany(mappedBy = "rolesCollection")
+    @JsonIgnore
     private Collection<User> userCollection;
 
     public Role() {

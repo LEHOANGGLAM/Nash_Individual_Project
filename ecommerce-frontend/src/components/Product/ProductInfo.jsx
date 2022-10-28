@@ -19,7 +19,7 @@ function ProductInfo(props) {
             <div class="col-lg-6 product-details pl-md-5 ftco-animate fadeInUp ftco-animated">
                 <h3>{product.title}</h3>
                 <div class="rating d-flex">
-                    <p class="text-left mr-4">
+                    <div class="text-left mr-4">
                         <a href="/" class="mr-2">{product.averageRating?.toFixed(2)}</a>
                         <StarRatings starDimension="14px"
                             starSpacing="0"
@@ -28,7 +28,7 @@ function ProductInfo(props) {
                             numberOfStars={5}
                             name='rating'
                         />
-                    </p>
+                    </div>
                     <p class="text-left mr-4">
                         <a href="#" class="mr-2" style={{ color: "#000" }}>{product.numberRating} <span style={{ color: "#bbb" }}>Rating</span></a>
                     </p>

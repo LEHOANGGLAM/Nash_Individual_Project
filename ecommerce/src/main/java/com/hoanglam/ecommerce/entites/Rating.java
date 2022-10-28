@@ -29,7 +29,6 @@ public class Rating {
 
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
-    @JsonIgnore
     private User userId;
     @Column(name = "rating")
     private Integer rating;
