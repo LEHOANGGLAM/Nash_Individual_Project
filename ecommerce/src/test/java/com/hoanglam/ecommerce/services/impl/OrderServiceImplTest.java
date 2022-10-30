@@ -70,7 +70,7 @@ public class OrderServiceImplTest {
     void beforeEach() {
         autoCloseable = MockitoAnnotations.openMocks(this);
         orderServiceImpl = new OrderServiceImpl(orderRepository, orderItemRepository, cartItemRepository,
-                productRepository, orderMapper , orderItemMapper, modelMapper);
+                productRepository, userRepository, orderMapper , orderItemMapper, modelMapper);
 
         product = Product.builder().id("1").quantity((short) 100).price(BigDecimal.valueOf(100)).title("test").build();
         user = User.builder().id("2").build();
@@ -101,7 +101,7 @@ public class OrderServiceImplTest {
     public void createOrder_ShouldThrowException_WhenQuantityNotEnough() {
         orderItemRequestDto.setQuantity((short) 101);
         MessageException messageException = Assertions.assertThrows(MessageException.class,
-                () -> orderServiceImpl.createOrder(orderResquestDto));
+                () -> orderServiceImpl.createOrder(orderResquestDto, "2"));
 
         Assertions.assertEquals("Not enough quantity with Item: " + product.getTitle(), messageException.getMessage());
     }
@@ -117,7 +117,7 @@ public class OrderServiceImplTest {
         when(orderServiceImpl.addOrderItemIntoOrder(savedOrder, orderResquestDto.getOrderItems())).thenReturn(savedOrder);
         when(modelMapper.map(savedOrder, OrderResponseDto.class)).thenReturn(expectedOrderResDto);
 
-        OrderResponseDto result = orderServiceImpl.createOrder(orderResquestDto);
+        OrderResponseDto result = orderServiceImpl.createOrder(orderResquestDto, "2");
 
         verify(savedOrder).setStatus((short) 0);
         verify(savedOrder).setTotal(BigDecimal.valueOf(0));

@@ -22,22 +22,26 @@ function Products(props) {
 
     const addToCart = (pro) => {
         const user = AuthService.getCurrentUser();
-        const cartItem = {
-            quantity: 1,
-            productId: pro.id,
-            sizeId: {
-                id: pro.sizeCollection[0]?.id
+        if (user) {
+            const cartItem = {
+                quantity: 1,
+                productId: pro.id,
+                sizeId: {
+                    id: pro.sizeCollection[0]?.id
+                }
             }
-        }
 
-        let mess;
-        CartService.addItemIntoCart(cartItem, user.id).then((res) => {
-            mess = res.data.code ? res.data.message : "Add product successful!"
-            handleOpenModal(true, mess);
-        }, (err) => {
-            console.log(err);
+            let mess;
+            CartService.addItemIntoCart(cartItem, user.id).then((res) => {
+                mess = res.data.code ? res.data.message : "Add product successful!"
+                handleOpenModal(true, mess);
+            }, (err) => {
+                console.log(err);
+            }
+            )
+        } else {
+            window.location.pathname = "/login"
         }
-        )
     }
 
     return (

@@ -23,15 +23,8 @@ public class OrderMapper {
     private OrderItemRepository orderItemRepository;
 
     public Order mapOrderRequestDtoToEntity(OrderResquestDto cDto) {
-        Optional<User> userOptional = userRepository.findById(cDto.getUserId());
-        if (userOptional.isEmpty()) {
-            throw new ResourceNotFoundException("User not exist with id: " + cDto.getUserId());
-        }
-
-
 
         return Order.builder()
-                .userId(userOptional.get())
                 .address(cDto.getAddress())
                 .paymentMethod(cDto.getPaymentMethod())
                 .build();

@@ -17,6 +17,7 @@ ProductInfo.defaultProps = {
 
 function ProductInfo(props) {
     const { product } = props;
+    const [quantity, setQuantity] = useState(1);
     const [sizeId, setSizeId] = useState(
         product.sizeCollection[0] ? product.sizeCollection[0]?.id : null
     );
@@ -27,28 +28,43 @@ function ProductInfo(props) {
 
     const addToCart = (pro) => {
         const user = AuthService.getCurrentUser();
-        const cartItem = {
-            quantity: 1,
-            productId: pro.id,
-            sizeId: {
-                id: sizeId
-            },
-        }
-        CartService.addItemIntoCart(cartItem, user.id).then((res) => {
-            res.data.code ? setMessage(res.data.message) : setMessage("Add product successful!")
-        }, (err) => {
-            console.log(err);
-        }
-        )
+        if (user) {
+            const cartItem = {
+                quantity: quantity,
+                productId: pro.id,
+                sizeId: {
+                    id: sizeId
+                },
+            }
+            CartService.addItemIntoCart(cartItem, user.id).then((res) => {
+                res.data.code ? setMessage(res.data.message) : setMessage("Add product successful!")
+            }, (err) => {
+                console.log(err);
+            }
+            )
 
-        //handle POPUP MODEL
-        setOpen(true);
+            //handle POPUP MODEL
+            setOpen(true);
+        } else {
+            window.location.pathname = "/login"
+        }
+    }
+
+    const handleInputsQuantity = (e) => {
+        if (e.target.value > 0) {
+            setQuantity(e.target.value)
+        }
+    }
+
+    const handleMinusQuantity = (newQuantity) => {
+        if (newQuantity > 0) {
+            setQuantity(newQuantity)
+        }
     }
 
     const handleSizeChange = (e) => {
         setSizeId(e.target.value)
     }
-
     return (
         <>
             <div class="col-lg-6 product-details pl-md-5 ftco-animate fadeInUp ftco-animated">
@@ -92,13 +108,14 @@ function ProductInfo(props) {
                     <div class="w-100"></div>
                     <div class="input-group col-md-6 d-flex mb-3">
                         <span class="input-group-btn mr-2">
-                            <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
+                            <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="" onClick={() => handleMinusQuantity(quantity - 1)} >
                                 <i class="ion-ios-remove"></i>
                             </button>
                         </span>
-                        <input type="number" id="quantity" name="quantity" class="quantity form-control input-number" defaultValue={1} min="1" max="100" />
+                        <input type="number" id="quantity" name="quantity" class="quantity form-control input-number"
+                            value={quantity} min="1" max="100" onChange={(e) => handleInputsQuantity(e)} />
                         <span class="input-group-btn ml-2">
-                            <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+                            <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="" onClick={() => setQuantity(quantity + 1)} >
                                 <i class="ion-ios-add"></i>
                             </button>
                         </span>
@@ -109,7 +126,7 @@ function ProductInfo(props) {
                     </div>
                 </div>
                 <p><a class="btn btn-black py-3 px-5 mr-2" onClick={() => addToCart(product)}>Add to Cart</a><a href="/checkout" class="btn btn-primary py-3 px-5">Buy now</a></p>
-                <Modal isOpen={isOpen} toggle={() => setOpen(!isOpen)} size='lg' style={{top: '35%'}}>
+                <Modal isOpen={isOpen} toggle={() => setOpen(!isOpen)} size='lg' style={{ top: '35%' }}>
                     <ModalHeader toggle={() => setOpen(!isOpen)}>
                         {message}
                     </ModalHeader>

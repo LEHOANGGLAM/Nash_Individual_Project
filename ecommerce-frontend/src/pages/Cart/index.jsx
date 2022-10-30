@@ -8,9 +8,6 @@ import AuthService from '../../services/AuthService';
 const Cart = () => {
     const [items, setItems] = useState([]);
     const [isUpdate, setUpdate] = useState(false);
-    // const [checkedState, setCheckedState] = useState(
-    //     new Array(items.length).fill(false)
-    // );
 
     useEffect(() => {
         fetchCartItem();
@@ -27,26 +24,16 @@ const Cart = () => {
     const handleUpdate = (boolean) => {
         setUpdate(boolean)
     }
-    // const handleOnChange = (position) => {
-    //     const updatedCheckedState = checkedState.map((item, index) =>
-    //         index === position ? !item : item
-    //     );
-    //     console.log(updatedCheckedState);
-    //     setCheckedState(updatedCheckedState);
 
-    //     const totalPri = updatedCheckedState.reduce(
-    //         (sum, currentState, index) => {
-    //             console.log(currentState);
-    //             if (currentState === true) {
-    //                 return sum + items[index].price;
-    //             }
-    //             return sum;
-    //         },
-    //         1
-    //     );
-    //     console.log(totalPri);
-    //     setTotal(totalPri);
-    // };
+    const handleCheckout = () => {
+        if (items.length > 0) {
+            localStorage.setItem("itemsCheckOut", JSON.stringify(items));
+            window.location.pathname = ('/checkout');
+        }
+        else {
+            console.log('Empty product to Checkout');
+        }
+    }
 
     return (
         <>
@@ -54,7 +41,7 @@ const Cart = () => {
             <section class="ftco-section ftco-cart">
                 <div class="container">
                     <CartItems items={items} handleUpdate={handleUpdate} />
-                    <CartTotal items={items} />
+                    <CartTotal items={items} handleCheckout={handleCheckout}/>
                 </div>
             </section>
         </>

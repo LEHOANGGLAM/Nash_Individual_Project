@@ -3,10 +3,7 @@ package com.hoanglam.ecommerce.service.impl;
 import com.hoanglam.ecommerce.dto.request.OrderItemRequestDto;
 import com.hoanglam.ecommerce.dto.request.OrderResquestDto;
 import com.hoanglam.ecommerce.dto.response.entities.OrderResponseDto;
-import com.hoanglam.ecommerce.entites.CartItem;
-import com.hoanglam.ecommerce.entites.Order;
-import com.hoanglam.ecommerce.entites.OrderItem;
-import com.hoanglam.ecommerce.entites.Product;
+import com.hoanglam.ecommerce.entites.*;
 import com.hoanglam.ecommerce.exception.MessageException;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import com.hoanglam.ecommerce.mappers.CartItemMapper;
@@ -18,6 +15,7 @@ import com.hoanglam.ecommerce.service.OrderService;
 import com.hoanglam.ecommerce.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -36,6 +34,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderItemRepository orderItemRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private CartItemRepository cartItemRepository;
     @Autowired
     private ProductRepository productRepository;
@@ -47,19 +47,21 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderServiceImpl(OrderRepository orderRepository ,OrderItemRepository orderItemRepository,
                             CartItemRepository cartItemRepository, ProductRepository productRepository,
+                            UserRepository userRepository,
                             OrderMapper orderMapper, OrderItemMapper orderItemMapper, ModelMapper modelMapper) {
         super();
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.cartItemRepository = cartItemRepository;
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
         this.orderMapper = orderMapper;
         this.orderItemMapper = orderItemMapper;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public OrderResponseDto createOrder(OrderResquestDto orderResquestDto) {
+    public OrderResponseDto createOrder(OrderResquestDto orderResquestDto, String userId) {
         //Check quantity
         for (OrderItemRequestDto o : orderResquestDto.getOrderItems()) {
             Product product = productRepository.findById(o.getProductId()).orElseThrow(() ->
@@ -69,9 +71,12 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + userId));
         //Create Order
         UUID uuid = UUID.randomUUID();
         Order order = orderMapper.mapOrderRequestDtoToEntity(orderResquestDto);
+        order.setUserId(user);
         order.setId(uuid.toString());
         order.setCreatedAt(new Date());
         order.setStatus((short) 0);

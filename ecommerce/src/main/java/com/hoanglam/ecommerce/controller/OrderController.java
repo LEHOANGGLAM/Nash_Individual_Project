@@ -12,15 +12,15 @@ import javax.validation.Valid;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/order")
+@RequestMapping("")
 public class OrderController {
     @Autowired
     private OrderService orderService;
 
 
-    @PostMapping("")
+    @PostMapping("/user/{userId}/orders")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponseDto createOrder(@Valid @RequestBody OrderResquestDto orderResquestDto){
-        return orderService.createOrder(orderResquestDto);
+    public OrderResponseDto createOrder(@PathVariable String userId, @Valid @RequestBody OrderResquestDto orderResquestDto){
+        return orderService.createOrder(orderResquestDto , userId);
     }
 }

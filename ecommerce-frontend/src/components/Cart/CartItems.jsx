@@ -6,15 +6,13 @@ import CartService from '../../services/CartService';
 CartItems.propTypes = {
     items: PropTypes.array,
     handleUpdate: PropTypes.func,
-    //     checkedState: PropTypes.array,
-    //     handlecheckedItems: PropTypes.func,
+
 }
 
 CartItems.defaultProps = {
     items: null,
     handleUpdate: null,
-    // checkedState: [],
-    // handlecheckedItems: null,
+
 }
 
 function CartItems(props) {
@@ -22,8 +20,15 @@ function CartItems(props) {
 
 
     const handleInputsQuantity = (e, item) => {
-        if (e.target.value != 0) {
+        if (e.target.value > 0) {
             item.quantity = e.target.value;
+            CartService.updateCartItem(item.id, item);
+            handleUpdate(true)
+        }
+    }
+    const handlePlusOrMinusQuantity = (newQuantity, item) => {
+        if (newQuantity > 0) {
+            item.quantity = newQuantity;
             CartService.updateCartItem(item.id, item);
             handleUpdate(true)
         }
@@ -34,12 +39,7 @@ function CartItems(props) {
         handleUpdate(true)
     }
 
-    // const handleOnChange = (index) => { 
-    //     if (handlecheckedItems) {
-    //         handlecheckedItems(index);
-    //     }
-    // }
-    // console.log(checkedState);
+
     return (
         <div class="row">
             <div class="col-md-12 ftco-animate fadeInUp ftco-animated">
@@ -78,8 +78,16 @@ function CartItems(props) {
 
                                     <td class="quantity">
                                         <div class="input-group mb-3">
+                                            <button type="button" data-type="minus" data-field="" onClick={() => handlePlusOrMinusQuantity(item.quantity - 1, item)}
+                                               style={{width: 30}}>
+                                                <i class="ion-ios-remove" style={{color: 'black'}}></i>
+                                            </button>
                                             <input type="number" name="quantity" class="quantity form-control input-number" onChange={(e) => handleInputsQuantity(e, item)}
                                                 value={item.quantity} min="1" max="100" />
+                                            <button type="button" data-type="plus" data-field="" onClick={() => handlePlusOrMinusQuantity(item.quantity + 1, item)}
+                                                 style={{width: 30}}>
+                                                <i class="ion-ios-add" style={{color: 'black'}}></i>
+                                            </button>
                                         </div>
                                     </td>
 

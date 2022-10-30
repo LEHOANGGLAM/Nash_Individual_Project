@@ -10,7 +10,7 @@ class AuthService {
             username, password
         }).then(res => {
             if (res.data.accessToken) {
-                cookies.set("user", JSON.stringify(res.data));
+                cookies.set("user", res.data);
                 //localStorage.setItem("user", JSON.stringify(res.data));
             }
             return res.data;

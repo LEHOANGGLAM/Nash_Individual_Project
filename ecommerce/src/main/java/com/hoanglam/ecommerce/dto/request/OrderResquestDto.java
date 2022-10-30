@@ -8,7 +8,6 @@ import java.util.List;
 
 @Builder
 public class OrderResquestDto {
-    @NotBlank(message = "userId is required")
     private String userId;
     @NotBlank(message = "address is required")
     private String address;

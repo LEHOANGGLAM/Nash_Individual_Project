@@ -4,14 +4,16 @@ import PropTypes from 'prop-types'
 
 CartTotal.propTypes = {
     items: PropTypes.array,
+    handleCheckout: PropTypes.func
 }
 
 CartTotal.defaultProps = {
-    items: null
+    items: null,
+    handleCheckout: null
 }
 
 function CartTotal(props) {
-    const { items } = props;
+    const { items, handleCheckout } = props;
     const [totalPrice, setTotal] = useState(0);
 
     useEffect(() => {
@@ -47,7 +49,7 @@ function CartTotal(props) {
                         <span>{currencyFormat(totalPrice)} VND</span>
                     </p>
                 </div>
-                <p class="text-center"><a href="/checkout" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+                <p class="text-center"><a onClick={()=>handleCheckout()} class="btn btn-primary py-3 px-4" style={{cursor: 'pointer'}}>Proceed to Checkout</a></p>
             </div>
         </div>
     )
