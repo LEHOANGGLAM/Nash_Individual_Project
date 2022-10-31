@@ -53,18 +53,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public APIRespone<List<ProductResponseDto>> getAllProducts(Map<String, String> params) {
-        Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
+    public List<ProductResponseDto> getAllProducts(Map<String, String> params) {
+        //Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
 
-        Page<Product> result = productRepository.findByActive(true, pageable);
+        List<Product> result = productRepository.findByActive(true);
 
         //map to listDTO
         List<ProductResponseDto> productResponseDtos = new ArrayList<>();
-        result.getContent().forEach(p -> {
+        result.forEach(p -> {
             ProductResponseDto productResponseDto = modelMapper.map(p, ProductResponseDto.class);
             productResponseDtos.add(productResponseDto);
         });
-        return new APIRespone<>(result.getTotalPages(), productResponseDtos);
+        return productResponseDtos;
     }
 
     @Override

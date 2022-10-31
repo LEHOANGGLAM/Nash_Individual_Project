@@ -4,8 +4,11 @@ import OrderService from '../../services/OrderService';
 import UserService from '../../services/UserService';
 import currencyFormat from '../Common/CurrencyFormat';
 import { Modal, ModalHeader } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function CheckoutInfo() {
+    const navigate = useNavigate();
     const [currentUser, setUser] = useState([]);
     const [items, setItems] = useState([]);
     const [address, setAddress] = useState('');
@@ -17,6 +20,8 @@ function CheckoutInfo() {
     //handle POPUP MODEL
     const [isOpen, setOpen] = useState(false);
     const [message, setMessage] = useState();
+    //oderSuccess?
+    const [isSuccess, setSuccess] = useState(false);
     useEffect(() => {
         fetchUserInfo();
 
@@ -40,15 +45,15 @@ function CheckoutInfo() {
 
     const fetchUserInfo = async () => {
         const user = AuthService.getCurrentUser();
-        if(user){
+        if (user) {
             UserService.getUserById(user.id).then((res) => {
                 setUser(res.data);
                 setAddress(res.data.address)
             })
-        }else{
-            window.location.pathname = "/login"
+        } else {
+            navigate("/login");
         }
-        
+
     }
 
     const createOrder = () => {
@@ -74,6 +79,9 @@ function CheckoutInfo() {
                 console.log(order);
                 OrderService.createOrder(order, currentUser.id).then((res) => {
                     setMessage("Order Sucessful!")
+                    setSuccess(true);
+
+                    localStorage.clear();
                 }, (err) => {
                     setMessage(err.message);
                 })
@@ -88,7 +96,7 @@ function CheckoutInfo() {
                 setOpen(true);
                 setMessage("Please accept the terms and conditions")
             }
-        } 
+        }
     }
 
     const handleAddressChange = (e) => {
@@ -211,9 +219,21 @@ function CheckoutInfo() {
                     </div>
                 </div>
             </section>
-            <Modal isOpen={isOpen} toggle={() => setOpen(!isOpen)} size='lg' style={{ top: '35%' }}>
+            <Modal isOpen={isOpen} toggle={() => setOpen(!isOpen)} size='lg' style={{ top: '35%' }} backdrop='static' keyboard={false}>
                 <ModalHeader toggle={() => setOpen(!isOpen)}>
                     {message}
+                    
+                    {isSuccess &&
+                        <Link to="/products" className="link" style={{ width: 300,
+                            marginLeft: 400,
+                            padding: 10,
+                            border: 'none',
+                            backgroundColor: ' teal',
+                            fontWeight: 'bold',
+                            cursor: 'pointer'}}>
+                            Back to shopping
+                        </Link>
+                    }
                 </ModalHeader>
             </Modal>
         </>

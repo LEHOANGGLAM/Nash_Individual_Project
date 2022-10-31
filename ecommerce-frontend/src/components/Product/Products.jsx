@@ -80,8 +80,7 @@ function Products(props) {
                                             </span></p>
                                         </div>
                                         <p class="bottom-area d-flex px-3">
-                                            <a onClick={() => addToCart(pro)} class="add-to-cart text-center py-2 mr-1" style={{ cursor: 'pointer' }}><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-                                            <a href="/checkout" class="buy-now text-center py-2">Buy now<span><i class="ion-ios-cart ml-1"></i></span></a>
+                                            <a onClick={() => addToCart(pro)} class="add-to-cart text-center py-2 mr-1" style={{ cursor: 'pointer' }}><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>                            
                                         </p>
                                     </div>
                                 </div>

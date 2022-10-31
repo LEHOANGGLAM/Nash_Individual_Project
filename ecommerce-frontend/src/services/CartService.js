@@ -20,6 +20,10 @@ class CateService {
     deleteCartItem(id) {
         return axios.delete(`${API_BASE_URL}/carts/${id}`);
     }
+
+    countItemsInCartByUserId(id) {
+        return axios.get(`${API_BASE_URL}/user/${id}/carts/count`);
+    }
 }
 
 export default new CateService();

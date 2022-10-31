@@ -42,7 +42,7 @@ public class Product implements Serializable {
     @Column(name = "metaTitle")
     private String metaTitle;
 
-    @Size(max = 2000)
+    @Size(max = 5000)
     @Column(name = "desciption")
     private String desciption;
 

@@ -29,7 +29,7 @@ public class ProductController {
 
 
     @GetMapping("/products")
-    public APIRespone<List<ProductResponseDto>> getAllProducts(@RequestParam Map<String, String> params) {
+    public List<ProductResponseDto> getAllProducts(@RequestParam Map<String, String> params) {
         return productService.getAllProducts(params);
     }
 

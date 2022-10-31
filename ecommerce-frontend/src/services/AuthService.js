@@ -23,6 +23,7 @@ class AuthService {
     }
 
     logout() {
+        localStorage.clear();
         cookies.remove('user')
     }
 

@@ -8,15 +8,6 @@ import queryString from 'query-string';
 import background from '../../images/searchicon.png'
 import { Modal, ModalHeader } from 'reactstrap';
 
-ProductList.propTypes = {
-
-}
-
-ProductList.defaultProps = {
-
-}
-
-
 function ProductList(props) {
     const [products, setProducts] = useState([]);
     const [totalPage, setTotalPage] = useState();

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import AuthService from '../../services/AuthService';
 import UserService from '../../services/UserService';
 import CateService from '../../services/CateService';
+import CartService from '../../services/CartService';
 
 class NavBar extends Component {
     constructor(props) {
@@ -12,7 +13,7 @@ class NavBar extends Component {
             roles: [],
             currentUser: undefined,
             isHovering: false,
-
+            numItems: 0,
             cates: [],
         }
         this.handleMouseOver = this.handleMouseOver.bind(this);
@@ -47,6 +48,17 @@ class NavBar extends Component {
         })
     }
 
+    componentDidUpdate() {
+        const user = AuthService.getCurrentUser();
+        if (user) {
+            CartService.countItemsInCartByUserId(user.id).then((res) => {
+                this.setState({
+                    numItems: res.data,
+                });
+            })
+        }
+    }
+
     logOut() {
         AuthService.logout();
         this.setState({
@@ -58,7 +70,7 @@ class NavBar extends Component {
     }
 
     render() {
-        const { currentUser, showAdmin, showUser} = this.state;
+        const { currentUser, showAdmin, showUser } = this.state;
         const isHovering = this.state.isHovering;
         return (
             <div>
@@ -92,14 +104,17 @@ class NavBar extends Component {
                                         <li class="nav-item"><a href="" class="nav-link">Blog</a></li>
                                         <li class="nav-item"><a href="" class="nav-link">Contact</a></li>
 
-                                        <li class="nav-item cta cta-colored"><a href="/cart" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+                                        <li class="nav-item cta cta-colored"><a href="/cart" class="nav-link"><span class="icon-shopping_cart"></span>{this.state.numItems}</a></li>
 
                                     </>
                                 )}
                                 {showAdmin && (
                                     <>
-
-
+                                        <li class="nav-item"><a href="/admin-users" class="nav-link">Users</a></li>
+                                        <li class="nav-item"><a href="/admin-products" class="nav-link">Products</a></li>
+                                        <li class="nav-item"><a href="/admin-categories" class="nav-link">Category</a></li>
+                                        <li class="nav-item cta cta-colored"><a href="/" class="nav-link"><span class="icon-bell"></span>[0]</a></li>
+                                        <li class="nav-item cta cta-colored"><a href="/" class="nav-link"><span class="icon-envelope"></span>[0]</a></li>
                                     </>
                                 )}
                                 {currentUser == undefined ? (
@@ -122,7 +137,7 @@ class NavBar extends Component {
                                                 )}
 
                                                 Hi, {currentUser.firstName} {currentUser.lastName}</a>
-                                            <div className='dropdown-menu' aria-labelledby="dropdown04">
+                                            <div className='dropdown-menu' aria-labelledby="dropdown04" style={{cursor: 'pointer'}}>
                                                 <a class="dropdown-item" href="/">My Profile</a>
                                                 <a class="dropdown-item" onClick={this.logOut}>Log Out</a>
                                             </div>

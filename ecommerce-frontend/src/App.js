@@ -1,5 +1,9 @@
 //import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
 
 import Header from './components//Header';
 import Footer from './components/Footer';
@@ -11,31 +15,35 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import CheckOut from './pages/CheckOut';
 import Overview from './pages/Admin/Overview';
+import AdminProducts from './pages/Admin/AdminProducts';
+import CreateProduct from "./pages/Admin/CreateProduct";
 
 function App() {
   return (
     <div className="App">
-      <Router>
+      <BrowserRouter>
         <Header />
-        <Switch>
-          <Route exact path="/" component={Home}></Route>
-          <Route path="/login" component={LoginAndRegister}></Route>
+        <Routes>
 
-          <Route path="/products" component={ProductList}></Route>
-          <Route path="/product-:productId" component={ProductDetail}></Route>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/login" element={<LoginAndRegister />}></Route>
 
-          <Route path="/cart" component={Cart}></Route>
-          <Route path="/checkout" component={CheckOut}></Route>
+          <Route path="/products" element={<ProductList />}></Route>
+          <Route path="/product-:productId" element={<ProductDetail />}></Route>
 
+          <Route path="/cart" element={<Cart />}></Route>
+          <Route path="/checkout" element={<CheckOut />}></Route>
 
-          <Route path="/overview" component={Overview}></Route>
+          {/* admin */}
+          <Route path="/overview" element={<Overview />}></Route>
+          <Route path="/admin-products" element={<AdminProducts />}></Route>
+          <Route path="/admin-products/new" element={<CreateProduct />}></Route>
 
-          <Route path="*"> <PageNotFound /></Route>
-        </Switch>
+          <Route path="*" element={<PageNotFound />}> </Route>
+        </Routes>
         <Footer />
-      </Router>
-
-    </div>
+      </BrowserRouter>
+    </div >
   );
 }
 

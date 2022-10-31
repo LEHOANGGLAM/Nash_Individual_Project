@@ -7,6 +7,11 @@ class ProductService {
     getProductsByPredicates(query){
         return axios.get(`${API_BASE_URL}/products/search?${query}`);
     }
+
+    getAllProducts(){
+        return axios.get(`${API_BASE_URL}/products`);
+    }
+
     getProductById(id){
         return axios.get(`${API_BASE_URL}/product/${id}`);
     }

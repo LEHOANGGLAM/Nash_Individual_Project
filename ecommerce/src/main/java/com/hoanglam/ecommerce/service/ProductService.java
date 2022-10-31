@@ -12,7 +12,7 @@ import java.util.Map;
 public interface ProductService {
     Product getProductById(String id);
 
-    APIRespone<List<ProductResponseDto>> getAllProducts(Map<String, String> params);
+    List<ProductResponseDto> getAllProducts(Map<String, String> params);
 
     APIRespone<List<ProductResponseDto>> getProductsByPredicates(Map<String, String> params);
 

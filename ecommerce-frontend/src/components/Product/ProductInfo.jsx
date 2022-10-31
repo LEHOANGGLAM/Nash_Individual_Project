@@ -5,6 +5,7 @@ import currencyFormat from '../Common/CurrencyFormat';
 import AuthService from '../../services/AuthService';
 import { useState } from 'react';
 import { Modal, ModalHeader } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
 
 ProductInfo.propTypes = {
     product: PropTypes.object,
@@ -16,6 +17,7 @@ ProductInfo.defaultProps = {
 
 
 function ProductInfo(props) {
+    const navigate = useNavigate();
     const { product } = props;
     const [quantity, setQuantity] = useState(1);
     const [sizeId, setSizeId] = useState(
@@ -25,6 +27,28 @@ function ProductInfo(props) {
     //handle POPUP MODEL
     const [isOpen, setOpen] = useState(false);
     const [message, setMessage] = useState();
+
+    const handleCheckout = () => {
+        if (product) {
+            const item = [
+                {
+                    price: quantity * product.price,
+                    quantity: quantity,
+                    productId: product,
+                    sizeId: {
+                        id: sizeId
+                    },
+                }
+            ];
+            //console.log(item);
+            localStorage.clear();
+            localStorage.setItem("itemsCheckOut", JSON.stringify(item));
+            navigate('/checkout');
+        }
+        else {
+            console.log('Empty product to Checkout');
+        }
+    }
 
     const addToCart = (pro) => {
         const user = AuthService.getCurrentUser();
@@ -125,7 +149,7 @@ function ProductInfo(props) {
                         <p style={{ color: "#000" }}>{product.quantity} piece available</p>
                     </div>
                 </div>
-                <p><a class="btn btn-black py-3 px-5 mr-2" onClick={() => addToCart(product)}>Add to Cart</a><a href="/checkout" class="btn btn-primary py-3 px-5">Buy now</a></p>
+                <p><a class="btn btn-black py-3 px-5 mr-2" onClick={() => addToCart(product)}>Add to Cart</a><a onClick={handleCheckout} class="btn btn-primary py-3 px-5">Buy now</a></p>
                 <Modal isOpen={isOpen} toggle={() => setOpen(!isOpen)} size='lg' style={{ top: '35%' }}>
                     <ModalHeader toggle={() => setOpen(!isOpen)}>
                         {message}
