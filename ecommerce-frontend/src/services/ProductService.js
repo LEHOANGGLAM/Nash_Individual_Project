@@ -13,7 +13,7 @@ class ProductService {
     }
 
     getProductById(id){
-        return axios.get(`${API_BASE_URL}/product/${id}`);
+        return axios.get(`${API_BASE_URL}/products/${id}`);
     }
 }
 

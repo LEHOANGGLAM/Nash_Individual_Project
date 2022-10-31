@@ -17,23 +17,23 @@ import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("")
+@RequestMapping("/products")
 public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/product/{id}")
+    @GetMapping("/{id}")
     public Product getProductById(@PathVariable String id) {
         return productService.getProductById(id);
     }
 
 
-    @GetMapping("/products")
+    @GetMapping("")
     public List<ProductResponseDto> getAllProducts(@RequestParam Map<String, String> params) {
         return productService.getAllProducts(params);
     }
 
-    @GetMapping("/products/search")
+    @GetMapping("/search")
     public APIRespone<List<ProductResponseDto>> getProductsByPredicates(@RequestParam Map<String, String> params) {
         return productService.getProductsByPredicates(params);
     }
@@ -46,21 +46,18 @@ public class ProductController {
 
     //-------------FOR ADMIN BELOW--------------
     //------------FOR ADMIN BELOW------------------
-    @PostMapping("/product")
-    @PreAuthorize("hasAuthority('admin')")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponseDto addProduct(@Valid @RequestBody ProductRequestDto product) {
         return this.productService.createProduct(product);
     }
 
-    @PutMapping("/product/{id}")
-    @PreAuthorize("hasAuthority('admin')")
+    @PutMapping("/{id}")
     public ProductResponseDto updateProduct(@PathVariable String id, @Valid @RequestBody ProductRequestDto product) {
         return this.productService.updateProduct(id, product);
     }
 
-    @DeleteMapping("/product/{id}")
-    @PreAuthorize("hasAuthority('admin')")
+    @DeleteMapping("/{id}")
     public DeleteResponseDto deleteProduct(@PathVariable String id) {
         return this.productService.softDeleteProduct(id);
     }

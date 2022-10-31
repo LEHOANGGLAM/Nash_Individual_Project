@@ -14,39 +14,39 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("")
+@RequestMapping("/categories")
 public class CateController {
 
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/categories")
+    @GetMapping("")
     public List<Category> getAllCategories() {
         return categoryService.getAllCate();
     }
 
 
 
-    @GetMapping("/category/{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")
     public Category getCateById(@PathVariable String id) {
         return categoryService.getCateById(id);
     }
 
-    @PostMapping("/category")
+    @PostMapping("")
     @PreAuthorize("hasAuthority('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryReponseDto addCate(@Valid @RequestBody Category cate) {
         return this.categoryService.createCate(cate);
     }
 
-    @PutMapping("/category/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")
     public CategoryReponseDto updateCate(@PathVariable String id, @Valid @RequestBody Category cate) {
         return this.categoryService.updateCate(id, cate);
     }
 
-    @DeleteMapping("/category/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")
     public DeleteResponseDto deleteCate(@PathVariable String id) {
         return this.categoryService.softDeleteCate(id);

@@ -14,36 +14,36 @@ import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public UserResponseDto getUserById(@PathVariable String id) {
         return userService.getUserById(id);
     }
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/{id}")
     public UserResponseDto updateUserById(@PathVariable String id, @Valid @RequestBody User user) {
         return userService.updateUser(id, user);
     }
 
 
-    @GetMapping("/users")
+    @GetMapping("")
     @PreAuthorize("hasAuthority('admin')")
     public List<UserResponseDto> getAllUsers(@RequestParam Map<String, String> params) {
         return  userService.getAllUsers(params);
     }
 
-    @GetMapping("/users/role")
+    @GetMapping("/role")
     @PreAuthorize("hasAuthority('admin')")
     public List<UserResponseDto> getUserByRole(@RequestParam Map<String, String> params) {
         return  userService.getUsersByRole(params);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")
     public DeleteResponseDto deleteUser(@PathVariable String id) {
         return  this.userService.softDeleteUser(id);

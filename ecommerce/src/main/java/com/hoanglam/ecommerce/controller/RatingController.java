@@ -17,14 +17,14 @@ public class RatingController {
     @Autowired
     public RatingService ratingService;
 
-    @PostMapping("/rating")
+    @PostMapping("/ratings")
     @ResponseStatus(HttpStatus.CREATED)
     public Rating createComment(@Valid @RequestBody RatingRequestDto c){
         return ratingService.createRating(c);
     }
 
 
-    @GetMapping("/ratings/product/{id}")
+    @GetMapping("/product/{id}/ratings")
     public List<Rating> getRatingByProductId(@PathVariable String id){
         return ratingService.getRatingsByProductId(id);
     }

@@ -5,17 +5,33 @@ import { useState } from "react";
 import TextEditor from '../../components/TextEditor/TextEditor';
 import MultipleSelectChip from '../../components/MultipleSelectChip/MultipleSelectChip';
 import { useEffect } from 'react';
+import CateService from '../../services/CateService';
 
 
 function CreateProduct(props) {
+    const [sizes, setSizes] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [file, setFile] = useState('');
     const [text, setText] = useState('');
 
+    const handleCateChange = (newCate) => {
+        setCategories(newCate)
+    }
     const handleTextEditorChange = (newText) => {
         setText(newText)
     }
     console.log(text);
     console.log(file);
+
+    useEffect(() => {
+        fetchCategories();
+    }, [])
+
+    const fetchCategories = async () => {
+        CateService.getAllCates().then((res) => {
+            setCategories(res.data)
+        })
+    }
 
     return (
         <>
@@ -60,14 +76,13 @@ function CreateProduct(props) {
                                     <div className='formInput'>
                                         <label>Category</label>
                                         <div >
-                                            <MultipleSelectChip />
+                                            <MultipleSelectChip data={categories} handleDataChange={handleCateChange}/>
                                         </div>
                                     </div>
                                     <div className='oneline'>
                                         <label>Description</label>
                                         <div >
                                             <TextEditor text={text} setText={handleTextEditorChange} />
-                                            {text}
                                         </div>
                                     </div>
                                     <button className='button'>Submit</button>

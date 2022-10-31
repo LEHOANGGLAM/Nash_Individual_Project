@@ -6,6 +6,7 @@ import com.hoanglam.ecommerce.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 
@@ -27,7 +28,7 @@ public class SecurityConfiguration {
     UserDetailsServiceImpl userDetailsService;
 
 
-    @Autowired(required=true)
+    @Autowired(required = true)
     private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
@@ -61,10 +62,14 @@ public class SecurityConfiguration {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/auth/**").permitAll();
-//                .antMatchers("/all/**").permitAll()
-//                .antMatchers("/user/**").hasAuthority("user")
-//                .antMatchers("/admin/**").hasAuthority("admin");
+                .authorizeRequests().antMatchers("/auth/**").permitAll()
+
+                //product
+                .antMatchers(HttpMethod.POST, "/products").hasAuthority("admin")
+                .antMatchers(HttpMethod.PUT, "/products/**").hasAuthority("admin")
+                .antMatchers(HttpMethod.DELETE, "/products/**").hasAuthority("admin");
+                //category
+                //user
 
 
         http.authenticationProvider(authenticationProvider());
