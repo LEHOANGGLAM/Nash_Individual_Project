@@ -6,6 +6,7 @@ import Products from './Products';
 import queryString from 'query-string';
 import RatingService from '../../services/RatingService';
 import StarRatings from 'react-star-ratings';
+import parse from 'html-react-parser'
 
 Rating.propTypes = {
     product: PropTypes.object,
@@ -62,7 +63,7 @@ function Rating(props) {
                     <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="day-1-tab">
                         <div class="p-4">
                             <h3 class="mb-4">Manufacturer by {product.title}</h3>
-                            <p>{product.desciption}</p>
+                            <p>{parse(product.desciption)}</p>
                         </div>
                     </div>
 

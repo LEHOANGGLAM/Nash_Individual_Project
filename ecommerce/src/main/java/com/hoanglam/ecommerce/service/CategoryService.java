@@ -7,7 +7,7 @@ import com.hoanglam.ecommerce.entites.Category;
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> getAllCate();
+    List<Category> getAllCateActive();
     Category getCateById(String id);
     CategoryReponseDto createCate(Category u);
     CategoryReponseDto updateCate(String id, Category cateUpdate);

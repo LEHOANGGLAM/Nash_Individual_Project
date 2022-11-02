@@ -112,7 +112,8 @@ class NavBar extends Component {
                                     <>
                                         <li class="nav-item"><a href="/admin-users" class="nav-link">Users</a></li>
                                         <li class="nav-item"><a href="/admin-products" class="nav-link">Products</a></li>
-                                        <li class="nav-item"><a href="/admin-categories" class="nav-link">Category</a></li>
+                                        <li class="nav-item"><a href="/admin-categories" class="nav-link">Categories</a></li>
+                                        <li class="nav-item"><a href="/admin-orders" class="nav-link">Orders</a></li>
                                         <li class="nav-item cta cta-colored"><a href="/" class="nav-link"><span class="icon-bell"></span>[0]</a></li>
                                         <li class="nav-item cta cta-colored"><a href="/" class="nav-link"><span class="icon-envelope"></span>[0]</a></li>
                                     </>

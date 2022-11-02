@@ -1,15 +1,19 @@
 package com.hoanglam.ecommerce.service.impl;
 
+import com.cloudinary.Cloudinary;
 import com.hoanglam.ecommerce.dto.request.ProductRequestDto;
 import com.hoanglam.ecommerce.dto.response.*;
 import com.hoanglam.ecommerce.dto.response.entities.ProductResponseDto;
 import com.hoanglam.ecommerce.entites.Category;
+import com.hoanglam.ecommerce.entites.Image;
 import com.hoanglam.ecommerce.entites.Product;
 import com.hoanglam.ecommerce.entites.Size;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import com.hoanglam.ecommerce.repository.CategoryRepository;
+import com.hoanglam.ecommerce.repository.ImageRepository;
 import com.hoanglam.ecommerce.repository.ProductRepository;
 import com.hoanglam.ecommerce.repository.SizeRepository;
+import com.hoanglam.ecommerce.service.CloudinaryService;
 import com.hoanglam.ecommerce.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +40,14 @@ public class ProductServiceImpl implements ProductService {
     private CategoryRepository categoryRepository;
     @Autowired
     private SizeRepository sizeRepository;
+    @Autowired
+    private ImageRepository imageRepository;
+    @Autowired(required = false)
+    private CloudinaryService cloudinaryService;
+    @Autowired
+    private Cloudinary cloudinary;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,SizeRepository sizeRepository, ModelMapper modelMapper) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, SizeRepository sizeRepository, ModelMapper modelMapper) {
         super();
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
@@ -136,15 +146,26 @@ public class ProductServiceImpl implements ProductService {
         //add Size for product
         Collection<Size> sizes = new HashSet<>();
         productRequestDto.getSizeIds().forEach(sizeDto -> {
-            Optional<Size> size = sizeRepository.findById(sizeDto);
+            Optional<Size> size = sizeRepository.findBySizeName(sizeDto);
             if (size.isEmpty()) {
-                throw new ResourceNotFoundException("Size not exist with id: " + sizeDto);
+                throw new ResourceNotFoundException("Size not exist with name: " + sizeDto);
             }
             sizes.add(size.get());
         });
         p.setSizeCollection(sizes);
 
         Product savedProduct = productRepository.save(p);
+
+        if(productRequestDto.getImages() != null){
+            for (int i = 0; i < productRequestDto.getImages().size(); i++) {
+                uuid = UUID.randomUUID();
+                Image image = new Image();
+                image.setId(uuid.toString());
+                image.setProductId(p);
+                image.setLink(productRequestDto.getImages().get(i));
+                imageRepository.save(image);
+            }
+        }
 
         //map to responseDto
         ProductResponseDto productResponseDto = modelMapper.map(savedProduct, ProductResponseDto.class);

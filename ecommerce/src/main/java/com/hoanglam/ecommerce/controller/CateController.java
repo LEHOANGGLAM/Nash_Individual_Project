@@ -22,7 +22,7 @@ public class CateController {
 
     @GetMapping("")
     public List<Category> getAllCategories() {
-        return categoryService.getAllCate();
+        return categoryService.getAllCateActive();
     }
 
 
@@ -34,20 +34,17 @@ public class CateController {
     }
 
     @PostMapping("")
-    @PreAuthorize("hasAuthority('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryReponseDto addCate(@Valid @RequestBody Category cate) {
         return this.categoryService.createCate(cate);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin')")
     public CategoryReponseDto updateCate(@PathVariable String id, @Valid @RequestBody Category cate) {
         return this.categoryService.updateCate(id, cate);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin')")
     public DeleteResponseDto deleteCate(@PathVariable String id) {
         return this.categoryService.softDeleteCate(id);
     }

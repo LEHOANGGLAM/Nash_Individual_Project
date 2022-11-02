@@ -42,8 +42,6 @@
 
                     label {
                         display: flex;
-
-
                     }
 
                 }
@@ -52,15 +50,19 @@
                     padding: 20px;
                     width: 100%;
 
-                    label {
+                    .lab {
                         display: flex;
                     }
                 }
 
+                p {
+                    display: flex;
+                    width: 100%;
+                }
 
                 .button {
                     margin-left: 20px;
-                    margin-bottom:20px;
+                    margin-bottom: 20px;
                     width: 150px;
                     padding: 10px;
                     border: none;

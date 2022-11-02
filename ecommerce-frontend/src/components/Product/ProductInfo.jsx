@@ -6,6 +6,7 @@ import AuthService from '../../services/AuthService';
 import { useState } from 'react';
 import { Modal, ModalHeader } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
+import parse from 'html-react-parser'
 
 ProductInfo.propTypes = {
     product: PropTypes.object,
@@ -113,7 +114,7 @@ function ProductInfo(props) {
                 </div>
                 <p class="price"><span>{currencyFormat(product.price)} VND</span></p>
 
-                <p>{product.desciption}</p>
+                <p  style={{height: 400}}>{parse(product.desciption)}</p>
 
                 <div class="row mt-4">
                     <div class="col-md-6">

@@ -55,9 +55,9 @@ export default function MultipleSelectChip(props) {
         typeof value === 'string' ? value.split(',') : value,
       );
 
-      // handleDataChange(
-      //   typeof value === 'string' ? value.split(',') : value,
-      // )
+      handleDataChange(
+        typeof value === 'string' ? value.split(',') : value,
+      )
     }
   };
 
@@ -84,10 +84,10 @@ export default function MultipleSelectChip(props) {
           {data.map((i) => (
             <MenuItem
               key={i.id}
-              value={i.title}
-              style={getStyles(i, personName, theme)}
+              value={i.sizeName}
+              style={getStyles(i.sizeName, personName, theme)}
             >
-              {i.title}
+              {i.sizeName}
             </MenuItem>
           ))}
         </Select>

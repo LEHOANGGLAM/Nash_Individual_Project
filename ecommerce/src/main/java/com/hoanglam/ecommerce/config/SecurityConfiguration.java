@@ -67,10 +67,16 @@ public class SecurityConfiguration {
                 //product
                 .antMatchers(HttpMethod.POST, "/products").hasAuthority("admin")
                 .antMatchers(HttpMethod.PUT, "/products/**").hasAuthority("admin")
-                .antMatchers(HttpMethod.DELETE, "/products/**").hasAuthority("admin");
+                .antMatchers(HttpMethod.DELETE, "/products/**").hasAuthority("admin")
                 //category
+                .antMatchers(HttpMethod.POST, "/categories").hasAuthority("admin")
+                .antMatchers(HttpMethod.PUT, "/categories/**").hasAuthority("admin")
+                .antMatchers(HttpMethod.DELETE, "/categories/**").hasAuthority("admin")
                 //user
-
+                .antMatchers(HttpMethod.GET, "/users").hasAuthority("admin")
+                .antMatchers(HttpMethod.POST, "/users").hasAuthority("admin")
+                .antMatchers(HttpMethod.PUT, "/users/**").hasAuthority("admin")
+                .antMatchers(HttpMethod.DELETE, "/users/**").hasAuthority("admin");
 
         http.authenticationProvider(authenticationProvider());
 

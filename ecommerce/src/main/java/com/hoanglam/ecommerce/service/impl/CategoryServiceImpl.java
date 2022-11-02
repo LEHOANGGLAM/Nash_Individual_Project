@@ -25,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> getAllCate() {
+    public List<Category> getAllCateActive() {
         return categoryRepository.findByActive(true);
     }
 
@@ -66,7 +66,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         Category cate = cateOptional.get();
-        cate.setActive(false);
+        cate.setActive(!cate.isActive());
         categoryRepository.save(cate);
 
         return new DeleteResponseDto("Delete category successfully", HttpStatus.OK.value(), HttpStatus.OK);

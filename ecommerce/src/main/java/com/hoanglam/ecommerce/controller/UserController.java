@@ -32,19 +32,16 @@ public class UserController {
 
 
     @GetMapping("")
-    @PreAuthorize("hasAuthority('admin')")
     public List<UserResponseDto> getAllUsers(@RequestParam Map<String, String> params) {
         return  userService.getAllUsers(params);
     }
 
     @GetMapping("/role")
-    @PreAuthorize("hasAuthority('admin')")
     public List<UserResponseDto> getUserByRole(@RequestParam Map<String, String> params) {
         return  userService.getUsersByRole(params);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin')")
     public DeleteResponseDto deleteUser(@PathVariable String id) {
         return  this.userService.softDeleteUser(id);
     }

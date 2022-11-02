@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import currencyFormat from '../../components/Common/CurrencyFormat';
 import Datatable from '../../components/Datatable/datatable';
 import ProductService from '../../services/ProductService';
@@ -71,13 +70,13 @@ function AdminProducts(props) {
 
             <section class="ftco-section ftco-cart">
                 <div class="container">
-                    <h2 class="mb-3">Products</h2>
+                    <h2 class="mb-3">Products Management</h2>
                     <div className="datatable">
                         <div className="datatableTitle">
                        
-                            <Link to="new" className="link">
+                            <a href="/admin-products-new" className="link">
                                 Add New
-                            </Link>
+                            </a>
                         </div>
                         <Datatable data={products} col={columns} />
                     </div>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import currencyFormat from '../Common/CurrencyFormat';
 import CartService from '../../services/CartService';
 import { Modal, ModalHeader } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 CartItems.propTypes = {
     items: PropTypes.array,
@@ -77,12 +78,14 @@ function CartItems(props) {
                                             {/* () => handleDeleteCartItem(item.id) */}
                                             <td class="product-remove " onClick={() => setOpen(true)}><a><span class="ion-ios-close" ></span></a></td>
 
-                                            <td class="image-prod"><div class="img" style={{ backgroundImage: `url(${item.productId.imageCollection[0]?.link})` }}></div></td>
-                                            <td class="product-name">
-                                                <h3>{item.productId.title}</h3>
-                                                <div>Size: {item.sizeId.sizeName} &ensp;
-                                                </div>
-                                            </td>
+                                            <Link to={`/product-${item.productId.id}`} >
+                                                <td class="image-prod"><div class="img" style={{ backgroundImage: `url(${item.productId.imageCollection[0]?.link})` }}></div></td>
+                                                <td class="product-name">
+                                                    <h3>{item.productId.title}</h3>
+                                                    <div>Size: {item.sizeId.sizeName} &ensp;
+                                                    </div>
+                                                </td>
+                                            </Link>
 
                                             <td class="price">{currencyFormat(item.productId.price)} VND</td>
 
@@ -112,11 +115,11 @@ function CartItems(props) {
                                         </Modal>
                                     </>
                                 )}
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
 
         </>
     )

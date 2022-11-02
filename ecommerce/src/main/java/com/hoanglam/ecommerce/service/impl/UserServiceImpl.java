@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userOptional.get();
-        user.setActive(false);
+        user.setActive(!user.isActive());
         userRepository.save(user);
 
         return new DeleteResponseDto("Delete user successfully", HttpStatus.OK.value(), HttpStatus.OK);

@@ -14,9 +14,13 @@ import ProductList from './pages/ProductList';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import CheckOut from './pages/CheckOut';
-import Overview from './pages/Admin/Overview';
-import AdminProducts from './pages/Admin/AdminProducts';
-import CreateProduct from "./pages/Admin/CreateProduct";
+import Overview from './pages/AdminOverview/Overview';
+import AdminProducts from './pages/AdminProduct/AdminProducts';
+import CreateProduct from "./pages/AdminAddProduct/CreateProduct";
+import AdminUser from "./pages/AdminUser/AdminUser";
+import CreateUser from "./pages/AdminAddUser/CreateUser";
+import AdminCate from "./pages/AdminCate/AdminCate";
+import CreateCate from "./pages/AdminAddCate/CreateCate";
 
 function App() {
   return (
@@ -37,7 +41,14 @@ function App() {
           {/* admin */}
           <Route path="/overview" element={<Overview />}></Route>
           <Route path="/admin-products" element={<AdminProducts />}></Route>
-          <Route path="/admin-products/new" element={<CreateProduct />}></Route>
+          <Route path="/admin-products-new" element={<CreateProduct />}></Route>
+
+          <Route path="/admin-users" element={<AdminUser />}></Route>
+          <Route path="/admin-users-new" element={<CreateUser />}></Route>
+          <Route path="/admin-users-new:id" element={<CreateUser />}></Route>
+
+          <Route path="/admin-categories" element={<AdminCate />}></Route>
+          <Route path="/admin-categories-new" element={<CreateCate />}></Route>
 
           <Route path="*" element={<PageNotFound />}> </Route>
         </Routes>
