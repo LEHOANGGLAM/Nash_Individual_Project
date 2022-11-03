@@ -3,6 +3,7 @@ package com.hoanglam.ecommerce.service.impl;
 import com.hoanglam.ecommerce.dto.request.OrderItemRequestDto;
 import com.hoanglam.ecommerce.dto.request.OrderResquestDto;
 import com.hoanglam.ecommerce.dto.response.entities.OrderResponseDto;
+import com.hoanglam.ecommerce.dto.response.entities.ProductResponseDto;
 import com.hoanglam.ecommerce.entites.*;
 import com.hoanglam.ecommerce.exception.MessageException;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
@@ -94,6 +95,38 @@ public class OrderServiceImpl implements OrderService {
         //Set Output Response
         OrderResponseDto orderResponseDto = modelMapper.map(order, OrderResponseDto.class);
         return orderResponseDto;
+    }
+
+    @Override
+    public List<OrderResponseDto> getOrderByUserId(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + userId));
+        List<Order> orders = orderRepository.findByUserId(user);
+
+
+        List<OrderResponseDto> orderResponseDtos = new ArrayList<>();
+        orders.forEach(o -> {
+            OrderResponseDto orderResponseDto = modelMapper.map(o, OrderResponseDto.class);
+            orderResponseDtos.add(orderResponseDto);
+        });
+        return orderResponseDtos;
+    }
+
+    @Override
+    public List<OrderItem> getOrderItemNoRatingByUserId(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + userId));
+
+        List<OrderItem> oItems = orderItemRepository.findByOrderId_UserId(user);
+
+        //get item no rating
+        List<OrderItem> result = new ArrayList<>();
+        oItems.forEach(item ->{
+            if(item.getRating()== null){
+                result.add(item);
+            }
+        });
+        return result;
     }
 
     public Order addOrderItemIntoOrder(Order order, List<OrderItemRequestDto> orderItemRequestDtos) {

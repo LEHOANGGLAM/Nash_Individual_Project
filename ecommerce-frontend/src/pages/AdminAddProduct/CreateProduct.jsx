@@ -12,6 +12,9 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import ModalConfirm from '../../components/ModalConfirm';
+import LoadingButton from '../../components/LoadingButton/LoadingButton';
 
 const schema = yup.object().shape({
     title: yup.string().required(),
@@ -23,6 +26,7 @@ function CreateProduct(props) {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
+
     const [sizes, setSizes] = useState([]);
     const [categories, setCategories] = useState([]);
 
@@ -31,6 +35,11 @@ function CreateProduct(props) {
     const [selectCate, setSelect] = useState(["1"]);
     const [text, setText] = useState("");
     const [err, setErr] = useState();
+
+    //handleModal
+    const [showModal, setShowModal] = useState(false);
+    const handleShowModal = () => { setShowModal(true); }
+    const handleCloseModal = () => { setShowModal(false); }
 
     const handleImageChange = (e) => {
         setImageSelect([]);
@@ -86,7 +95,7 @@ function CreateProduct(props) {
                 let result = await axios.post("https://api.cloudinary.com/v1_1/dmstiyczr/image/upload", formData);
                 imageLink.push(String(result?.data?.url))
             }
-            
+
             // console.log(imageLink);
             const newPro = {
                 price: Number(data.price),
@@ -103,6 +112,8 @@ function CreateProduct(props) {
 
             ProductService.addProduct(newPro).then((res) => {
                 console.log("thanhcong");
+
+                handleShowModal();
             }, (err) => {
                 console.log("fail");
             })
@@ -191,13 +202,14 @@ function CreateProduct(props) {
                                         </div>
                                     </div>
                                     <input type="submit" class="btn btn-primary py-3 px-4 col-md-12" name="submit" value="Submit" />
+                         
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-
+            <ModalConfirm title={'Add Product success'} handleCloseModal={handleCloseModal} showModal={showModal} link="/admin-products" />
         </>
     );
 }

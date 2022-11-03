@@ -1,9 +1,12 @@
 package com.hoanglam.ecommerce.repository;
 
 import com.hoanglam.ecommerce.entites.OrderItem;
+import com.hoanglam.ecommerce.entites.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface OrderItemRepository extends JpaRepository<OrderItem, String>, JpaSpecificationExecutor<OrderItem> {
+import java.util.List;
 
+public interface OrderItemRepository extends JpaRepository<OrderItem, String>, JpaSpecificationExecutor<OrderItem> {
+    List<OrderItem> findByOrderId_UserId(User userid);
 }

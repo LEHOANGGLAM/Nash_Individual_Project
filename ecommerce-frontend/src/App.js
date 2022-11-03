@@ -21,6 +21,7 @@ import AdminUser from "./pages/AdminUser/AdminUser";
 import CreateUser from "./pages/AdminAddUser/CreateUser";
 import AdminCate from "./pages/AdminCate/AdminCate";
 import CreateCate from "./pages/AdminAddCate/CreateCate";
+import DisplayOrder from "./pages/DisplayOrder/DisplayOrder";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/cart" element={<Cart />}></Route>
           <Route path="/checkout" element={<CheckOut />}></Route>
 
+          <Route path="/myorders" element={<DisplayOrder />}></Route>
           {/* admin */}
           <Route path="/overview" element={<Overview />}></Route>
           <Route path="/admin-products" element={<AdminProducts />}></Route>

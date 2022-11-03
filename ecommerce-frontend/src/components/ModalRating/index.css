@@ -1,0 +1,9 @@
+
+textarea{
+    overflow: hidden;
+    resize: none;
+    padding: 0;
+    margin: 0;
+    line-height: 1.25rem;
+    width: 100%;
+}

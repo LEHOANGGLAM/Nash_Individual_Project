@@ -4,6 +4,7 @@ import com.hoanglam.ecommerce.dto.request.RatingRequestDto;
 import com.hoanglam.ecommerce.dto.response.ErrorResponse;
 import com.hoanglam.ecommerce.entites.Rating;
 import com.hoanglam.ecommerce.entites.Product;
+import com.hoanglam.ecommerce.exception.MessageException;
 import com.hoanglam.ecommerce.exception.ResourceAlreadyExistException;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import com.hoanglam.ecommerce.mappers.RatingMapper;
@@ -36,7 +37,7 @@ public class RatingServiceImpl implements RatingService {
 
         Optional<Rating> ratingOptional = ratingRepository.findByUserIdAndOrderItem(rating.getUserId(), rating.getOrderItem());
         if(ratingOptional.isPresent()){
-            throw new ResourceAlreadyExistException("User already rating this product");
+            throw new MessageException("User already rating this product");
         }
 
         rating.setId(uuid.toString());

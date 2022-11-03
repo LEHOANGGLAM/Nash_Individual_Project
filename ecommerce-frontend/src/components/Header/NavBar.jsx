@@ -100,10 +100,11 @@ class NavBar extends Component {
 
                                             </div>
                                         </li>
+                                       
                                         <li class="nav-item"><a href="" class="nav-link">About</a></li>
                                         <li class="nav-item"><a href="" class="nav-link">Blog</a></li>
                                         <li class="nav-item"><a href="" class="nav-link">Contact</a></li>
-
+                                        <li class="nav-item"><a href="/myorders" class="nav-link">My Orders</a></li>
                                         <li class="nav-item cta cta-colored"><a href="/cart" class="nav-link"><span class="icon-shopping_cart"></span>{this.state.numItems}</a></li>
 
                                     </>

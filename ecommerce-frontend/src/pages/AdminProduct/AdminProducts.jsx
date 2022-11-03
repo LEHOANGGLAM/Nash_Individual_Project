@@ -4,6 +4,7 @@ import currencyFormat from '../../components/Common/CurrencyFormat';
 import Datatable from '../../components/Datatable/datatable';
 import ProductService from '../../services/ProductService';
 
+
 const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     {
@@ -79,6 +80,7 @@ function AdminProducts(props) {
                             </a>
                         </div>
                         <Datatable data={products} col={columns} />
+                  
                     </div>
                 </div>
             </section>

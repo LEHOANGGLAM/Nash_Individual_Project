@@ -4,6 +4,7 @@
  */
 package com.hoanglam.ecommerce.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 
 import java.io.Serializable;
@@ -83,6 +84,7 @@ public class Order implements Serializable {
     private Collection<OrderItem> orderItemCollection;
     @JoinColumn(name = "userId", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private User userId;
 
     public Order() {
