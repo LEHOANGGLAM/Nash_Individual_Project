@@ -3,6 +3,7 @@ import {
   BrowserRouter,
   Routes,
   Route,
+  Outlet,
 } from "react-router-dom";
 
 import Header from './components//Header';
@@ -22,6 +23,8 @@ import CreateUser from "./pages/AdminAddUser/CreateUser";
 import AdminCate from "./pages/AdminCate/AdminCate";
 import CreateCate from "./pages/AdminAddCate/CreateCate";
 import DisplayOrder from "./pages/DisplayOrder/DisplayOrder";
+import AdminPrivateRoute from "./routes/AdminPrivateRoute";
+import UserPrivateRoute from "./routes/UserPrivateRoute";
 
 function App() {
   return (
@@ -30,27 +33,58 @@ function App() {
         <Header />
         <Routes>
 
-          <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<LoginAndRegister />}></Route>
+          <Route path="/" element={<Home />}></Route>
 
-          <Route path="/products" element={<ProductList />}></Route>
-          <Route path="/product-:productId" element={<ProductDetail />}></Route>
+          {/* user */}
+          <Route path="/" element={
+            <UserPrivateRoute>
+              <Outlet />
+            </UserPrivateRoute>
+          }>
+            <Route path="/products" element={<ProductList />}></Route>
+            <Route path="/product-:productId" element={<ProductDetail />}></Route>
 
-          <Route path="/cart" element={<Cart />}></Route>
-          <Route path="/checkout" element={<CheckOut />}></Route>
+            <Route path="/cart" element={<Cart />}></Route>
+            <Route path="/checkout" element={<CheckOut />}></Route>
 
-          <Route path="/myorders" element={<DisplayOrder />}></Route>
+            <Route path="/myorders" element={<DisplayOrder />}></Route>
+          </Route>
+
+
+
           {/* admin */}
-          <Route path="/overview" element={<Overview />}></Route>
-          <Route path="/admin-products" element={<AdminProducts />}></Route>
-          <Route path="/admin-products-new" element={<CreateProduct />}></Route>
+          <Route path="/admin/overview" element={<Overview />}></Route>
+          {/* loi css cua template nen k dung auth như user đuọc */}
+          <Route path="/admin-products" element={
+            <AdminPrivateRoute>
+              <AdminProducts />
+            </AdminPrivateRoute>}>
+          </Route>
+          <Route path="/admin-products-new" element={
+            <AdminPrivateRoute>
+              <CreateProduct />
+            </AdminPrivateRoute>}>
+          </Route>
+          <Route path="/admin-products-new:id" element={<CreateProduct />}></Route>
 
-          <Route path="/admin-users" element={<AdminUser />}></Route>
-          <Route path="/admin-users-new" element={<CreateUser />}></Route>
-          <Route path="/admin-users-new:id" element={<CreateUser />}></Route>
 
+          <Route path="/admin-users" element={
+            <AdminPrivateRoute>
+              <AdminUser />
+            </AdminPrivateRoute>}>
+          </Route>
+          <Route path="/admin-users-new" element={
+            <AdminPrivateRoute>
+              <CreateUser />
+            </AdminPrivateRoute>}>
+          </Route>
+
+            {/* tuong tu */}
           <Route path="/admin-categories" element={<AdminCate />}></Route>
           <Route path="/admin-categories-new" element={<CreateCate />}></Route>
+          <Route path="/admin-categories-new:id" element={<CreateCate />}></Route>
+
 
           <Route path="*" element={<PageNotFound />}> </Route>
         </Routes>

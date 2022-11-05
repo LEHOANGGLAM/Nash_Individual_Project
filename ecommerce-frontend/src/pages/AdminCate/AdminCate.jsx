@@ -1,50 +1,48 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Datatable from '../../components/Datatable/datatable';
 import CateService from '../../services/CateService';
 
-const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'title', headerName: 'Name', width: 450 },
-    {
-        field: 'active', headerName: 'Status', width: 200,
-        renderCell: (params) => {
-            return (
-                <div className={`cellWithStatus ${params.row.active ? "publish" : "draft"}`}>
-                    {params.row.active ? "Active" : "Block"}
-                </div>
-            )
-        }
-    },
-    {
-        field: 'action', headerName: 'Action', width: 300,
-        renderCell: (params) => {
-            return (
-                <div className='cellAction'>
-                    <div className='viewButton' ><a href="/" style={{color: 'blue'}}>View</a></div>
-                    <div className='deleteButton'  onClick={() => blockCate(params.row.id)}>Delete</div>
-                </div>
-            )
 
-        }
-    }
-];
-
-
-const blockCate = (id) => {
-    CateService.deleteCate(id).then((res => {
-        console.log(res.data);
-        // window.location.reload();
-    }))
-}
 function AdminCate(props) {
-  
+
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 70 },
+        { field: 'title', headerName: 'Name', width: 450 },
+        {
+            field: 'active', headerName: 'Status', width: 200,
+            renderCell: (params) => {
+                return (
+                    <div className={`cellWithStatus ${params.row.active ? "publish" : "draft"}`}>
+                        {params.row.active ? "Active" : "Block"}
+                    </div>
+                )
+            }
+        },
+        {
+            field: 'action', headerName: 'Action', width: 300,
+            renderCell: (params) => {
+                return (
+                    <div className='cellAction'>
+                        <div className='viewButton' ><Link to={`/admin-categories-new${params.row.id}`}>View</Link></div>
+                        <div className='deleteButton' onClick={() => blockCate(params.row.id)}>Delete</div>
+                    </div>
+                )
+
+            }
+        }
+    ];
 
     const [cates, setCates] = useState([]);
+    const [isUpdated, setUpdate] = useState(false);
+    const handleUpdate = () => {
+        setUpdate(!isUpdated);
+    }
 
     useEffect(() => {
         fetchCates();
-    }, [columns])
+    }, [isUpdated])
 
     const fetchCates = async () => {
         CateService.getAllCates().then((res => {
@@ -53,6 +51,12 @@ function AdminCate(props) {
     }
 
 
+    const blockCate = (id) => {
+        CateService.deleteCate(id).then((res => {
+            console.log(res.data);
+            handleUpdate()
+        }))
+    }
     return (
         <>
             <div class="hero-wrap hero-bread" style={{ padding: 20 }}>

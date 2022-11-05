@@ -7,7 +7,7 @@ const ModalConfirm = ({ title, handleCloseModal, showModal, link }) => {
     const navigate = useNavigate();
 
     return (
-        <Modal show={showModal} onHide={handleCloseModal} size="lg">
+        <Modal show={showModal} onHide={handleCloseModal} size="lg" backdrop='static' keyboard={false}>
             <Modal.Header closeButton>
                 <Modal.Title>Confirm</Modal.Title>
             </Modal.Header>

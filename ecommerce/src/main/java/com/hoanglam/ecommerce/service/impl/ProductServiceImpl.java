@@ -174,9 +174,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto updateProduct(String id, ProductRequestDto productRequestDto) {
-        if (productRepository.findById(id).isEmpty()) {
-            throw new ResourceNotFoundException("Product not exist with id: " + id);
-        }
+        Product product = productRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Product not exist with id: " + id));
         Product productUpdated = modelMapper.map(productRequestDto, Product.class);
         productUpdated.setId(id);
 
@@ -194,7 +193,7 @@ public class ProductServiceImpl implements ProductService {
         //update new Size for product
         Collection<Size> sizes = new HashSet<>();
         productRequestDto.getSizeIds().forEach(sizeDto -> {
-            Optional<Size> size = sizeRepository.findById(sizeDto);
+            Optional<Size> size = sizeRepository.findBySizeName(sizeDto);
             if (size.isEmpty()) {
                 throw new ResourceNotFoundException("Size not exist with id: " + sizeDto);
             }
@@ -202,6 +201,29 @@ public class ProductServiceImpl implements ProductService {
         });
         productUpdated.setSizeCollection(sizes);
 
+        //delete link Image old
+        List<Image> images = imageRepository.findByProductId(productRepository.findById(id).get());
+        imageRepository.deleteAllInBatch(images);
+        //Set  new image
+        UUID uuid = UUID.randomUUID();
+        if(productRequestDto.getImages() != null){
+            for (int i = 0; i < productRequestDto.getImages().size(); i++) {
+                uuid = UUID.randomUUID();
+                Image image = new Image();
+                image.setId(uuid.toString());
+                image.setProductId(productRepository.findById(id).get());
+                image.setLink(productRequestDto.getImages().get(i));
+                imageRepository.save(image);
+            }
+        }
+
+        //set OldValue
+        productUpdated.setActive(true);
+        productUpdated.setCreatedDate(product.getCreatedDate());
+        productUpdated.setAverageRating(product.getAverageRating());
+        productUpdated.setNumberSold(product.getNumberSold());
+        productUpdated.setNumberRating(product.getNumberRating());
+        productUpdated.setUpdatedDate(new Date());
         //save new product
         productUpdated = productRepository.save(productUpdated);
 

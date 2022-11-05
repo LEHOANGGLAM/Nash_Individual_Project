@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Datatable from '../../components/Datatable/datatable';
 import UserService from '../../services/UserService';
 
@@ -65,8 +66,10 @@ function AdminUser(props) {
                     <div className="datatable">
                         <div className="datatableTitle">
 
-                            <a href="/admin-users-new" className="link">
-                                Add new admin account
+                            {/* <Link to="new"  className="link"> Add admin account</Link> */}
+
+                            <a href="/new" className="link">
+                                Add admin account
                             </a>
                         </div>
                         <Datatable data={users} col={columns} />

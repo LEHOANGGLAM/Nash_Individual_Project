@@ -13516,16 +13516,6 @@ h5,
   border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
 
-.product-remove {
-  background: #dbcc8f;
-  padding: 4px 10px;
-  color: #000000;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  cursor: pointer;
-  border-radius: 2px;
-}
 
 .table tbody tr td.product-remove a {
   background: #dbcc8f;

@@ -57,17 +57,7 @@ export default function LoadingButtonsTransition() {
         >
           Send
         </LoadingButton>
-        <LoadingButton
-          size="small"
-          color="secondary"
-          onClick={handleClick}
-          loading={loading}
-          loadingPosition="start"
-          startIcon={<SaveIcon />}
-          variant="contained"
-        >
-          Save
-        </LoadingButton>
+ 
       </Box>
 
       <Box sx={{ '& > button': { m: 1 } }}>
