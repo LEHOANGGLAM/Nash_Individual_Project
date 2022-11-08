@@ -47,11 +47,13 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private Cloudinary cloudinary;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, SizeRepository sizeRepository, ModelMapper modelMapper) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
+                              SizeRepository sizeRepository, ImageRepository imageRepository, ModelMapper modelMapper) {
         super();
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.sizeRepository = sizeRepository;
+        this.imageRepository = imageRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -156,7 +158,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product savedProduct = productRepository.save(p);
 
-        if(productRequestDto.getImages() != null){
+        if (productRequestDto.getImages() != null) {
             for (int i = 0; i < productRequestDto.getImages().size(); i++) {
                 uuid = UUID.randomUUID();
                 Image image = new Image();
@@ -205,7 +207,7 @@ public class ProductServiceImpl implements ProductService {
         //Set  new image
         List<Image> images = new ArrayList<>();
         UUID uuid;
-        if(productRequestDto.getImages() != null){
+        if (productRequestDto.getImages() != null) {
             for (int i = 0; i < productRequestDto.getImages().size(); i++) {
                 uuid = UUID.randomUUID();
                 Image image = new Image();
@@ -224,7 +226,8 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productRequestDto.getPrice());
         product.setQuantity(productRequestDto.getQuantity());
         product.setTitle(productRequestDto.getTitle());
-       //save new product
+        product.setUpdatedDate(new Date());
+        //save new product
         product = productRepository.save(product);
 
         //map to responseDto

@@ -113,20 +113,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderItem> getOrderItemNoRatingByUserId(String userId) {
+    public List<OrderItem> getOrderItemByUserId(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + userId));
 
-        List<OrderItem> oItems = orderItemRepository.findByOrderId_UserId(user);
+        List<OrderItem> oItems = orderItemRepository.findByOrderId_UserIdOrderByRating(user);
 
-        //get item no rating
-        List<OrderItem> result = new ArrayList<>();
-        oItems.forEach(item ->{
-            if(item.getRating()== null){
-                result.add(item);
-            }
-        });
-        return result;
+
+        return oItems;
     }
 
     public Order addOrderItemIntoOrder(Order order, List<OrderItemRequestDto> orderItemRequestDtos) {

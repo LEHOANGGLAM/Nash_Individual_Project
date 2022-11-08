@@ -124,15 +124,5 @@ public class OrderServiceImplTest {
         assertThat(result, is(expectedOrderResDto));
     }
 
-//    @Test
-//    public void getOrderTotalPrice_ShouldReturnValue_WhenDataValid() {
-//        savedOrderItem = OrderItem.builder().productId(product).quantity((short) 2).price(BigDecimal.valueOf(100)).build();
-//        Collection<OrderItem> orderItems = new HashSet<>();
-//        orderItems.add(savedOrderItem);
-//        savedOrder = Order.builder().orderItemCollection( orderItems).build();
-//
-//        BigDecimal result = orderServiceImpl.getOrderTotalPrice(savedOrder.getOrderItemCollection());
-//
-//        assertThat(result, is(savedOrderItem.getPrice()));
-//    }
+
 }

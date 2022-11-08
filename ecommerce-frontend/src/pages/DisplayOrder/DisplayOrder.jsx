@@ -65,7 +65,7 @@ function DisplayOrder(props) {
                                     <tbody>
                                         {items.map((item, index) =>
                                             <>
-                                                <tr class="text-center" key={index } >
+                                                <tr class="text-center" key={index} >
                                                     <td class="price" style={{ backgroundColor: '#FFFFFF' }}>{index + 1}</td>
 
                                                     <Link to={`/product-${item.productId.id}`} >
@@ -88,7 +88,16 @@ function DisplayOrder(props) {
                                                     </td>
 
                                                     <td class="quantity">
-                                                        <button class="btn btn-primary py-3 px-4" style={{ color: 'white', fontWeight: 'bold' }} onClick={() => handleOpenModal(item)} disabled={item.rating != null}>Rating</button>
+                                                        {item.rating == null ?
+                                                            < button class="btn btn-primary py-3 px-4" style={{ color: 'white', fontWeight: 'bold' }} onClick={() => handleOpenModal(item)}>Rating</button>
+                                                            : <>
+                                                                <Link to={`/product-${item.productId.id}`} >
+                                                                    <button style={{ backgroundColor: 'lightblue', borderRadius: 50, fontWeight: 'bold', padding:10 }}>
+                                                                        Buy again</button>
+                                                                </Link>
+                                                            </>
+
+                                                        }
                                                     </td>
                                                 </tr>
                                             </>
@@ -97,7 +106,7 @@ function DisplayOrder(props) {
                                 </table>
                             </div>
                             <ModaRating item={itemSelect} handleCloseModal={handleCloseModal} showModal={showModal} handleCommented={handleCommented} />
-                            <ModalConfirm title={'Success'} handleCloseModal={handleCommented} showModal={isComment}/>
+                            <ModalConfirm title={'Success'} handleCloseModal={handleCommented} showModal={isComment} />
                         </div>
                     </div>
                 </div>

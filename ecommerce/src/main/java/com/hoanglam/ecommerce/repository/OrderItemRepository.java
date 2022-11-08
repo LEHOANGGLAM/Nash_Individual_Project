@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import java.util.List;
 
 public interface OrderItemRepository extends JpaRepository<OrderItem, String>, JpaSpecificationExecutor<OrderItem> {
-    List<OrderItem> findByOrderId_UserId(User userid);
+    List<OrderItem> findByOrderId_UserIdOrderByRating(User userid);
 }

@@ -33,6 +33,6 @@ public class OrderController {
 
     @GetMapping("/user/{userId}/orderitems")
     public List<OrderItem> getOrderItemsByUserId(@PathVariable String userId){
-        return orderService.getOrderItemNoRatingByUserId(userId);
+        return orderService.getOrderItemByUserId(userId);
     }
 }

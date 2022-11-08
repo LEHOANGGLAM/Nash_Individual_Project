@@ -10,5 +10,5 @@ public interface OrderService {
     OrderResponseDto createOrder(OrderResquestDto o, String userId);
     List<OrderResponseDto> getOrderByUserId(String userId);
 
-    List<OrderItem> getOrderItemNoRatingByUserId(String userId);
+    List<OrderItem> getOrderItemByUserId(String userId);
 }

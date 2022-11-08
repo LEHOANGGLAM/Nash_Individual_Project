@@ -48,7 +48,7 @@ const Cart = () => {
         <>
             <HeadWrap />
             <section class="ftco-section ftco-cart">
-                <div class="container">
+                <div class="row">
                     <CartItems items={items} handleUpdate={handleUpdate} />
                     <CartTotal items={items} handleCheckout={handleCheckout} />
                 </div>
