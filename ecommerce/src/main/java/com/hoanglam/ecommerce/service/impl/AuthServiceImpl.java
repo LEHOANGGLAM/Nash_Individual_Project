@@ -10,6 +10,7 @@ import com.hoanglam.ecommerce.dto.response.SuccessResponse;
 import com.hoanglam.ecommerce.dto.response.entities.UserResponseDto;
 import com.hoanglam.ecommerce.entites.Role;
 import com.hoanglam.ecommerce.entites.User;
+import com.hoanglam.ecommerce.exception.MessageException;
 import com.hoanglam.ecommerce.exception.ResourceAlreadyExistException;
 import com.hoanglam.ecommerce.exception.ResourceNotFoundException;
 import com.hoanglam.ecommerce.repository.RoleRepository;
@@ -94,18 +95,18 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResourceAlreadyExistException("Error: Username is already in use!"));
+                    .body(new MessageException("Error: Username is already in use!"));
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResourceAlreadyExistException("Error: Email is already in use!"));
+                    .body(new MessageException("Error: Email is already in use!"));
         }
         if (userRepository.existsByMobile(signUpRequest.getMobile())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ResourceAlreadyExistException("Error: This phone is already in use!"));
+                    .body(new MessageException("Error: This phone is already in use!"));
         }
 
         // Create new user's account

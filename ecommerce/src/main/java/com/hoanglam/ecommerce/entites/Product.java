@@ -94,7 +94,7 @@ public class Product implements Serializable {
     @ManyToMany(cascade = {CascadeType.ALL})
     private Collection<Category> categoryCollection;
 
-    @OneToMany(mappedBy = "productId")
+    @OneToMany(mappedBy = "productId",cascade = CascadeType.ALL)
     private Collection<Image> imageCollection;
 
     @JsonIgnore

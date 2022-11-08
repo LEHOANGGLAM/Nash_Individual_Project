@@ -3,6 +3,7 @@ import AuthService from '../../services/AuthService';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+
 function Login(props) {
     const navigate = useNavigate();
     const [fields, setFields] = useState({});
@@ -22,6 +23,8 @@ function Login(props) {
 
         AuthService.login(fields["username"], fields["password"]).then(
             () => {
+             
+
                 navigate('/');
                 window.location.reload();
             },

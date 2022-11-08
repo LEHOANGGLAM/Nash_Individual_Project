@@ -30,7 +30,9 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
         final Map<String, Object> body = new HashMap<>();
         body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
         body.put("error", "Unauthorized");
-        body.put("message", authException.getMessage());
+        //body.put("message", "Incorrect username or password");
+        body.put("message", authException.getMessage() == "Bad credentials" ?
+                "Incorrect username or password" : authException.getMessage());
         body.put("path", request.getServletPath());
 
         final ObjectMapper mapper = new ObjectMapper();

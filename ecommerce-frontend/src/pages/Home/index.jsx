@@ -4,6 +4,7 @@ import ProductService from '../../services/ProductService';
 import MiddleBar from '../../components/Home/MiddleBar';
 import ImageGallery from '../../components/Home/ImageGallery';
 import Products from '../../components/Product/Products';
+import SupportEngine from '../../components/SupportEngine';
 
 
 
@@ -12,6 +13,8 @@ const Home = () => {
 
     useEffect(() => {
         fetchProducts();
+
+        localStorage.clear()
     }, [])
 
     const fetchProducts = async () => {
@@ -38,6 +41,7 @@ const Home = () => {
                 </div>
             </section>
             <ImageGallery />
+            < SupportEngine/>
         </div>
     )
 }

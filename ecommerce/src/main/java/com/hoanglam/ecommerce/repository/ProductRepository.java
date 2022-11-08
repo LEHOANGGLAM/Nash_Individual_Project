@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, String>, JpaSpecificationExecutor<Product> {
     Optional<Product> findByTitle(String title);
 
-    List<Product> findByActive(boolean active);
+    List<Product> findByActiveOrderByCreatedDateDesc(boolean active);
 
     Page<Product> findByPriceBetweenAndTitleContainingAndCategoryCollection_IdAndActiveOrderByCreatedDateDesc
             (BigDecimal fromPrice, BigDecimal toPrice, String title, String id, boolean active, Pageable pageable);

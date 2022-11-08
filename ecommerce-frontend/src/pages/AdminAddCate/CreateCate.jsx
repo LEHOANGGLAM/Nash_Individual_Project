@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import CateService from '../../services/CateService';
+import ModalConfirm from '../../components/ModalConfirm';
 
 const schema = yup.object().shape({
     title: yup.string().required(),
@@ -20,6 +21,12 @@ function CreateCate(props) {
 
     const { id } = useParams();
     const [cate, setCate] = useState([]);
+
+    //handleModal
+    const [showModal, setShowModal] = useState(false);
+    const handleShowModal = () => { setShowModal(true); }
+    const handleCloseModal = () => { setShowModal(false); }
+
     useEffect(() => {
         if (id) {
             CateService.getCateById(id).then(res => {
@@ -37,9 +44,12 @@ function CreateCate(props) {
         }
         CateService.addCate(cate).then(res => {
             console.log("thanh cong");
+            handleShowModal()
         }, err => {
             console.log("fail");
         })
+
+   
     }
 
     const handleUpdateCate = (data) => {
@@ -50,10 +60,13 @@ function CreateCate(props) {
         }
         CateService.updateCate(id, newCate).then(res => {
             console.log("update thanh cong");
+            handleShowModal()
         }, err => {
             console.log("update fail");
         })
     }
+
+
     return (
         <>
             <div class="hero-wrap hero-bread" style={{ padding: 20 }}>
@@ -95,7 +108,7 @@ function CreateCate(props) {
                     </div>
                 </div>
             </section>
-
+            <ModalConfirm title={'Add Category success'} handleCloseModal={handleCloseModal} showModal={showModal} link="/admin-categories" />
         </>
     );
 }

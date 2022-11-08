@@ -51,13 +51,14 @@ function CartItems(props) {
     return (
         <>
             <div class="row">
+                
                 <div class="col-md-12 ftco-animate fadeInUp ftco-animated">
                     <div class="cart-list">
                         <table class="table">
                             <thead class="thead-primary">
                                 <tr class="text-center">
                                     {/* <th>&nbsp;</th> */}
-                                    <th>&nbsp;</th>
+                                 
                                     <th>&nbsp;</th>
                                     <th>Product</th>
                                     <th>Price</th>
@@ -76,7 +77,7 @@ function CartItems(props) {
                                         onChange={() => handleOnChange(index)}
                                     /> */}
                                             {/* () => handleDeleteCartItem(item.id) */}
-                                            <td class="product-remove " onClick={() => setOpen(true)}><a><span class="ion-ios-close" ></span></a></td>
+                                            <td class="product-remove" onClick={() => setOpen(true)}><a><span class="ion-ios-close" ></span></a></td>
 
                                             <Link to={`/product-${item.productId.id}`} >
                                                 <td class="image-prod"><div class="img" style={{ backgroundImage: `url(${item.productId.imageCollection[0]?.link})` }}></div></td>
@@ -115,11 +116,11 @@ function CartItems(props) {
                                         </Modal>
                                     </>
                                 )}
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
         </>
     )

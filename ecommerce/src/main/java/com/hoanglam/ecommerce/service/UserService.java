@@ -10,7 +10,7 @@ import java.util.Map;
 public interface UserService {
     UserResponseDto getUserById(String id);
     List<UserResponseDto> getAllUsers(Map<String, String> params);
-    List<UserResponseDto> getUsersByRole(Map<String, String> params);
+
    // User createUser(User u);
     UserResponseDto updateUser(String id, User userUpdate);
     DeleteResponseDto softDeleteUser(String id);

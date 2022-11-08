@@ -36,15 +36,15 @@ function App() {
           <Route path="/login" element={<LoginAndRegister />}></Route>
           <Route path="/" element={<Home />}></Route>
 
+          <Route path="/products" element={<ProductList />}></Route>
+          <Route path="/product-:productId" element={<ProductDetail />}></Route>
+
           {/* user */}
           <Route path="/" element={
             <UserPrivateRoute>
               <Outlet />
             </UserPrivateRoute>
           }>
-            <Route path="/products" element={<ProductList />}></Route>
-            <Route path="/product-:productId" element={<ProductDetail />}></Route>
-
             <Route path="/cart" element={<Cart />}></Route>
             <Route path="/checkout" element={<CheckOut />}></Route>
 
@@ -80,7 +80,7 @@ function App() {
             </AdminPrivateRoute>}>
           </Route>
 
-            {/* tuong tu */}
+          {/* tuong tu */}
           <Route path="/admin-categories" element={<AdminCate />}></Route>
           <Route path="/admin-categories-new" element={<CreateCate />}></Route>
           <Route path="/admin-categories-new:id" element={<CreateCate />}></Route>

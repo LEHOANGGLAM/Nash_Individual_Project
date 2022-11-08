@@ -6,8 +6,9 @@ import UserService from '../../services/UserService';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'firstName', headerName: 'First Name', width: 200 },
-    { field: 'lastName', headerName: 'Last Name', width: 150 },
+    { field: 'username', headerName: 'Username', width: 150 },
+    { field: 'firstName', headerName: 'First Name', width: 100 },
+    { field: 'lastName', headerName: 'Last Name', width: 100 },
     { field: 'mobile', headerName: 'Phone', width: 100 },
     { field: 'email', headerName: 'Email', width: 200 },
     {
@@ -66,11 +67,11 @@ function AdminUser(props) {
                     <div className="datatable">
                         <div className="datatableTitle">
 
-                            {/* <Link to="new"  className="link"> Add admin account</Link> */}
+                            <Link to="/admin-users-new"  className="link"> Add admin account</Link>
 
-                            <a href="/new" className="link">
+                            {/* <a href="/admin-sers-new" className="link">
                                 Add admin account
-                            </a>
+                            </a> */}
                         </div>
                         <Datatable data={users} col={columns} />
                     </div>

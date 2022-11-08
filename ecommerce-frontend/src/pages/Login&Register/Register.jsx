@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AuthService from '../../services/AuthService';
+import ModalConfirm from '../../components/ModalConfirm';
 
 class Register extends Component {
     constructor(props) {
@@ -8,11 +9,21 @@ class Register extends Component {
             fields: {},
             successful: false,
             message: "",
+
+            showModal: false,
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleRegister = this.handleRegister.bind(this);
     }
 
+    handleShowModal = () => {
+        this.setState({
+            showModal: true,
+        });
+    }
+    handleCloseModal = () => {  this.setState({
+        showModal: false,
+    }); }
     handleChange = (field, e) => {
         let fields = this.state.fields;
         fields[field] = e.target.value;
@@ -29,11 +40,11 @@ class Register extends Component {
             formIsValid = false;
             return formIsValid;
         }
-       
+
         return formIsValid;
     }
 
-    handleRegister = (e) => {
+    handleRegister = async (e) => {
         e.preventDefault();
 
         this.setState({
@@ -43,7 +54,7 @@ class Register extends Component {
 
         console.log(this.state)
         if (this.handleValidation()) {
-            AuthService.register(
+            await AuthService.register(
                 this.state.fields["username"],
                 this.state.fields["email"],
                 this.state.fields["mobile"],
@@ -55,6 +66,7 @@ class Register extends Component {
                         message: response.data.message,
                         successful: true
                     });
+                    this.handleShowModal();
                 },
                 error => {
                     const resMessage =
@@ -127,6 +139,7 @@ class Register extends Component {
                         </span>
                     )}
                 </form>
+                <ModalConfirm title={'Success'} handleCloseModal={this.handleCloseModal} showModal={this.state.showModal} link="/login" />
             </>
         );
     }

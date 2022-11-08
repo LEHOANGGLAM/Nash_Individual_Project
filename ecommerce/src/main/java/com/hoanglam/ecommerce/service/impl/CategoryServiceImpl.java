@@ -54,6 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         cateUpdate = categoryRepository.save(cateUpdate);
 
+        cateUpdate.setActive(true);
         CategoryReponseDto categoryReponseDto = modelMapper.map(cateUpdate, CategoryReponseDto.class);
         return categoryReponseDto;
     }

@@ -66,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResponseDto> getAllProducts(Map<String, String> params) {
         //Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
 
-        List<Product> result = productRepository.findByActive(true);
+        List<Product> result = productRepository.findByActiveOrderByCreatedDateDesc(true);
 
         //map to listDTO
         List<ProductResponseDto> productResponseDtos = new ArrayList<>();
@@ -176,10 +176,8 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDto updateProduct(String id, ProductRequestDto productRequestDto) {
         Product product = productRepository.findById(id).orElseThrow(() ->
                 new ResourceNotFoundException("Product not exist with id: " + id));
-        Product productUpdated = modelMapper.map(productRequestDto, Product.class);
-        productUpdated.setId(id);
 
-        //update new Category for product
+//        //update new Category for product
         Collection<Category> categories = new HashSet<>();
         productRequestDto.getCategoryIds().forEach(cateDto -> {
             Optional<Category> category = categoryRepository.findById(cateDto);
@@ -188,7 +186,7 @@ public class ProductServiceImpl implements ProductService {
             }
             categories.add(category.get());
         });
-        productUpdated.setCategoryCollection(categories);
+        product.setCategoryCollection(categories);
 
         //update new Size for product
         Collection<Size> sizes = new HashSet<>();
@@ -199,36 +197,38 @@ public class ProductServiceImpl implements ProductService {
             }
             sizes.add(size.get());
         });
-        productUpdated.setSizeCollection(sizes);
+        product.setSizeCollection(sizes);
 
         //delete link Image old
-        List<Image> images = imageRepository.findByProductId(productRepository.findById(id).get());
-        imageRepository.deleteAllInBatch(images);
+        List<Image> tempList = imageRepository.findByProductId(productRepository.findById(id).get());
+        imageRepository.deleteAllInBatch(tempList);
         //Set  new image
-        UUID uuid = UUID.randomUUID();
+        List<Image> images = new ArrayList<>();
+        UUID uuid;
         if(productRequestDto.getImages() != null){
             for (int i = 0; i < productRequestDto.getImages().size(); i++) {
                 uuid = UUID.randomUUID();
                 Image image = new Image();
                 image.setId(uuid.toString());
-                image.setProductId(productRepository.findById(id).get());
+                image.setProductId(product);
                 image.setLink(productRequestDto.getImages().get(i));
+
                 imageRepository.save(image);
+                images.add(image);
             }
         }
+        product.setImageCollection(images);
 
-        //set OldValue
-        productUpdated.setActive(true);
-        productUpdated.setCreatedDate(product.getCreatedDate());
-        productUpdated.setAverageRating(product.getAverageRating());
-        productUpdated.setNumberSold(product.getNumberSold());
-        productUpdated.setNumberRating(product.getNumberRating());
-        productUpdated.setUpdatedDate(new Date());
-        //save new product
-        productUpdated = productRepository.save(productUpdated);
+        //set new Value
+        product.setDesciption(productRequestDto.getDesciption());
+        product.setPrice(productRequestDto.getPrice());
+        product.setQuantity(productRequestDto.getQuantity());
+        product.setTitle(productRequestDto.getTitle());
+       //save new product
+        product = productRepository.save(product);
 
         //map to responseDto
-        ProductResponseDto productResponseDto = modelMapper.map(productUpdated, ProductResponseDto.class);
+        ProductResponseDto productResponseDto = modelMapper.map(product, ProductResponseDto.class);
         return productResponseDto;
     }
 

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Datatable from '../../components/Datatable/datatable';
 import CateService from '../../services/CateService';
-
+import { Button, Modal } from 'react-bootstrap';
 
 function AdminCate(props) {
 
@@ -26,7 +26,7 @@ function AdminCate(props) {
                 return (
                     <div className='cellAction'>
                         <div className='viewButton' ><Link to={`/admin-categories-new${params.row.id}`}>View</Link></div>
-                        <div className='deleteButton' onClick={() => blockCate(params.row.id)}>Delete</div>
+                        <div className='deleteButton' onClick={() => handleShowModal(params.row.id)}>Delete</div>
                     </div>
                 )
 
@@ -40,6 +40,15 @@ function AdminCate(props) {
         setUpdate(!isUpdated);
     }
 
+    //handleModal
+    const [idCateDelete, setIdCateDelete] = useState();
+    const [showModal, setShowModal] = useState(false);
+    const handleShowModal = (id) => {
+        setIdCateDelete(id)
+        setShowModal(true);
+    }
+    const handleCloseModal = () => { setShowModal(false); }
+
     useEffect(() => {
         fetchCates();
     }, [isUpdated])
@@ -51,10 +60,11 @@ function AdminCate(props) {
     }
 
 
-    const blockCate = (id) => {
-        CateService.deleteCate(id).then((res => {
+    const deleteCate = () => {
+        CateService.deleteCate(idCateDelete).then((res => {
             console.log(res.data);
             handleUpdate()
+            handleCloseModal()
         }))
     }
     return (
@@ -73,6 +83,21 @@ function AdminCate(props) {
                             </a>
                         </div>
                         <Datatable data={cates} col={columns} />
+                        <Modal show={showModal} onHide={handleCloseModal} size="lg" backdrop='static' keyboard={false}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Confirm</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Do you sure to delete this category?</Modal.Body>
+                            <Modal.Footer>
+
+                                <Button variant="secondary" onClick={deleteCate}>
+                                    Yes
+                                </Button>
+                                <Button variant="secondary" onClick={handleCloseModal}>
+                                    No
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
                     </div>
                 </div>
             </section>

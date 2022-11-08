@@ -37,24 +37,7 @@ public class UserServiceImpl implements UserService {
     public List<UserResponseDto> getAllUsers(Map<String, String> params) {
         Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
         String kw = params.getOrDefault("username", "");
-
-        Page<User> result  = userRepository.findByUsernameContainingOrderByUsernameAsc(kw ,pageable);
-
-        //map listUser to ListUserDto
-        List<UserResponseDto> userResponseDtos = new ArrayList<>();
-        result.getContent().forEach(u -> {
-            UserResponseDto userResponseDto = modelMapper.map(u, UserResponseDto.class);
-            userResponseDtos.add(userResponseDto);
-        });
-        return userResponseDtos;
-    }
-
-    @Override
-    public List<UserResponseDto> getUsersByRole(Map<String, String> params) {
-        Pageable pageable = PageRequest.of(Integer.parseInt(params.getOrDefault("page", "0")), pageSize);
-        String kw = params.getOrDefault("username", "");
         String id = params.get("roleId");
-
         Page<User> result;
         if (id != null && !id.equals("")) {
             result = userRepository.findByRolesCollection_IdAndUsernameContainingOrderByUsernameAsc(id, kw, pageable);
@@ -67,9 +50,10 @@ public class UserServiceImpl implements UserService {
         result.getContent().forEach(u -> {
             UserResponseDto userResponseDto = modelMapper.map(u, UserResponseDto.class);
             userResponseDtos.add(userResponseDto);
-        } );
+        });
         return userResponseDtos;
     }
+
 
 //    @Override
 //    public User createUser(User u) {

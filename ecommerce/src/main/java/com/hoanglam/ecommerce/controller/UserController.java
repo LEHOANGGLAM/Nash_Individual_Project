@@ -36,10 +36,6 @@ public class UserController {
         return  userService.getAllUsers(params);
     }
 
-    @GetMapping("/role")
-    public List<UserResponseDto> getUserByRole(@RequestParam Map<String, String> params) {
-        return  userService.getUsersByRole(params);
-    }
 
     @DeleteMapping("/{id}")
     public DeleteResponseDto deleteUser(@PathVariable String id) {

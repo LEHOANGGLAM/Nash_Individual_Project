@@ -4,6 +4,8 @@ import currencyFormat from '../../components/Common/CurrencyFormat';
 import Datatable from '../../components/Datatable/datatable';
 import ProductService from '../../services/ProductService';
 import { Link } from 'react-router-dom';
+import { Button, Modal } from 'react-bootstrap';
+
 
 function AdminProducts(props) {
 
@@ -45,7 +47,7 @@ function AdminProducts(props) {
                 return (
                     <div className='cellAction'>
                         <div className='viewButton'><Link to={`/admin-products-new${params.row.id}`} style={{ color: 'blue' }}>View</Link></div>
-                        <div className='deleteButton' onClick={() => deletePro(params.row.id)}>Delete</div>
+                        <div className='deleteButton' onClick={() => handleShowModal(params.row.id)}>Delete</div>
                     </div>
                 )
 
@@ -59,6 +61,16 @@ function AdminProducts(props) {
     const handleUpdate = () => {
         setUpdate(!isUpdated);
     }
+
+    //handleModal
+    const [idProductDelete, setIdProductDelete] = useState();
+    const [showModal, setShowModal] = useState(false);
+    const handleShowModal = (id) => {
+        setIdProductDelete(id)
+        setShowModal(true);
+    }
+    const handleCloseModal = () => { setShowModal(false); }
+
     useEffect(() => {
         fetchProducts();
     }, [isUpdated])
@@ -69,11 +81,14 @@ function AdminProducts(props) {
         }))
     }
 
-    const deletePro = (id) => {
-        ProductService.deleteProduct(id).then((res => {
+
+
+    const deletePro = () => {
+        ProductService.deleteProduct(idProductDelete).then((res => {
             console.log(res.data);
             handleUpdate();
-          //  window.location.reload();
+
+            handleCloseModal()
         }))
     }
 
@@ -93,7 +108,21 @@ function AdminProducts(props) {
                             </a>
                         </div>
                         <Datatable data={products} col={columns} />
+                        <Modal show={showModal} onHide={handleCloseModal} size="lg" backdrop='static' keyboard={false}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Confirm</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Do you sure to delete this product?</Modal.Body>
+                            <Modal.Footer>
 
+                                <Button variant="secondary" onClick={deletePro}>
+                                    Yes
+                                </Button>
+                                <Button variant="secondary" onClick={handleCloseModal}>
+                                    No
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
                     </div>
                 </div>
             </section>
