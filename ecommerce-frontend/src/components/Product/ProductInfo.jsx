@@ -64,6 +64,13 @@ function ProductInfo(props) {
             CartService.addItemIntoCart(cartItem, user.id).then((res) => {
                 res.data.code ? setMessage(res.data.message) : setMessage("Add product successful!")
             }, (err) => {
+                const resMessage =
+                    (err.response &&
+                        err.response.data &&
+                        err.response.data.message) ||
+                    err.message ||
+                    err.toString();
+                setMessage(resMessage);
                 console.log(err);
             }
             )
@@ -114,7 +121,7 @@ function ProductInfo(props) {
                 </div>
                 <p class="price"><span>{currencyFormat(product.price)} VND</span></p>
 
-                <p  style={{height: 400}}>{parse(product.desciption)}</p>
+                <p style={{ height: 400 }}>{parse(product.desciption)}</p>
 
                 <div class="row mt-4">
                     <div class="col-md-6">

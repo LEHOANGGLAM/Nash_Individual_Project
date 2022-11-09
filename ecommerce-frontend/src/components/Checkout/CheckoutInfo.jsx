@@ -83,7 +83,14 @@ function CheckoutInfo() {
 
                     localStorage.clear();
                 }, (err) => {
-                    setMessage(err.message);
+                    const resMessage =
+                        (err.response &&
+                            err.response.data &&
+                            err.response.data.message) ||
+                            err.message ||
+                            err.toString();
+                    setMessage(resMessage);
+                    console.log(err);
                 })
 
                 localStorage.removeItem("itemsCheckOut");
@@ -129,10 +136,11 @@ function CheckoutInfo() {
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" style={{fontWeight: 'bold'}}>
                                         <div class="form-group">
                                             <label for="streetaddress">Street Address</label>
-                                            <input type="text" class="form-control" value={address} onChange={handleAddressChange} />
+                                            <input type="text"  value={address} onChange={handleAddressChange} 
+                                             style={{borderStyle: 'solid 3px', borderWidth: 3, display: 'flex', width: '100%', height: 50}}/>
                                         </div>
                                     </div>
 
