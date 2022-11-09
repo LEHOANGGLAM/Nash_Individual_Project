@@ -15,22 +15,4 @@ public class AppConfig {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-
-    @Bean
-    public Cloudinary cloudinaryConfig() {
-        Cloudinary cloudinary
-                = new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", "dmstiyczr",
-                "api_key", "624246788974614",
-                "api_secret", "-Uz1msvYALJyI96oaJRmC_28DjU",
-                "secure", true));
-        return cloudinary;
-    }
-
-    @Bean
-    public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        resolver.setDefaultEncoding("UTF-8");
-        return resolver;
-    }
 }

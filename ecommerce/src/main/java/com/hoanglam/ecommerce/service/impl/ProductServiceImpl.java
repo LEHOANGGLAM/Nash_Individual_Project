@@ -13,7 +13,6 @@ import com.hoanglam.ecommerce.repository.CategoryRepository;
 import com.hoanglam.ecommerce.repository.ImageRepository;
 import com.hoanglam.ecommerce.repository.ProductRepository;
 import com.hoanglam.ecommerce.repository.SizeRepository;
-import com.hoanglam.ecommerce.service.CloudinaryService;
 import com.hoanglam.ecommerce.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +41,7 @@ public class ProductServiceImpl implements ProductService {
     private SizeRepository sizeRepository;
     @Autowired
     private ImageRepository imageRepository;
-    @Autowired(required = false)
-    private CloudinaryService cloudinaryService;
-    @Autowired
-    private Cloudinary cloudinary;
+
 
     public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
                               SizeRepository sizeRepository, ImageRepository imageRepository, ModelMapper modelMapper) {

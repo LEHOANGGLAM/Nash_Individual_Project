@@ -45,10 +45,11 @@ function App() {
               <Outlet />
             </UserPrivateRoute>
           }>
+
             <Route path="/cart" element={<Cart />}></Route>
             <Route path="/checkout" element={<CheckOut />}></Route>
-
             <Route path="/myorders" element={<DisplayOrder />}></Route>
+
           </Route>
 
 
